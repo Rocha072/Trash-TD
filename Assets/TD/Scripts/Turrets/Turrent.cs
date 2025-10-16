@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.VFX;
 
 public class Turrent : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Turrent : MonoBehaviour
     public float turnSpeed = 5f;
     public string enemyTag = "Enemy";
     public Transform partToRotate;
+    public VisualEffect attackEffect;
     void Start()
     {
         InvokeRepeating(nameof(UpdateTarget), 0f, 0.5f);
@@ -38,14 +40,12 @@ public class Turrent : MonoBehaviour
     {
         if (target == null)
         {
+            attackEffect.Stop();
             return;
-            //Desativa efeito
         }
-            
-
 
         RotateTarget();
-        //Ativa efeito
+        attackEffect.Play();
     }
 
     void RotateTarget()
