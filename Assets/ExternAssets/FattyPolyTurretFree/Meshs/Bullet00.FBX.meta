@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b3b36bdff47225d478f6348be07f369e
+guid: 15a0e7a7ce870f54d97428ac5a990813
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -95,6 +95,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 159989
   packageName: Fatty Poly Turret Part 2 Free
-  packageVersion: 
-  assetPath: Assets/FattyPolyTurretFree/Meshs/Bullet00.FBX
-  uploadId: 0
+  packageVersion: 1.0
+  assetPath: Assets/ExternAssets/FattyPolyTurretFree/Meshs/Bullet00.FBX
+  uploadId: 344828

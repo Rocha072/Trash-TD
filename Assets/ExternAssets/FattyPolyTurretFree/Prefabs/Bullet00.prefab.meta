@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 12ea0a574b594264685afffd52fff036
+guid: 9318a11cd670f3d4f924ff92fe7b0c77
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 100100000
@@ -10,6 +10,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 159989
   packageName: Fatty Poly Turret Part 2 Free
-  packageVersion: 
-  assetPath: Assets/FattyPolyTurretFree/Prefabs/Bullet00.prefab
-  uploadId: 0
+  packageVersion: 1.0
+  assetPath: Assets/ExternAssets/FattyPolyTurretFree/Prefabs/Bullet00.prefab
+  uploadId: 344828

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 153a6fc921cd02042b5901d923ca5e41
+guid: 5a879cfd796bee14a88131ec7aaddc45
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -108,6 +108,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 159989
   packageName: Fatty Poly Turret Part 2 Free
-  packageVersion: 
-  assetPath: Assets/FattyPolyTurretFree/Textures/Palette256.png
-  uploadId: 0
+  packageVersion: 1.0
+  assetPath: Assets/ExternAssets/FattyPolyTurretFree/Textures/Palette256.png
+  uploadId: 344828
