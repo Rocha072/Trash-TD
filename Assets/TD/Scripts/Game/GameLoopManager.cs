@@ -14,11 +14,11 @@ public class GameLoopManager : MonoBehaviour
     {
         EnemyIDsToSummon = new Queue<int>();
         EnemiesToRemove = new Queue<Enemy>();
-        EntitySummoner.Init();
+        EntitySummoner.Instance.Init();
 
         StartCoroutine(GameLoop());
 
-        InvokeRepeating("SummonTest", 0f, 30f);
+        InvokeRepeating("SummonTest", 0f, 1f);
     }
 
     void SummonTest()
@@ -33,7 +33,7 @@ public class GameLoopManager : MonoBehaviour
             {
                 for (int i = 0; i < EnemyIDsToSummon.Count; i++)
                 {
-                    EntitySummoner.SummonEnemy(EnemyIDsToSummon.Dequeue());
+                    EntitySummoner.Instance.SummonEnemy(EnemyIDsToSummon.Dequeue());
                 }
             }
 
@@ -43,7 +43,7 @@ public class GameLoopManager : MonoBehaviour
             {
                 for (int i = 0; i < EnemiesToRemove.Count; i++)
                 {
-                    EntitySummoner.RemoveEnemy(EnemiesToRemove.Dequeue());
+                    EntitySummoner.Instance.RemoveEnemy(EnemiesToRemove.Dequeue());
                 }
             }
 

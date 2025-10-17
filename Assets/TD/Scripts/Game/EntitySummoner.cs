@@ -7,62 +7,74 @@ using UnityEngine;
 
 public class EntitySummoner : MonoBehaviour
 {
-    public static List<Enemy> EnemiesInGame;
-    public static Dictionary<int, GameObject> EnemyPrefabs;
-    public static Dictionary<int, Queue<Enemy>> EnemyObjectPools;
+    public static EntitySummoner Instance { get; private set; }
+
+    [Header("Enemy Configuration")]
+    public Dictionary<int, GameObject> EnemyPrefabs; //tem que mudar
+    public Dictionary<int, Queue<Enemy>> EnemyObjectPools;  //tem que mudar
+
+    [Header("Turret Configuration")]
+    public List<TurretBlueprint> turretBlueprints;
+    
+
+    [Header("In Game Objects")]
+    public GameObject Spawnner;
+    public List<Transform> enemyPath;
+    public List<Enemy> EnemiesInGame;
+    public List<Turret> TurretsInGame;
 
 
-    static GameObject Spawnner; 
-    public static List<Transform> enemyPath;
-    private static bool IsInitialized;
-
-    public static void Init()
+    private void Awake()
     {
-        if (!IsInitialized)
+        
+        if (Instance != null && Instance != this)
         {
-            
-            EnemyPrefabs = new Dictionary<int, GameObject>();
-            EnemyObjectPools = new Dictionary<int, Queue<Enemy>>();
-            EnemiesInGame = new List<Enemy>();
-
-            Spawnner = GameObject.Find("Enemy Spawner");
-
-            enemyPath = new List<Transform>();
-            
-            if (Spawnner != null)
-            {
-                foreach (Transform childNode in Spawnner.transform)
-                {
-                    enemyPath.Add(childNode);
-                }
-            }
-            else
-            {
-                Debug.LogError("Objeto 'Enemy Spawner' não encontrado na cena!");
-            }
-
-
-            EnemySummonData[] EnemiesScrObj = Resources.LoadAll<EnemySummonData>("Enemies");
-
-            foreach (EnemySummonData enemy in EnemiesScrObj)
-            {
-                EnemyPrefabs.Add(enemy.EnemyID, enemy.EnemyPrefab);
-                EnemyObjectPools.Add(enemy.EnemyID, new Queue<Enemy>());
-            }
-
-            
-
-            IsInitialized = true;
+            Destroy(gameObject);
         }
         else
         {
-            Debug.Log("Class EntitySummoner already initilized");
+            Instance = this;
         }
+    }
+    
+    public void Init()
+    {
+       
+        EnemyPrefabs = new Dictionary<int, GameObject>(); //tem que mudar
+        EnemyObjectPools = new Dictionary<int, Queue<Enemy>>(); //tem que mudar
+        
+        EnemiesInGame = new List<Enemy>();
+
+        enemyPath = new List<Transform>();
+
+        TurretsInGame = new List<Turret>();
+
+
+
+        if (Spawnner != null)
+        {
+            foreach (Transform childNode in Spawnner.transform)
+            {
+                enemyPath.Add(childNode);
+            }
+        }
+        else
+            Debug.LogError("Objeto 'Enemy Spawner' não encontrado!");
+
+
+
+        EnemySummonData[] EnemiesScrObj = Resources.LoadAll<EnemySummonData>("Enemies");
+
+        foreach (EnemySummonData enemy in EnemiesScrObj)
+        {
+            EnemyPrefabs.Add(enemy.EnemyID, enemy.EnemyPrefab);
+            EnemyObjectPools.Add(enemy.EnemyID, new Queue<Enemy>());
+            }
 
     }
 
 
-    public static Enemy SummonEnemy(int EnemyID)
+    public Enemy SummonEnemy(int EnemyID)
     {
         Enemy SummonedEnemy = null;
 
@@ -97,14 +109,43 @@ public class EntitySummoner : MonoBehaviour
     }
 
     
-    public static void RemoveEnemy(Enemy EnemyToRemove)
+    public void RemoveEnemy(Enemy EnemyToRemove)
     {
         EnemyObjectPools[EnemyToRemove.ID].Enqueue(EnemyToRemove);
         EnemyToRemove.gameObject.SetActive(false);
         EnemiesInGame.Remove(EnemyToRemove);
     }
 
+    public void SummonTurret(int TurretID, Vector3 positionToSpawn)
+    {
 
+        if (TurretID < 0 || TurretID >= turretBlueprints.Count)
+        {
+            Debug.Log($"Turret with ID {TurretID} not found");
+            return;
+        }
+
+        TurretBlueprint turretToSummon = turretBlueprints[TurretID];
+
+        GameObject turretInstance = Instantiate(turretToSummon.turretPrefab, positionToSpawn, Quaternion.identity);
+
+        Turret turret = turretInstance.GetComponent<Turret>();
+        TurretsInGame.Add(turret);
+
+        if (turret != null)
+            turret.Init(turretToSummon.turretData);
+        else
+            Debug.LogError("O prefab da torre não contém o script TowerController!");
+
+    }
 
     
+}
+
+[System.Serializable]
+public class TurretBlueprint
+{
+    public TurretData turretData;
+    public GameObject turretPrefab;
+
 }

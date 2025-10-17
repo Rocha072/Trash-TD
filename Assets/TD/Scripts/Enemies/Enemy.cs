@@ -69,7 +69,7 @@ public class Enemy : MonoBehaviour
 
         }
 
-        EntitySummoner.RemoveEnemy(this);
+        EntitySummoner.Instance.RemoveEnemy(this);
 
     }
 
@@ -85,13 +85,13 @@ public class Enemy : MonoBehaviour
 
     public void ApplySlow(float factor, float duration)
     {
-        // Lógica para decidir qual efeito prevalece (o mais forte)
+        
         if (factor < this.slowFactor)
         {
             this.slowFactor = factor;
         }
 
-        // Se um novo slow for aplicado, ele reinicia a duração (ou a estende)
+    
         this.slowDurationTimer = duration;
 
         Speed = MaxSpeed * slowFactor;
@@ -99,7 +99,7 @@ public class Enemy : MonoBehaviour
 
     private void die()
     {
-        EntitySummoner.RemoveEnemy(this);
+        EntitySummoner.Instance.RemoveEnemy(this);
     }
 
 }
