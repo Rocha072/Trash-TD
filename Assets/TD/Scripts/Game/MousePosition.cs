@@ -38,7 +38,7 @@ public class MousePosition : MonoBehaviour
                 
                 if (Input.GetMouseButtonDown(1))
                 {
-                    // EntitySummoner.Instance.RemoveTower(towerBeingPlaced); 
+                    EntitySummoner.Instance.RemoveTower(towerBeingPlaced); 
                     towerBeingPlaced = null;
                 }
             }

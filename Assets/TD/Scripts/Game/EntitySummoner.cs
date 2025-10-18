@@ -118,7 +118,7 @@ public class EntitySummoner : MonoBehaviour
 
     public Tower SummonTower(int TowerID, Vector3 positionToSpawn)
     {
-        
+
         if (TowerID < 0 || TowerID >= towerBlueprints.Count)
         {
             Debug.Log($"Tower with ID {TowerID} not found");
@@ -139,6 +139,12 @@ public class EntitySummoner : MonoBehaviour
 
         return tower;
 
+    }
+    
+    public void RemoveTower(Tower TowerToRemove)
+    {
+        TowersInGame.Remove(TowerToRemove);
+        GameObject.Destroy(TowerToRemove.gameObject);
     }
 
     
