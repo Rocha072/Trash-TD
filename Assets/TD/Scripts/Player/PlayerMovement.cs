@@ -16,40 +16,36 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float rotationSpeed;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public static bool moveOn;
     
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        moveOn = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayerMovementInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-        PlayerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-        Move();
-
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (moveOn)
         {
-            if (Cursor.lockState != CursorLockMode.None)
-                Cursor.lockState = CursorLockMode.None;
-            else
-                Cursor.lockState = CursorLockMode.Locked;
-        }
-
-        if (Cursor.lockState != CursorLockMode.None)
+            PlayerMovementInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
+            PlayerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+            Move();            
             Rotate();
+        }
     }
 
     private void Move()
     {
         Vector3 movement = transform.TransformDirection(PlayerMovementInput);
 
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.E))
         {
             Velocity.y = 1f;
         }
-        else if (Input.GetKey(KeyCode.LeftControl))
+        else if (Input.GetKey(KeyCode.Q))
         {
             Velocity.y = -1f;
         }

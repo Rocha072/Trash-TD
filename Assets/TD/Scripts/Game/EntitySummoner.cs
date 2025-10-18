@@ -116,13 +116,13 @@ public class EntitySummoner : MonoBehaviour
         EnemiesInGame.Remove(EnemyToRemove);
     }
 
-    public void SummonTower(int TowerID, Vector3 positionToSpawn)
+    public Tower SummonTower(int TowerID, Vector3 positionToSpawn)
     {
-
+        
         if (TowerID < 0 || TowerID >= towerBlueprints.Count)
         {
             Debug.Log($"Tower with ID {TowerID} not found");
-            return;
+            return null;
         }
 
         TowerBlueprint towerToSummon = towerBlueprints[TowerID];
@@ -136,6 +136,8 @@ public class EntitySummoner : MonoBehaviour
             tower.Init(towerToSummon.towerData);
         else
             Debug.LogError("O prefab da torre não contém o script TowerController!");
+
+        return tower;
 
     }
 

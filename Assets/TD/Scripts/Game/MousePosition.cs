@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MousePosition : MonoBehaviour
 {
@@ -7,22 +8,50 @@ public class MousePosition : MonoBehaviour
     [SerializeField] private float minHeight;
     [SerializeField] private float maxHeight;
 
-    // Update is called once per frame
+    public Tower towerBeingPlaced;
+
     void Update()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask))
+        if (!PlayerMovement.moveOn)
         {
-            if (raycastHit.point.y >= minHeight && raycastHit.point.y <= maxHeight)
-                transform.position = raycastHit.point;
-        }
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask))
+            {
+                if (raycastHit.point.y >= minHeight && raycastHit.point.y <= maxHeight)
+                    transform.position = raycastHit.point;
+            }
 
-        if (Input.GetMouseButtonDown(0))
-            OnMouseDown();
+            if (towerBeingPlaced != null)
+            {
+                towerBeingPlaced.transform.position = transform.position;
+
+           
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (EventSystem.current.IsPointerOverGameObject())
+                    {
+                        return;
+                    }
+                    towerBeingPlaced = null; 
+                }
+                
+                
+                if (Input.GetMouseButtonDown(1))
+                {
+                    // EntitySummoner.Instance.RemoveTower(towerBeingPlaced); 
+                    towerBeingPlaced = null;
+                }
+            }
+
+        }
     }
 
-    void OnMouseDown()
+    public void setTowerToPlaceByID(int towerID)
     {
-        EntitySummoner.Instance.SummonTower(0, transform.position);
+        if (towerBeingPlaced != null)
+            return;
+
+        towerBeingPlaced = EntitySummoner.Instance.SummonTower(towerID, transform.position);
+        
     }
 }
