@@ -3,20 +3,19 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
-public class Turret : MonoBehaviour
+public class Tower : MonoBehaviour
 {
 
-    public TurretData turretData;
+    public TowerData towerData;
     public Enemy target;
-    public string enemyTag = "Enemy";
     public Transform partToRotate;
     public VisualEffect attackEffect;
     private float fireCountdown = 0f;   
 
 
-    public void Init(TurretData data)
+    public void Init(TowerData data)
     {
-        this.turretData = data;
+        this.towerData = data;
 
         InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
     }
@@ -29,7 +28,7 @@ public class Turret : MonoBehaviour
         foreach (Enemy enemy in enemies)
         {
             float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy <=  turretData.range)
+            if (distanceToEnemy <=  towerData.range)
             {
                 target = enemy;
                 return;
@@ -54,7 +53,7 @@ public class Turret : MonoBehaviour
 
         if (fireCountdown <= 0f) {
             Attack();
-            fireCountdown = 1f / turretData.fireRate;
+            fireCountdown = 1f / towerData.fireRate;
         }
         fireCountdown -= Time.deltaTime;
 
@@ -64,22 +63,22 @@ public class Turret : MonoBehaviour
     {   
         Vector3 dir = target.transform.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
-        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turretData.turnSpeed).eulerAngles;
+        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * towerData.turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
     }
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, turretData.range);
+        Gizmos.DrawWireSphere(transform.position, towerData.range);
     }
 
     void Attack()
     {
-        if (turretData.turretType == TurretData.TurretTypes.waterGun)
+        if (towerData.towerType == TowerData.TowerTypes.waterGun)
         {
             Debug.Log("Atack");
-            target.TakeDamage(turretData.Damage);
-            target.ApplySlow(turretData.slowFactor, turretData.slowDuration);
+            target.TakeDamage(towerData.Damage);
+            target.ApplySlow(towerData.slowFactor, towerData.slowDuration);
         }
         
     }

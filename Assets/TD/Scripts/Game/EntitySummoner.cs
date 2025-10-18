@@ -13,15 +13,15 @@ public class EntitySummoner : MonoBehaviour
     public Dictionary<int, GameObject> EnemyPrefabs; //tem que mudar
     public Dictionary<int, Queue<Enemy>> EnemyObjectPools;  //tem que mudar
 
-    [Header("Turret Configuration")]
-    public List<TurretBlueprint> turretBlueprints;
+    [Header("Tower Configuration")]
+    public List<TowerBlueprint> towerBlueprints;
     
 
     [Header("In Game Objects")]
     public GameObject Spawnner;
     public List<Transform> enemyPath;
     public List<Enemy> EnemiesInGame;
-    public List<Turret> TurretsInGame;
+    public List<Tower> TowersInGame;
 
 
     private void Awake()
@@ -47,7 +47,7 @@ public class EntitySummoner : MonoBehaviour
 
         enemyPath = new List<Transform>();
 
-        TurretsInGame = new List<Turret>();
+        TowersInGame = new List<Tower>();
 
 
 
@@ -116,24 +116,24 @@ public class EntitySummoner : MonoBehaviour
         EnemiesInGame.Remove(EnemyToRemove);
     }
 
-    public void SummonTurret(int TurretID, Vector3 positionToSpawn)
+    public void SummonTower(int TowerID, Vector3 positionToSpawn)
     {
 
-        if (TurretID < 0 || TurretID >= turretBlueprints.Count)
+        if (TowerID < 0 || TowerID >= towerBlueprints.Count)
         {
-            Debug.Log($"Turret with ID {TurretID} not found");
+            Debug.Log($"Tower with ID {TowerID} not found");
             return;
         }
 
-        TurretBlueprint turretToSummon = turretBlueprints[TurretID];
+        TowerBlueprint towerToSummon = towerBlueprints[TowerID];
 
-        GameObject turretInstance = Instantiate(turretToSummon.turretPrefab, positionToSpawn, Quaternion.identity);
+        GameObject towerInstance = Instantiate(towerToSummon.towerPrefab, positionToSpawn, Quaternion.identity);
 
-        Turret turret = turretInstance.GetComponent<Turret>();
-        TurretsInGame.Add(turret);
+        Tower tower = towerInstance.GetComponent<Tower>();
+        TowersInGame.Add(tower);
 
-        if (turret != null)
-            turret.Init(turretToSummon.turretData);
+        if (tower != null)
+            tower.Init(towerToSummon.towerData);
         else
             Debug.LogError("O prefab da torre não contém o script TowerController!");
 
@@ -143,9 +143,9 @@ public class EntitySummoner : MonoBehaviour
 }
 
 [System.Serializable]
-public class TurretBlueprint
+public class TowerBlueprint
 {
-    public TurretData turretData;
-    public GameObject turretPrefab;
+    public TowerData towerData;
+    public GameObject towerPrefab;
 
 }

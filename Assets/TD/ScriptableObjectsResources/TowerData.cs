@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Turrets", menuName = "Create Scriptable Objects/Turrets")]
-public class TurretData : ScriptableObject
+[CreateAssetMenu(fileName = "Towers", menuName = "Create Scriptable Objects/Towers")]
+public class TowerData : ScriptableObject
 {
     public float range;
     public float turnSpeed;
@@ -9,8 +9,8 @@ public class TurretData : ScriptableObject
     public float fireRate;
     public float slowFactor;
     public float slowDuration;
-    public enum TurretTypes {
+    public enum TowerTypes {
         waterGun = 1
     }
-    public TurretTypes turretType;
+    public TowerTypes towerType;
 }

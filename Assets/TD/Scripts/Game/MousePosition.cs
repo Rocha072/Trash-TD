@@ -23,6 +23,6 @@ public class MousePosition : MonoBehaviour
 
     void OnMouseDown()
     {
-        EntitySummoner.Instance.SummonTurret(0, transform.position);
+        EntitySummoner.Instance.SummonTower(0, transform.position);
     }
 }

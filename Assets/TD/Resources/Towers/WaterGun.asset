@@ -18,4 +18,4 @@ MonoBehaviour:
   fireRate: 1
   slowFactor: 0.5
   slowDuration: 2
-  turretType: 1
+  towerType: 1
