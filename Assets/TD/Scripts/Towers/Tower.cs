@@ -10,6 +10,7 @@ public class Tower : MonoBehaviour
     public Enemy target;
     public Transform partToRotate;
     public VisualEffect attackEffect;
+    public GameObject invalidMask;
     private float fireCountdown = 0f;   
 
 

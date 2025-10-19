@@ -7,7 +7,6 @@ public class MousePosition : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private float minHeight;
     [SerializeField] private float maxHeight;
-
     public Tower towerBeingPlaced;
 
     void Update()
@@ -18,7 +17,14 @@ public class MousePosition : MonoBehaviour
             if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask))
             {
                 if (raycastHit.point.y >= minHeight && raycastHit.point.y <= maxHeight)
+                {
                     transform.position = raycastHit.point;
+                    towerBeingPlaced.invalidMask.SetActive(false);
+                }
+                else
+                {
+                    towerBeingPlaced.invalidMask.SetActive(true);
+                }
             }
 
             if (towerBeingPlaced != null)
