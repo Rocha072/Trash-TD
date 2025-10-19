@@ -77,7 +77,6 @@ public class Tower : MonoBehaviour
     {
         if (towerData.towerType == TowerData.TowerTypes.waterGun)
         {
-            Debug.Log("Atack");
             target.TakeDamage(towerData.Damage);
             target.ApplySlow(towerData.slowFactor, towerData.slowDuration);
         }

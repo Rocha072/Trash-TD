@@ -23,7 +23,7 @@ public class GameLoopManager : MonoBehaviour
 
     void SummonTest()
     {
-        EnqueueEnemyIDToSummon(1);
+        EnqueueEnemyIDToSummon(0);
     }
     IEnumerator GameLoop()
     {

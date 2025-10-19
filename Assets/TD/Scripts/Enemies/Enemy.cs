@@ -8,29 +8,29 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    public float MaxHealth = 100f;
+    public EnemyData enemyData;
     public float Health;
     public float Speed;
-    public float MaxSpeed = 4f;
-    private float slowFactor = 1.0f; // 1.0f = sem lentidão
-    private float slowDurationTimer = 0f;
-    public int ID;
-
+    private float slowFactor; // 1.0f = sem lentidão
+    private float slowDurationTimer;
+    
     NavMeshAgent agent;
 
     List<Transform> path;
 
-    [SerializeField] float dist = 2;
-
-
-    public void Init()
+    public void Init(EnemyData data)
     {
-        Health = MaxHealth;
-
-        Speed = MaxSpeed;
-
+        enemyData = data;
         agent = GetComponent<NavMeshAgent>();
+        RestartState();
+    }
 
+    public void RestartState()
+    {
+        slowFactor = 1.0f;
+        slowDurationTimer = 0f;
+        Health = enemyData.MaxHealth;
+        Speed = enemyData.MaxSpeed;
         StartCoroutine(MovementCoroutine());
     }
 
@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
             if (slowDurationTimer <= 0)
             {
                 slowFactor = 1.0f;
-                Speed = MaxSpeed * slowFactor;
+                Speed = enemyData.MaxSpeed * slowFactor;
             }
         }
         agent.speed = Speed;
@@ -64,7 +64,8 @@ public class Enemy : MonoBehaviour
         {
             agent.SetDestination(node.position);
 
-            yield return new WaitUntil(() => Vector3.Distance(transform.position, node.position) < dist);
+            yield return new WaitUntil(() =>
+            Vector3.Distance(transform.position, node.position) < enemyData.MinDistanceToPassNode);
 
 
         }
@@ -75,11 +76,11 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage, string type = "nothing")
     {
-        Health -= damage;
+        this.Health -= damage;
 
         if (Health <= 0f)
         {
-            die();
+            Die();
         }
     }
 
@@ -94,10 +95,10 @@ public class Enemy : MonoBehaviour
     
         this.slowDurationTimer = duration;
 
-        Speed = MaxSpeed * slowFactor;
+        Speed = enemyData.MaxSpeed * slowFactor;
     }
 
-    private void die()
+    private void Die()
     {
         EntitySummoner.Instance.RemoveEnemy(this);
     }

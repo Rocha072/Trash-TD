@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 756510617254639972}
   - component: {fileID: 7363885233849484448}
   m_Layer: 0
-  m_Name: Enemy 1
+  m_Name: Trash Bag
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

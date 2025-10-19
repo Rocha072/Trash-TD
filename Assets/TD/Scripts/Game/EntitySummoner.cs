@@ -10,8 +10,8 @@ public class EntitySummoner : MonoBehaviour
     public static EntitySummoner Instance { get; private set; }
 
     [Header("Enemy Configuration")]
-    public Dictionary<int, GameObject> EnemyPrefabs; //tem que mudar
-    public Dictionary<int, Queue<Enemy>> EnemyObjectPools;  //tem que mudar
+    public List<EnemyBlueprint> enemyBlueprints;
+    private Dictionary<int, Queue<Enemy>> enemiesDisabled;  //tem que mudar
 
     [Header("Tower Configuration")]
     public List<TowerBlueprint> towerBlueprints;
@@ -40,8 +40,7 @@ public class EntitySummoner : MonoBehaviour
     public void Init()
     {
        
-        EnemyPrefabs = new Dictionary<int, GameObject>(); //tem que mudar
-        EnemyObjectPools = new Dictionary<int, Queue<Enemy>>(); //tem que mudar
+        enemiesDisabled = new Dictionary<int, Queue<Enemy>>(); 
         
         EnemiesInGame = new List<Enemy>();
 
@@ -63,55 +62,53 @@ public class EntitySummoner : MonoBehaviour
 
 
 
-        EnemySummonData[] EnemiesScrObj = Resources.LoadAll<EnemySummonData>("Enemies");
-
-        foreach (EnemySummonData enemy in EnemiesScrObj)
+        for(int i = 0; i<enemyBlueprints.Count; i++)
         {
-            EnemyPrefabs.Add(enemy.EnemyID, enemy.EnemyPrefab);
-            EnemyObjectPools.Add(enemy.EnemyID, new Queue<Enemy>());
-            }
+            enemiesDisabled.Add(i, new Queue<Enemy>());
+        }
 
     }
 
 
     public Enemy SummonEnemy(int EnemyID)
     {
-        Enemy SummonedEnemy = null;
 
-        if (EnemyPrefabs.ContainsKey(EnemyID))
+
+        if (EnemyID < 0 || EnemyID >= towerBlueprints.Count)
         {
-            Queue<Enemy> ReferencedQueue = EnemyObjectPools[EnemyID];
+            Debug.Log($"Enemy with ID {EnemyID} not found");
+            return null;
+        }
 
-            if (ReferencedQueue.Count > 0)
-            {
-                SummonedEnemy = ReferencedQueue.Dequeue();
-                SummonedEnemy.gameObject.SetActive(true);
-                SummonedEnemy.transform.position = Spawnner.transform.position;
-                SummonedEnemy.Init();
-            }
-            else
-            {
-                GameObject NewEnemy = Instantiate(EnemyPrefabs[EnemyID], Spawnner.transform);
-                SummonedEnemy = NewEnemy.GetComponent<Enemy>();
-                SummonedEnemy.Path = enemyPath;
-                SummonedEnemy.Init();
-            }
+        Enemy SummonedEnemy;
+        
+        EnemyBlueprint enemyToSummon = enemyBlueprints[EnemyID];
+        
+        Queue<Enemy> ReferencedQueue = enemiesDisabled[EnemyID];
+
+        if (ReferencedQueue.Count > 0)
+        {
+            SummonedEnemy = ReferencedQueue.Dequeue();
+            SummonedEnemy.gameObject.SetActive(true);
+            SummonedEnemy.transform.position = Spawnner.transform.position;
+            SummonedEnemy.RestartState();
         }
         else
         {
-            Debug.Log($"Enemy with ID {EnemyID} not found");
+            GameObject NewEnemy = Instantiate(enemyToSummon.enemyPrefab, Spawnner.transform);
+            SummonedEnemy = NewEnemy.GetComponent<Enemy>();
+            SummonedEnemy.Path = enemyPath;
+            SummonedEnemy.Init(enemyToSummon.enemyData);
         }
 
-       
         EnemiesInGame.Add(SummonedEnemy);
-        SummonedEnemy.ID = EnemyID;
         return SummonedEnemy;
     }
 
     
     public void RemoveEnemy(Enemy EnemyToRemove)
     {
-        EnemyObjectPools[EnemyToRemove.ID].Enqueue(EnemyToRemove);
+        enemiesDisabled[EnemyToRemove.enemyData.ID].Enqueue(EnemyToRemove);
         EnemyToRemove.gameObject.SetActive(false);
         EnemiesInGame.Remove(EnemyToRemove);
     }
@@ -157,3 +154,14 @@ public class TowerBlueprint
     public GameObject towerPrefab;
 
 }
+
+[System.Serializable]
+public class EnemyBlueprint
+{
+    public EnemyData enemyData;
+    public GameObject enemyPrefab;
+
+}
+
+
+
