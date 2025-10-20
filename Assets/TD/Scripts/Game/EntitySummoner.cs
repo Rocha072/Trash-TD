@@ -15,7 +15,7 @@ public class EntitySummoner : MonoBehaviour
 
     [Header("Tower Configuration")]
     public List<TowerBlueprint> towerBlueprints;
-    
+
 
     [Header("In Game Objects")]
     public GameObject Spawnner;
@@ -26,7 +26,7 @@ public class EntitySummoner : MonoBehaviour
 
     private void Awake()
     {
-        
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -36,12 +36,12 @@ public class EntitySummoner : MonoBehaviour
             Instance = this;
         }
     }
-    
+
     public void Init()
     {
-       
-        enemiesDisabled = new Dictionary<int, Queue<Enemy>>(); 
-        
+
+        enemiesDisabled = new Dictionary<int, Queue<Enemy>>();
+
         EnemiesInGame = new List<Enemy>();
 
         enemyPath = new List<Transform>();
@@ -62,7 +62,7 @@ public class EntitySummoner : MonoBehaviour
 
 
 
-        for(int i = 0; i<enemyBlueprints.Count; i++)
+        for (int i = 0; i < enemyBlueprints.Count; i++)
         {
             enemiesDisabled.Add(i, new Queue<Enemy>());
         }
@@ -81,9 +81,9 @@ public class EntitySummoner : MonoBehaviour
         }
 
         Enemy SummonedEnemy;
-        
+
         EnemyBlueprint enemyToSummon = enemyBlueprints[EnemyID];
-        
+
         Queue<Enemy> ReferencedQueue = enemiesDisabled[EnemyID];
 
         if (ReferencedQueue.Count > 0)
@@ -105,7 +105,7 @@ public class EntitySummoner : MonoBehaviour
         return SummonedEnemy;
     }
 
-    
+
     public void RemoveEnemy(Enemy EnemyToRemove)
     {
         enemiesDisabled[EnemyToRemove.enemyData.ID].Enqueue(EnemyToRemove);
@@ -137,14 +137,22 @@ public class EntitySummoner : MonoBehaviour
         return tower;
 
     }
-    
+
     public void RemoveTower(Tower TowerToRemove)
     {
         TowersInGame.Remove(TowerToRemove);
-        GameObject.Destroy(TowerToRemove.gameObject);
+        StartCoroutine(SafeDestroyRoutine(TowerToRemove));
     }
 
-    
+    private System.Collections.IEnumerator SafeDestroyRoutine(Tower TowerToRemove)
+    {
+        TowerToRemove.transform.position = new Vector3(1000, 1000, 1000);
+
+        yield return new WaitForFixedUpdate();
+        
+        Destroy(TowerToRemove.gameObject);
+    }
+
 }
 
 [System.Serializable]

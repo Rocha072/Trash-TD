@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,44 +10,37 @@ public class MousePosition : MonoBehaviour
     [SerializeField] private float maxHeight;
     public Tower towerBeingPlaced;
 
-    void Update()
+    async Task Update()
     {
         if (!PlayerMovement.moveOn)
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask))
             {
-                if (raycastHit.point.y >= minHeight && raycastHit.point.y <= maxHeight)
-                {
-                    transform.position = raycastHit.point;
-                    towerBeingPlaced.invalidMask.SetActive(false);
-                }
-                else
-                {
-                    towerBeingPlaced.invalidMask.SetActive(true);
-                }
+                transform.position = raycastHit.point;
             }
 
             if (towerBeingPlaced != null)
             {
                 towerBeingPlaced.transform.position = transform.position;
 
-           
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && towerBeingPlaced.validPosition)
                 {
                     if (EventSystem.current.IsPointerOverGameObject())
                     {
                         return;
                     }
+                    towerBeingPlaced.isBeingPlaced = false;
                     towerBeingPlaced = null; 
                 }
-                
-                
+
+
                 if (Input.GetMouseButtonDown(1))
                 {
-                    EntitySummoner.Instance.RemoveTower(towerBeingPlaced); 
+                    EntitySummoner.Instance.RemoveTower(towerBeingPlaced);
                     towerBeingPlaced = null;
                 }
+                
             }
 
         }

@@ -11,12 +11,19 @@ public class Tower : MonoBehaviour
     public Transform partToRotate;
     public VisualEffect attackEffect;
     public GameObject invalidMask;
-    private float fireCountdown = 0f;   
+    private float fireCountdown;
+    public bool isBeingPlaced = true;
+    private int coliding;
+    public bool validPosition;
+    [SerializeField] private float minHeight;
+    [SerializeField] private float maxHeight;
 
 
     public void Init(TowerData data)
     {
+        fireCountdown = 0f;
         this.towerData = data;
+        attackEffect.Stop();
 
         InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
     }
@@ -29,7 +36,7 @@ public class Tower : MonoBehaviour
         foreach (Enemy enemy in enemies)
         {
             float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy <=  towerData.range)
+            if (distanceToEnemy <= towerData.range)
             {
                 target = enemy;
                 return;
@@ -37,12 +44,16 @@ public class Tower : MonoBehaviour
 
         }
         target = null;
-        
-        
+
+
     }
 
     void Update()
     {
+
+        VerifyValidPosition();
+        if (isBeingPlaced) return;
+
         if (target == null)
         {
             attackEffect.Stop();
@@ -52,7 +63,8 @@ public class Tower : MonoBehaviour
         RotateTarget();
         attackEffect.Play();
 
-        if (fireCountdown <= 0f) {
+        if (fireCountdown <= 0f)
+        {
             Attack();
             fireCountdown = 1f / towerData.fireRate;
         }
@@ -61,7 +73,7 @@ public class Tower : MonoBehaviour
     }
 
     void RotateTarget()
-    {   
+    {
         Vector3 dir = target.transform.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * towerData.turnSpeed).eulerAngles;
@@ -80,6 +92,33 @@ public class Tower : MonoBehaviour
             target.TakeDamage(towerData.Damage);
             target.ApplySlow(towerData.slowFactor, towerData.slowDuration);
         }
-        
+
     }
+
+    public void VerifyValidPosition()
+    {
+        validPosition = this.transform.position.y >= minHeight && this.transform.position.y <= maxHeight && coliding==0;
+
+        if (validPosition)
+        {
+            this.invalidMask.SetActive(false);
+            return;
+        }
+
+        this.invalidMask.SetActive(true);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Tower"))
+            coliding++;
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        Debug.Log("saiu");
+        if (other.CompareTag("Tower"))
+            coliding--;
+    }
+
 }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TrashBag
   m_EditorClassIdentifier: 
   ID: 0
-  MaxHealth: 100
+  MaxHealth: 1000
   MaxSpeed: 4
   MinDistanceToPassNode: 2
