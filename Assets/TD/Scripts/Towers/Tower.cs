@@ -116,7 +116,6 @@ public class Tower : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        Debug.Log("saiu");
         if (other.CompareTag("Tower"))
             coliding--;
     }
