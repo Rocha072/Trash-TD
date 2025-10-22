@@ -20,6 +20,7 @@ public class PlayerEconomy : MonoBehaviour
     public void GainMoney(int amount)
     {
         money += amount;
+        UIManager.instance.UpdateMoneyText();
     }
     
     public int GetMoney()
@@ -48,6 +49,7 @@ public class PlayerEconomy : MonoBehaviour
     public void Buy(Tower tower)
     {
         money -= tower.towerData.cost;
+        UIManager.instance.UpdateMoneyText();
     }
 
 
