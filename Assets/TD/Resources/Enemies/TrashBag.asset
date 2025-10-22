@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc5e10748d5b75b42a3aef7e01555aaa, type: 3}
   m_Name: TrashBag
   m_EditorClassIdentifier: 
+  dropAmount: 10
   ID: 0
   MaxHealth: 1000
   MaxSpeed: 4
