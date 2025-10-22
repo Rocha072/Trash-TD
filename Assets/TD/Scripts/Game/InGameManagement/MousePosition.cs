@@ -30,8 +30,9 @@ public class MousePosition : MonoBehaviour
                     {
                         return;
                     }
+                    PlayerEconomy.Instance.Buy(towerBeingPlaced);
                     towerBeingPlaced.isBeingPlaced = false;
-                    towerBeingPlaced = null; 
+                    towerBeingPlaced = null;
                 }
 
 
@@ -40,7 +41,7 @@ public class MousePosition : MonoBehaviour
                     EntitySummoner.Instance.RemoveTower(towerBeingPlaced);
                     towerBeingPlaced = null;
                 }
-                
+
             }
 
         }

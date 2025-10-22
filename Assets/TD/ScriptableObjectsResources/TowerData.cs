@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Towers", menuName = "Create Scriptable Objects/Towers")]
 public class TowerData : ScriptableObject
 {
+    public int cost;
     public float range;
     public float turnSpeed;
     public float Damage;

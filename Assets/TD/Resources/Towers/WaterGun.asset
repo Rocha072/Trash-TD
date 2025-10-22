@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcd5328711f14c41accf7b49ff8f707, type: 3}
   m_Name: WaterGun
   m_EditorClassIdentifier: 
+  cost: 50
   range: 15
   turnSpeed: 5
   Damage: 40

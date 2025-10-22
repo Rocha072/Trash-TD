@@ -12,6 +12,8 @@ public class GameLoopManager : MonoBehaviour
     // public static Vector3[] NodePositions;
     private void Start()
     {
+        UIManager.instance.UpdateMoneyText();
+
         EnemyIDsToSummon = new Queue<int>();
         EnemiesToRemove = new Queue<Enemy>();
         EntitySummoner.Instance.Init();
