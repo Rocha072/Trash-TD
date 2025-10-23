@@ -2,25 +2,26 @@ using UnityEngine;
 
 public class PlayerEconomy : MonoBehaviour
 {
-    public static PlayerEconomy Instance { get; private set; }
     [SerializeField] private int money = 200;
+
+    public static PlayerEconomy Instance { get; private set; }
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance == null)
         {
-            Destroy(gameObject);
+            Instance = this;
         }
         else
         {
-            Instance = this;
+            Destroy(gameObject);
         }
     }
 
     public void GainMoney(int amount)
     {
         money += amount;
-        UIManager.instance.UpdateMoneyText();
+        UIManager.Instance.UpdateMoneyText();
     }
     
     public int GetMoney()
@@ -49,7 +50,7 @@ public class PlayerEconomy : MonoBehaviour
     public void Buy(Tower tower)
     {
         money -= tower.towerData.cost;
-        UIManager.instance.UpdateMoneyText();
+        UIManager.Instance.UpdateMoneyText();
     }
 
 

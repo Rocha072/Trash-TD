@@ -70,6 +70,7 @@ public class Enemy : MonoBehaviour
 
         }
 
+        PlayerLife.Instance.TakeDamage(this.enemyData.damage);
         EntitySummoner.Instance.RemoveEnemy(this);
 
     }

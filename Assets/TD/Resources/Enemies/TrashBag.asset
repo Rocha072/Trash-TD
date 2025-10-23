@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TrashBag
   m_EditorClassIdentifier: 
   dropAmount: 10
+  damage: 10
   ID: 0
   MaxHealth: 1000
   MaxSpeed: 4
