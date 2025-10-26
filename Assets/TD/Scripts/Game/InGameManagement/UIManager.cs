@@ -2,10 +2,14 @@ using TMPro;
 using UnityEngine;
 public class UIManager : MonoBehaviour
 {
+    [Header("Lifes/Money")]
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI lifeText;
+
+    [Header("Mouse and guide")]
     public MousePosition mouse;
     public GameObject guidePanel;
+
 
     public static UIManager Instance { get; private set; }
 
