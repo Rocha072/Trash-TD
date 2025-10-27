@@ -86,6 +86,7 @@ public class UIManager : MonoBehaviour
 
     public void showPauseScreen()
     {
+        Time.timeScale = 0f;
         PlayerMovement.TurnOffPlayerMovement();
         pauseScreen.SetActive(true);
         optionsScreen.SetActive(true);
@@ -97,6 +98,7 @@ public class UIManager : MonoBehaviour
 
     public void hidePauseScreen()
     {
+        Time.timeScale = 1.0f;
         pauseScreen.SetActive(false);
         optionsScreen.SetActive(false);
         gameGuide.SetActive(false);
@@ -118,6 +120,12 @@ public class UIManager : MonoBehaviour
     {
         optionsScreen.SetActive(true);
         gameGuide.SetActive(false);
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void exitToMainMenu()
