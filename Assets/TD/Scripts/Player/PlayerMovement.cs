@@ -1,4 +1,5 @@
 
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] CharacterController Controller;
     [SerializeField] float speed;
     [SerializeField] float rotationSpeed;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
 
     public static bool moveOn;
     
@@ -25,7 +26,6 @@ public class PlayerMovement : MonoBehaviour
         moveOn = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (moveOn)
@@ -66,9 +66,22 @@ public class PlayerMovement : MonoBehaviour
     {
         yRotation += PlayerMouseInput.x * rotationSpeed;
         xRotation -= PlayerMouseInput.y * rotationSpeed;
-        xRotation = Mathf.Clamp(xRotation, -10f, 60f); 
+        xRotation = Mathf.Clamp(xRotation, -10f, 60f);
 
-        transform.rotation = Quaternion.Euler (0f, yRotation , 0f);
+        transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
         PlayerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+    }
+
+
+    public static void TurnOnPlayerMovement()
+    {
+        moveOn = true;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+    
+    public static void TurnOffPlayerMovement()
+    {
+        moveOn = false;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

@@ -1,14 +1,21 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     [Header("Lifes/Money")]
     public TextMeshProUGUI moneyText;
     public TextMeshProUGUI lifeText;
 
-    [Header("Mouse and guide")]
+    [Header("Mouse and Pause Screen")]
     public MousePosition mouse;
-    public GameObject guidePanel;
+    public GameObject pauseScreen;
+    public GameObject gameGuide;
+    public GameObject optionsScreen;
+
+    [Header("Shop Bar")]
+    public GameObject Shop;
+    public CanvasGroup ShopCanvasGroup;
 
 
     public static UIManager Instance { get; private set; }
@@ -27,15 +34,37 @@ public class UIManager : MonoBehaviour
 
     public void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (guidePanel.activeSelf)
-                hideGuidePanel();
+            if (pauseScreen.activeSelf)
+            {
+                hidePauseScreen();
+            }
             else
-                showGuidePanel();
+            {
+                showPauseScreen();
+            }
+
+        }
+        
+        if (!pauseScreen.activeSelf && Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (Shop.activeSelf)
+            {
+                PlayerMovement.TurnOnPlayerMovement();
+                Shop.SetActive(false);
+            }
+            else
+            {
+                PlayerMovement.TurnOffPlayerMovement();
+                Shop.SetActive(true);
+                
+            }
+
         }
     }
-    
+
     public void UpdateMoneyText()
     {
         moneyText.text = "" + PlayerEconomy.Instance.GetMoney().ToString();
@@ -55,13 +84,49 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void showGuidePanel()
+    public void showPauseScreen()
     {
-        guidePanel.SetActive(true);
+        PlayerMovement.TurnOffPlayerMovement();
+        pauseScreen.SetActive(true);
+        optionsScreen.SetActive(true);
+        gameGuide.SetActive(false);
+
+        if (Shop.activeSelf)
+            ShopCanvasGroup.interactable = false;
     }
-    
-    public void hideGuidePanel()
+
+    public void hidePauseScreen()
     {
-        guidePanel.SetActive(false);
+        pauseScreen.SetActive(false);
+        optionsScreen.SetActive(false);
+        gameGuide.SetActive(false);
+
+        if (!Shop.activeSelf)
+            PlayerMovement.TurnOnPlayerMovement();
+        else
+            ShopCanvasGroup.interactable = true;
+    }
+
+
+    public void showGameGuide()
+    {
+        optionsScreen.SetActive(false);
+        gameGuide.SetActive(true);
+    }
+
+    public void hideGameGuide()
+    {
+        optionsScreen.SetActive(true);
+        gameGuide.SetActive(false);
+    }
+
+    public void exitToMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void exitGame()
+    {
+        Application.Quit();
     }
 }
