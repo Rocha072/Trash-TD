@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New EnemyData", menuName = "Create EnemyData")]
+[CreateAssetMenu(fileName = "New EnemyData", menuName = "Create Scriptable Object/EnemyData")]
 public class EnemyData : ScriptableObject
 {
     public int dropAmount;

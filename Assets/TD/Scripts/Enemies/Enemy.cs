@@ -101,6 +101,7 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        WaveManager.Instance.OnEnemyDied();
         PlayerEconomy.Instance.GainMoney(enemyData.dropAmount);
         EntitySummoner.Instance.RemoveEnemy(this);
     }

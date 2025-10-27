@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Towers", menuName = "Create Scriptable Objects/Towers")]
+[CreateAssetMenu(fileName = "New Tower", menuName = "Create Scriptable Object/Towers")]
 public class TowerData : ScriptableObject
 {
     public int cost;
