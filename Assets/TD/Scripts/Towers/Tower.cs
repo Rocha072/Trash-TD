@@ -1,23 +1,30 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
 public class Tower : MonoBehaviour
 {
-
+    [Header("Tower Properties")]
     public TowerData towerData;
-    public Enemy target;
     public Transform partToRotate;
     public VisualEffect attackEffect;
+
+    [Header("Masks")]
     public GameObject invalidMask;
-    private float fireCountdown;
+    public GameObject hoverMask;
+    public GameObject selectMask;
+
     public bool isBeingPlaced = true;
-    private int coliding;
     public bool validPosition;
+
     [SerializeField] private float minHeight;
     [SerializeField] private float maxHeight;
 
+    private Enemy target;
+    private float fireCountdown;
+    private int coliding;
 
     public void Init(TowerData data)
     {
@@ -79,11 +86,11 @@ public class Tower : MonoBehaviour
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * towerData.turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
     }
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, towerData.range);
-    }
+    //void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.green;
+    //    Gizmos.DrawWireSphere(transform.position, towerData.range);
+    //}
 
     void Attack()
     {
@@ -99,13 +106,7 @@ public class Tower : MonoBehaviour
     {
         validPosition = this.transform.position.y >= minHeight && this.transform.position.y <= maxHeight && coliding==0;
 
-        if (validPosition)
-        {
-            this.invalidMask.SetActive(false);
-            return;
-        }
-
-        this.invalidMask.SetActive(true);
+        this.invalidMask.SetActive(!validPosition);
     }
 
     void OnTriggerEnter(Collider other)
@@ -118,6 +119,29 @@ public class Tower : MonoBehaviour
     {
         if (other.CompareTag("Tower"))
             coliding--;
+    }
+
+    public void HoverTower()
+    {
+        if (this.selectMask.activeSelf || isBeingPlaced) return;
+
+        this.hoverMask.SetActive(true);
+    }
+
+    public void UnhoverTower()
+    {
+        this.hoverMask.SetActive(false);
+    }
+
+    public void SelectTower()
+    {
+        hoverMask.SetActive(false);
+        this.selectMask.SetActive(true);
+    }
+
+    public void UnselectTower()
+    {
+        this.selectMask.SetActive(false);
     }
 
 }
