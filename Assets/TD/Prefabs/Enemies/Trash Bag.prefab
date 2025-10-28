@@ -142,7 +142,7 @@ NavMeshAgent:
   m_Height: 0.78
   m_BaseOffset: 0.11
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &756510617254639972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,12 +155,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb28d7ebfebf8044b8d1fb6ad39d79b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 1000
+  enemyData: {fileID: 0}
   Health: 0
   Speed: 0
-  MaxSpeed: 4
-  ID: 0
-  dist: 2
 --- !u!64 &7363885233849484448
 MeshCollider:
   m_ObjectHideFlags: 0
