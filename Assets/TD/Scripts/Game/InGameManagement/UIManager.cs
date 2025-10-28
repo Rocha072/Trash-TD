@@ -72,7 +72,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLifeText()
     {
-        lifeText.text = "" + PlayerLife.Instance.GetLife().ToString();
+        lifeText.text = (100 - PlayerLife.Instance.GetLife()).ToString() + "%";
     }
 
 
