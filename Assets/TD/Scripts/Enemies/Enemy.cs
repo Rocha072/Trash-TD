@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     public float Speed;
     private float slowFactor; // 1.0f = sem lentidão
     private float slowDurationTimer;
+
+    private bool isDead;
     
     NavMeshAgent agent;
 
@@ -29,6 +31,7 @@ public class Enemy : MonoBehaviour
     {
         slowFactor = 1.0f;
         slowDurationTimer = 0f;
+        isDead = false;
         Health = enemyData.MaxHealth;
         Speed = enemyData.MaxSpeed;
         StartCoroutine(MovementCoroutine());
@@ -77,6 +80,8 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage, string type = "nothing")
     {
+        if (isDead) return;
+
         this.Health -= damage;
 
         if (Health <= 0f)
@@ -101,6 +106,10 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        if (isDead) return;
+
+        isDead = true;
+        
         WaveManager.Instance.OnEnemyDied();
         PlayerEconomy.Instance.GainMoney(enemyData.dropAmount);
         EntitySummoner.Instance.RemoveEnemy(this);

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,14 +12,14 @@ public class WaveManager : MonoBehaviour
     public List<WaveDefinition> allWaves;
 
     private int currentWaveIndex = 0;
-    private int enemiesAlive = 0;
+    private int enemiesAlive;
 
     public enum WaveState
     {
         WaitingToStart, Spawning, WaitingForClear, AllWavesComplete
     }
 
-    private WaveState currentState;
+    public WaveState currentState;
 
     void Awake()
     {
@@ -30,20 +31,13 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
+        enemiesAlive = 0;
         UIManager.Instance.UpdateMoneyText();
         UIManager.Instance.UpdateLifeText();
         EntitySummoner.Instance.Init();
         currentState = WaveState.WaitingToStart;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //Muda o estado do botao e
-            StartNextWave();
-        }
-    }
 
     public void StartNextWave()
     {
@@ -58,7 +52,7 @@ public class WaveManager : MonoBehaviour
             return;
         }
 
-        //Muda o botao de Start Wave
+        
         StartCoroutine(RunWave(allWaves[currentWaveIndex]));
         currentWaveIndex++;
     }
@@ -110,7 +104,7 @@ public class WaveManager : MonoBehaviour
     //Chamar essa funcao quando qualquer inimigo morre
     public void OnEnemyDied()
     {
-        enemiesAlive--;
+        enemiesAlive--;  
         CheckWaveCompletion();
     }
 
@@ -132,7 +126,6 @@ public class WaveManager : MonoBehaviour
 
             else
             {
-                //Atualiza botao de passar wave
                 currentState = WaveState.WaitingToStart;
             }
         }
