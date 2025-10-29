@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class PlayButtonManagement : MonoBehaviour
 {
+    [Header("Play Button")]
+    [SerializeField] private Button playButton;
+
     [Header("Objetos icon e glow effect")]
     [SerializeField] private Image buttonIcon;
     [SerializeField] private GameObject glowEffect;
@@ -20,12 +23,10 @@ public class PlayButtonManagement : MonoBehaviour
 
     private WaveManager waveManager;
 
-    private Button thisButton;
 
     void Start()
     {
         waveManager = WaveManager.Instance;
-        thisButton = GetComponent<Button>();
     }
 
     void Update()
@@ -33,7 +34,7 @@ public class PlayButtonManagement : MonoBehaviour
         CheckWaveManagerState();
         if (!UIManager.Instance.pauseScreen.activeSelf)
         {
-            thisButton.interactable = true;
+            playButton.interactable = true;
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 ChangeButtonState();
@@ -41,7 +42,7 @@ public class PlayButtonManagement : MonoBehaviour
         }
         else
         {
-            thisButton.interactable = false;
+            playButton.interactable = false;
         }
     }
 

@@ -14,6 +14,20 @@ public class MousePosition : MonoBehaviour
     private Tower hoveredTower;
     private Tower selectedTower;
 
+    public static MousePosition Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Update()
     {
         if (PlayerMovement.moveOn)
@@ -40,12 +54,8 @@ public class MousePosition : MonoBehaviour
             hoveredTower = null;
         }
 
-        if (selectedTower != null)
-        {
-            selectedTower.UnselectTower();
-            selectedTower = null;
-        }
-
+        DeselectTower();
+        
         if (towerBeingPlaced != null)
         {
             EntitySummoner.Instance.RemoveTower(towerBeingPlaced);
@@ -141,149 +151,37 @@ public class MousePosition : MonoBehaviour
 
                 hoveredTower = null;
             }
-            // (Se clicou na mesma torre que já estava selecionada, não faz nada.
-            //  Aqui você poderia abrir um menu de Upgrade, por exemplo)
+
+            SelectedTowerCardManager.Instance.ShowSelectCard(selectedTower);
         }
         else
         {
-            if (selectedTower != null)
-            {
-                selectedTower.UnselectTower();
-                selectedTower = null;
-            }
+            DeselectTower();
+        }
+    }
+
+    public void DeselectTower()
+    {
+        if (selectedTower != null)
+        {
+            selectedTower.UnselectTower();
+            selectedTower = null;
+            SelectedTowerCardManager.Instance.HideSelectCard();
         }
     }
 
     public void setTowerToPlaceByID(int towerID)
     {
-        // Não deixa pegar outra torre se já estiver posicionando
+        
         if (towerBeingPlaced != null)
         {
             EntitySummoner.Instance.RemoveTower(towerBeingPlaced);
         }
 
-        if (selectedTower != null)
-        {
-            selectedTower.UnselectTower();
-            selectedTower = null;
-        }
+        DeselectTower();
 
         towerBeingPlaced = EntitySummoner.Instance.SummonTower(towerID, transform.position);
     }
 
-    //void Update()
-    //{
-    //    if (selectedTower != null)
-    //        selectedTower.UnhoverTower();
 
-    //    if (PlayerMovement.moveOn)
-    //    {
-    //        if (hoveredTower != null)
-    //        {
-    //            hoveredTower.UnhoverTower();
-    //            hoveredTower = null;
-    //        }
-    //        towerBeingPlaced = null;
-    //        return;
-    //    }
-
-    //    if (towerBeingPlaced != null)
-    //    {
-    //        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-    //        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, layerMask))
-    //        {
-    //            transform.position = raycastHit.point;
-    //        }
-    //        towerBeingPlaced.transform.position = transform.position;
-            
-    //        if (Input.GetMouseButtonDown(0) && towerBeingPlaced.validPosition)
-    //        {
-    //            if (EventSystem.current.IsPointerOverGameObject())
-    //            {
-    //                return;
-    //            }
-    //            PlayerEconomy.Instance.Buy(towerBeingPlaced);
-    //            towerBeingPlaced.isBeingPlaced = false;
-    //            towerBeingPlaced = null;
-    //        }
-
-
-    //        if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape))
-    //        {
-    //            EntitySummoner.Instance.RemoveTower(towerBeingPlaced);
-    //            towerBeingPlaced = null;
-    //        }
-
-    //    }
-
-    //    if (towerBeingPlaced == null)
-    //    {
-    //        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-    //        RaycastHit hit;
-
-    //        if (Physics.Raycast(ray, out hit, float.MaxValue, towersLayer))
-    //        {
-    //            Tower towerHitThisFrame = hit.collider.GetComponent<Tower>();
-
-    //            if (towerHitThisFrame != hoveredTower)
-    //            {
-    //                if (hoveredTower != null)
-    //                {
-    //                    hoveredTower.UnhoverTower();
-    //                }
-    //                if (!(selectedTower != null && selectedTower == towerHitThisFrame))
-    //                {
-    //                    hoveredTower = towerHitThisFrame;
-    //                    hoveredTower.HoverTower();
-    //                }
-    //            }
-
-    //        }
-    //        else
-    //        {
-    //            if (hoveredTower != null)
-    //            {
-    //                hoveredTower.UnhoverTower();
-    //                hoveredTower = null;
-    //            }
-    //        }
-    //    }
-
-    //    if (Input.GetMouseButtonDown(0) && towerBeingPlaced == null)
-    //    {
-    //        if (selectedTower == null && hoveredTower != null)
-    //        {
-    //            selectedTower = hoveredTower;
-    //            selectedTower.SelectTower();
-    //        }
-
-    //        if (selectedTower != null && hoveredTower == null)
-    //        {
-    //            selectedTower.UnselectTower();
-    //            selectedTower = null;
-    //        }
-
-    //        if (selectedTower != null && hoveredTower != null)
-    //        {
-    //            if (selectedTower != hoveredTower)
-    //            {
-    //                selectedTower.UnselectTower();
-    //                selectedTower = hoveredTower;
-    //                selectedTower.SelectTower();    
-    //            }
-    //        }
-    //    }
-
-
-
-    //}
-
-    //public void setTowerToPlaceByID(int towerID)
-    //{
-    //    if (towerBeingPlaced != null)
-    //        return;
-
-    //    towerBeingPlaced = EntitySummoner.Instance.SummonTower(towerID, transform.position);
-        
-    //}
 }

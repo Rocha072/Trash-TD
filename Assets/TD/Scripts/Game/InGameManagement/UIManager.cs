@@ -59,6 +59,7 @@ public class UIManager : MonoBehaviour
             {
                 PlayerMovement.TurnOffPlayerMovement();
                 Shop.SetActive(true);
+                SelectedTowerCardManager.Instance.HideSelectCard();
                 
             }
 

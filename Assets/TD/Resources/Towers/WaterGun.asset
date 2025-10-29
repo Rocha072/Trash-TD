@@ -19,4 +19,5 @@ MonoBehaviour:
   fireRate: 1
   slowFactor: 0.5
   slowDuration: 2
-  towerType: 1
+  towerType: 0
+  TowerSprite: {fileID: 21300000, guid: b8c47ccc99ac2b64d9e85aca7cca87fd, type: 3}

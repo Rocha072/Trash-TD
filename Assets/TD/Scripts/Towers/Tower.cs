@@ -93,7 +93,8 @@ public class Tower : MonoBehaviour
     //}
 
     void Attack()
-    {
+    {   
+        //Cada torre ataca de uma forma
         if (towerData.towerType == TowerData.TowerTypes.waterGun)
         {
             target.TakeDamage(towerData.Damage);
