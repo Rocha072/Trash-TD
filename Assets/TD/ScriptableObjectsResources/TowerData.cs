@@ -11,7 +11,9 @@ public class TowerData : ScriptableObject
     public float slowFactor;
     public float slowDuration;
     public enum TowerTypes {
-        waterGun = 1
+        waterGun,
     }
     public TowerTypes towerType;
+
+    public Sprite TowerSprite;
 }

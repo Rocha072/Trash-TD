@@ -4,18 +4,19 @@ using UnityEngine.UI;
 public class InfoButtonManagement : MonoBehaviour
 {
     [Header("Referências")]
-    public RectTransform shopRect; 
+    [SerializeField] private RectTransform infoButtonRect; 
+    [SerializeField] private RectTransform shopRect; 
 
     [Header("Configurações de Posição")]
     public float padding = 20f;
 
-    private RectTransform infoButtonRect; 
+    
     private float defaultPosX;      
     private float defaultPosY;    
 
     void Start()
     {
-        infoButtonRect = GetComponent<RectTransform>();
+        // infoButtonRect = GetComponent<RectTransform>();
      
         defaultPosX = infoButtonRect.anchoredPosition.x;
         defaultPosY = infoButtonRect.anchoredPosition.y;
