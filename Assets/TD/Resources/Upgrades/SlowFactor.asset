@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8ee2d673ed29eb4b8b90b3f0e1a062d, type: 3}
-  m_Name: SlowFactor_UP
+  m_Name: SlowFactor
   m_EditorClassIdentifier: 
-  upgradeName: Aumenta o fator de lentidao
+  upgradeName: "Lentid\xE3o+++"
   upgradeDescription: "Aumenta o fator de lentid\xE3o em 20%"
   upgradeCost: 200
   statModifiers:

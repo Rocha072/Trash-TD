@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8ee2d673ed29eb4b8b90b3f0e1a062d, type: 3}
-  m_Name: Range_UP
+  m_Name: FireRate_SlowFactor
   m_EditorClassIdentifier: 
-  upgradeName: Aumenta Alcance
-  upgradeDescription: Aumenta o Alcance em 10
-  upgradeCost: 100
+  upgradeName: Fire Rate+++
+  upgradeDescription: "Aumenta o Fire Rate em 20% e a Lentid\xE3o em 10%"
+  upgradeCost: 220
   statModifiers:
     damage_add: 0
-    range_add: 10
-    fireRate_multiplier: 1
-    slowFactor_multiplier: 1
+    range_add: 0
+    fireRate_multiplier: 1.2
+    slowFactor_multiplier: 1.1
     slowDuration_add: 0

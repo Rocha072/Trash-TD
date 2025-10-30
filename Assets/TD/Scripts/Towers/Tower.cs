@@ -32,6 +32,13 @@ public class Tower : MonoBehaviour
     private float currentSlowFactor;
     private float currentSlowDuration;
 
+
+    private int totalCostInvested;
+    public int SellValue
+    {
+        get { return Mathf.RoundToInt(totalCostInvested * 0.7f); }
+    }
+
     //Estado do upgrade (indice)
     private int currentTierA = 0;
     private int currentTierB = 0;
@@ -48,6 +55,7 @@ public class Tower : MonoBehaviour
         currentFireRate = towerData.baseFireRate;
         currentSlowDuration = towerData.baseSlowDuration;
         currentSlowFactor = towerData.baseSlowFactor;
+        totalCostInvested = towerData.cost;
         
         InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
     }
@@ -189,6 +197,8 @@ public class Tower : MonoBehaviour
         if (PlayerEconomy.Instance.CanBuy(upgradeToApply.upgradeCost))
         {
             PlayerEconomy.Instance.Buy(upgradeToApply.upgradeCost);
+
+            totalCostInvested += upgradeToApply.upgradeCost;
 
             ApplyStats(upgradeToApply.statModifiers);
 

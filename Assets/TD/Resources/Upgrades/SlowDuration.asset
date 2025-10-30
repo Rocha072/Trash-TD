@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8ee2d673ed29eb4b8b90b3f0e1a062d, type: 3}
-  m_Name: Damage_UP
+  m_Name: SlowDuration
   m_EditorClassIdentifier: 
-  upgradeName: Aumenta Dano
-  upgradeDescription: Aumenta o Dano em 10
-  upgradeCost: 50
+  upgradeName: "Dura\xE7\xE3o Lentid\xE3o++"
+  upgradeDescription: "Aumenta a dura\xE7\xE3o da lentid\xE3o em 3 segundos"
+  upgradeCost: 90
   statModifiers:
-    damage_add: 10
+    damage_add: 0
     range_add: 0
     fireRate_multiplier: 1
     slowFactor_multiplier: 1
-    slowDuration_add: 0
+    slowDuration_add: 3

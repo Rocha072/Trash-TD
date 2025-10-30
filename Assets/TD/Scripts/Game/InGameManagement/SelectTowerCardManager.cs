@@ -28,7 +28,8 @@ public class SelectedTowerCardManager : MonoBehaviour
     public static SelectedTowerCardManager Instance { get; private set; }
 
     private Tower towerSelected;
-
+    private UpgradeDefinition nextUpgradeA;
+    private UpgradeDefinition nextUpgradeB;
     private int PriceToSell;
 
     private void Awake()
@@ -42,23 +43,33 @@ public class SelectedTowerCardManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-  
+
+    private void Update()
+    {
+        if (CardPanel.activeSelf && towerSelected != null)
+        {
+            UpdatePurchaseButtonsInteractability();
+        }
+    }
+
     public void ShowSelectCard(Tower tower)
     {
         towerSelected = tower;
+
         towerIcon.sprite = towerSelected.towerData.TowerSprite;
 
-        //chamar funcao para calculo atual de custo
-        PriceToSell = Mathf.RoundToInt(towerSelected.towerData.cost * 0.7f);
+        PriceToSell = towerSelected.SellValue;
         priceText.text = "" + PriceToSell;
 
-        RefreshUI(tower);
+        RefreshUI(towerSelected);
 
         CardPanel.SetActive(true);
     }
     public void HideSelectCard()
     {
         towerSelected = null;
+        nextUpgradeA = null;
+        nextUpgradeB = null;
         CardPanel.SetActive(false);
     }
 
@@ -66,9 +77,18 @@ public class SelectedTowerCardManager : MonoBehaviour
     {
         if (tower != towerSelected) return;
 
+        PriceToSell = towerSelected.SellValue;
+        priceText.text = "" + PriceToSell;
+
+        nextUpgradeA = tower.GetNextUpgrade(0);
+        nextUpgradeB = tower.GetNextUpgrade(1);
+
+
         UpdateUpgradeButtonUI(pathA_Button, pathA_Name, pathA_Desc, pathA_Cost, /*pathA_LockedIcon,*/ tower, 0);
-        
+
         UpdateUpgradeButtonUI(pathB_Button, pathB_Name, pathB_Desc, pathB_Cost, /*pathB_LockedIcon,*/ tower, 1);
+        
+        UpdatePurchaseButtonsInteractability();
     }
 
     private void UpdateUpgradeButtonUI(Button button, TextMeshProUGUI nameText, TextMeshProUGUI descText, TextMeshProUGUI costText, Tower tower, int pathIndex)
@@ -99,11 +119,24 @@ public class SelectedTowerCardManager : MonoBehaviour
             costText.text = "" + nextUpgrade.upgradeCost;
             descText.text = "" + nextUpgrade.upgradeDescription;
             // Desativa o botão se o jogador não tiver dinheiro
-            //button.interactable = PlayerEconomy.Instance.CanBuy(nextUpgrade.cost);
+            button.interactable = true;
         }
     }
 
-   
+    private void UpdatePurchaseButtonsInteractability()
+    {
+        if (nextUpgradeA != null && !towerSelected.IsPathLocked(0))
+        {
+            pathA_Button.interactable = PlayerEconomy.Instance.CanBuy(nextUpgradeA.upgradeCost);
+        }
+        
+        if (nextUpgradeB != null && !towerSelected.IsPathLocked(1))
+        {
+            pathB_Button.interactable = PlayerEconomy.Instance.CanBuy(nextUpgradeB.upgradeCost);
+        }
+    }
+
+
     public void OnPathClicked(int pathIndex)
     {
         if (towerSelected != null)
