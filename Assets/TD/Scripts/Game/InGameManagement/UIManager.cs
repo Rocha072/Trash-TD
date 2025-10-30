@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal.Commands;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -79,7 +80,8 @@ public class UIManager : MonoBehaviour
 
     public void PurchaseTower(int towerID)
     {
-        if (PlayerEconomy.Instance.CanBuy(towerID))
+        int cost = EntitySummoner.Instance.towerBlueprints[towerID].towerData.cost;
+        if (PlayerEconomy.Instance.CanBuy(cost))
         {
             mouse.setTowerToPlaceByID(towerID);
         }

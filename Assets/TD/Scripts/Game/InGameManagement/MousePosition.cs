@@ -79,7 +79,7 @@ public class MousePosition : MonoBehaviour
                 return;
             }
 
-            PlayerEconomy.Instance.Buy(towerBeingPlaced);
+            PlayerEconomy.Instance.Buy(towerBeingPlaced.towerData.cost);
             towerBeingPlaced.isBeingPlaced = false;
             towerBeingPlaced = null;
         }

@@ -12,12 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcd5328711f14c41accf7b49ff8f707, type: 3}
   m_Name: WaterGun
   m_EditorClassIdentifier: 
-  cost: 50
-  range: 15
-  turnSpeed: 5
-  Damage: 40
-  fireRate: 1
-  slowFactor: 0.5
-  slowDuration: 2
-  towerType: 0
   TowerSprite: {fileID: 21300000, guid: b8c47ccc99ac2b64d9e85aca7cca87fd, type: 3}
+  baseRange: 15
+  baseDamage: 40
+  baseFireRate: 1
+  baseSlowFactor: 0.5
+  baseSlowDuration: 4
+  cost: 50
+  turnSpeed: 5
+  towerType: 0
+  pathA_Upgrades:
+  - {fileID: 11400000, guid: bf424fef20d71ed4db0bc83b0eddaa17, type: 2}
+  - {fileID: 11400000, guid: e45a5f97581147949bb0b0adb7ba1b5f, type: 2}
+  - {fileID: 11400000, guid: b097e866cbbbefc43a05ba607a1080ef, type: 2}
+  pathB_Upgrades:
+  - {fileID: 11400000, guid: 43e7fc4d98f0c564da771e6cd1e140d4, type: 2}
+  - {fileID: 11400000, guid: 3bd940c76184db442b600cd2074f4075, type: 2}
+  - {fileID: 11400000, guid: d51dd6f51ee24ff4d9c00cb3fa6bd5fa, type: 2}
