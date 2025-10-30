@@ -29,27 +29,14 @@ public class PlayerEconomy : MonoBehaviour
         return money;
     }
 
-    public bool CanBuy(Tower tower)
+    public bool CanBuy(int cost)
     {
-        if (money >= tower.towerData.cost)
-        {
-            return true;
-        }
-        return false;
+        return money >= cost;
     }
 
-    public bool CanBuy(int ID)
+    public void Buy(int cost)
     {
-        if (money >= EntitySummoner.Instance.towerBlueprints[ID].towerData.cost)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public void Buy(Tower tower)
-    {
-        money -= tower.towerData.cost;
+        money -= cost;
         UIManager.Instance.UpdateMoneyText();
     }
 

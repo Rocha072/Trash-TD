@@ -21,17 +21,34 @@ public class Tower : MonoBehaviour
 
     [SerializeField] private float minHeight;
     [SerializeField] private float maxHeight;
-
+    
     private Enemy target;
     private float fireCountdown;
     private int coliding;
 
+    private float currentDamage;
+    private float currentRange;
+    private float currentFireRate;
+    private float currentSlowFactor;
+    private float currentSlowDuration;
+
+    //Estado do upgrade (indice)
+    private int currentTierA = 0;
+    private int currentTierB = 0;
+
+
     public void Init(TowerData data)
     {
-        fireCountdown = 0f;
         this.towerData = data;
+        fireCountdown = 0f;
         attackEffect.Stop();
 
+        currentDamage = towerData.baseDamage;
+        currentRange = towerData.baseRange;
+        currentFireRate = towerData.baseFireRate;
+        currentSlowDuration = towerData.baseSlowDuration;
+        currentSlowFactor = towerData.baseSlowFactor;
+        
         InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
     }
 
@@ -43,7 +60,7 @@ public class Tower : MonoBehaviour
         foreach (Enemy enemy in enemies)
         {
             float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy <= towerData.range)
+            if (distanceToEnemy <= currentRange)
             {
                 target = enemy;
                 return;
@@ -54,6 +71,8 @@ public class Tower : MonoBehaviour
 
 
     }
+
+    
 
     void Update()
     {
@@ -73,7 +92,7 @@ public class Tower : MonoBehaviour
         if (fireCountdown <= 0f)
         {
             Attack();
-            fireCountdown = 1f / towerData.fireRate;
+            fireCountdown = 1f / currentFireRate;
         }
         fireCountdown -= Time.deltaTime;
 
@@ -86,21 +105,22 @@ public class Tower : MonoBehaviour
         Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * towerData.turnSpeed).eulerAngles;
         partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
     }
-    //void OnDrawGizmosSelected()
-    //{
-    //    Gizmos.color = Color.green;
-    //    Gizmos.DrawWireSphere(transform.position, towerData.range);
-    //}
 
     void Attack()
-    {   
+    {
         //Cada torre ataca de uma forma
         if (towerData.towerType == TowerData.TowerTypes.waterGun)
         {
-            target.TakeDamage(towerData.Damage);
-            target.ApplySlow(towerData.slowFactor, towerData.slowDuration);
+            target.TakeDamage(currentDamage);
+            target.ApplySlow(currentSlowFactor, currentSlowDuration);
         }
 
+    }
+    
+    void OnDrawGizmosSelected()
+    {
+       Gizmos.color = Color.green;
+       Gizmos.DrawWireSphere(transform.position, currentRange);
     }
 
     public void VerifyValidPosition()
@@ -143,6 +163,79 @@ public class Tower : MonoBehaviour
     public void UnselectTower()
     {
         this.selectMask.SetActive(false);
+    }
+
+    public void TryApplyUpgrade(int pathIndex) // 0 => A, 1 => B
+    {
+        //Retorna se tentou comprar o caminho errado
+
+        if (pathIndex == 0 && currentTierB > 0)
+        {
+            return;
+        }
+        if (pathIndex == 1 && currentTierA > 0)
+        {
+            return;
+        }
+
+        // Pega o upgrade que deve ser incrementado
+        UpgradeDefinition upgradeToApply = GetNextUpgrade(pathIndex);
+
+        if (upgradeToApply == null)
+        {
+            return;
+        }
+
+        if (PlayerEconomy.Instance.CanBuy(upgradeToApply.upgradeCost))
+        {
+            PlayerEconomy.Instance.Buy(upgradeToApply.upgradeCost);
+
+            ApplyStats(upgradeToApply.statModifiers);
+
+            //Se for trocar prefab, cor, qualquer coisa é aqui
+
+            if (pathIndex == 0) currentTierA++;
+            else currentTierB++;
+
+            SelectedTowerCardManager.Instance.RefreshUI(this);
+        }
+    }
+
+    private void ApplyStats(UpgradeStats stats)
+    {
+        currentDamage += stats.damage_add;
+        currentRange += stats.range_add;
+        currentSlowDuration += stats.slowDuration_add;
+        currentFireRate *= stats.fireRate_multiplier;
+        currentSlowFactor *= stats.slowFactor_multiplier;
+
+        // Atualizar o anel de range
+    }
+
+    public UpgradeDefinition GetNextUpgrade(int pathIndex)
+    {
+        if (pathIndex == 0)
+        {
+            if (currentTierA >= 3)
+                return null;
+
+            return towerData.pathA_Upgrades[currentTierA];
+        }
+        else //Adicionar mais condicionais se for adicionar mais paths
+        {
+            if (currentTierB >= 3)
+                return null;
+
+            return towerData.pathB_Upgrades[currentTierB];
+        }
+
+    }
+    
+    public bool IsPathLocked(int pathIndex)
+    {
+        if (pathIndex == 0 && currentTierB > 0) return true;
+        if (pathIndex == 1 && currentTierA > 0) return true;
+        return false;
     }
 
 }
