@@ -29,10 +29,11 @@ public class PlayerLife : MonoBehaviour
         UIManager.Instance.UpdateLifeText();
 
         StatsManager.Instance.AddPolution(amount);
-        //if (life <= 0)
-        //{
-        //    LoseGame();
-        //}
+        
+        if (life <= 0)
+        {
+            UIManager.Instance.ShowDefeatScreen();
+        }
     }
 
 

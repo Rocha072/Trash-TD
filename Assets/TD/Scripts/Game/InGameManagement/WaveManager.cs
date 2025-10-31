@@ -11,7 +11,7 @@ public class WaveManager : MonoBehaviour
     [Header("All Waves List")]
     public List<WaveDefinition> allWaves;
 
-    public int currentWaveIndex = 0;
+    public int currentWaveIndex;
     private int enemiesAlive;
 
     public enum WaveState
@@ -31,7 +31,9 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
+        currentWaveIndex = 0;
         enemiesAlive = 0;
+        UIManager.Instance.UpdateCurrentWaveText();
         UIManager.Instance.UpdateMoneyText();
         UIManager.Instance.UpdateLifeText();
         EntitySummoner.Instance.Init();
@@ -46,8 +48,7 @@ public class WaveManager : MonoBehaviour
 
         if (currentWaveIndex >= allWaves.Count)
         {
-            //Chama a tela de fase completa (ou funcao)
-            Debug.Log("Ganhou");
+            UIManager.Instance.showVictoryScreen();
             currentState = WaveState.AllWavesComplete;
             return;
         }
@@ -115,13 +116,12 @@ public class WaveManager : MonoBehaviour
             WaveDefinition completedWave = allWaves[currentWaveIndex - 1];
             PlayerEconomy.Instance.GainMoney(completedWave.waveReward);
             StatsManager.Instance.AddMoneyGeneratedByWaves(completedWave.waveReward);
-            UIManager.Instance.UpdateMoneyText();            
+            UIManager.Instance.UpdateCurrentWaveText();           
             Debug.Log("Wave completed");
 
             if (currentWaveIndex >= allWaves.Count)
             {
-                //Aparece tela de fase completa (ou funcao)
-                Debug.Log("Fase completa");
+                UIManager.Instance.showVictoryScreen();
                 currentState = WaveState.AllWavesComplete;
             }
 
