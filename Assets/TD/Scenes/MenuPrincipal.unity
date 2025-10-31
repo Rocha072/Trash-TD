@@ -934,7 +934,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3312,7 +3312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4037,8 +4037,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultCursorTexture: {fileID: 2800000, guid: 36d55357e4adfe046ab9f050b0832bf0, type: 3}
   defaultCursorHotspot: {x: 4, y: 4}
-  handCursorTexture: {fileID: 0}
-  handCursorHotspot: {x: 0, y: 0}
+  handCursorTexture: {fileID: 2800000, guid: 857e607d67654cd4e8a8025404177ae5, type: 3}
+  handCursorHotspot: {x: 4, y: 4}
 --- !u!4 &1081000321
 Transform:
   m_ObjectHideFlags: 0
@@ -6380,7 +6380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
