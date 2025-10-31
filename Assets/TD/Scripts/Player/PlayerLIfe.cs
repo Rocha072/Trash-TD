@@ -28,6 +28,7 @@ public class PlayerLife : MonoBehaviour
         life -= amount;
         UIManager.Instance.UpdateLifeText();
 
+        StatsManager.Instance.AddPolution(amount);
         //if (life <= 0)
         //{
         //    LoseGame();

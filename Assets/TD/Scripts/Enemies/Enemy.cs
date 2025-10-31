@@ -74,6 +74,7 @@ public class Enemy : MonoBehaviour
         }
 
         PlayerLife.Instance.TakeDamage(this.enemyData.damage);
+
         EntitySummoner.Instance.RemoveEnemy(this);
 
     }
@@ -112,6 +113,8 @@ public class Enemy : MonoBehaviour
         
         WaveManager.Instance.OnEnemyDied();
         PlayerEconomy.Instance.GainMoney(enemyData.dropAmount);
+        StatsManager.Instance.AddTrashCollected();
+        StatsManager.Instance.AddMoneyGeneratedByCollections(enemyData.dropAmount);
         EntitySummoner.Instance.RemoveEnemy(this);
     }
 

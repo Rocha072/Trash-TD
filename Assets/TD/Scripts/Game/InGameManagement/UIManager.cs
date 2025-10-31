@@ -18,7 +18,11 @@ public class UIManager : MonoBehaviour
     public GameObject Shop;
     public CanvasGroup ShopCanvasGroup;
 
-
+    [Header("Victory/Defeat Screen")]
+    [SerializeField] private GameObject VictoryScreen;
+    [SerializeField] private VictoryScreenUI VictoryScreenScript;
+    [SerializeField] private GameObject DefeatScreen;
+    [SerializeField] private TextMeshProUGUI completedWavesText;
     public static UIManager Instance { get; private set; }
 
     private void Awake()
@@ -139,5 +143,21 @@ public class UIManager : MonoBehaviour
     public void exitGame()
     {
         Application.Quit();
+    }
+
+    public void showVictoryScreen()
+    {
+        VictoryScreenScript.showStats();
+        VictoryScreen.SetActive(true);
+        Time.timeScale = 0f;
+        PlayerMovement.TurnOffPlayerMovement();
+    }
+
+    public void ShowDefeatScreen()
+    {
+        DefeatScreen.SetActive(true);
+        completedWavesText.text = WaveManager.Instance.currentWaveIndex + "/" + WaveManager.Instance.allWaves.Count;
+        Time.timeScale = 0f;
+        PlayerMovement.TurnOffPlayerMovement();
     }
 }

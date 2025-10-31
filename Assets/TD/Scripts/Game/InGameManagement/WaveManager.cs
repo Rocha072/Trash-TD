@@ -11,7 +11,7 @@ public class WaveManager : MonoBehaviour
     [Header("All Waves List")]
     public List<WaveDefinition> allWaves;
 
-    private int currentWaveIndex = 0;
+    public int currentWaveIndex = 0;
     private int enemiesAlive;
 
     public enum WaveState
@@ -114,6 +114,7 @@ public class WaveManager : MonoBehaviour
         {
             WaveDefinition completedWave = allWaves[currentWaveIndex - 1];
             PlayerEconomy.Instance.GainMoney(completedWave.waveReward);
+            StatsManager.Instance.AddMoneyGeneratedByWaves(completedWave.waveReward);
             UIManager.Instance.UpdateMoneyText();            
             Debug.Log("Wave completed");
 
