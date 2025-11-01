@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 
 [RequireComponent(typeof(UnityEngine.UI.Button))]
-public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
    
     public void OnPointerEnter(PointerEventData eventData)
