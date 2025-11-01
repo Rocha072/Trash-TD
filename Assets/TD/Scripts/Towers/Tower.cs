@@ -48,7 +48,7 @@ public class Tower : MonoBehaviour
     {
         this.towerData = data;
         fireCountdown = 0f;
-        attackEffect.Stop();
+        SetAttackEfect(false);
 
         currentDamage = towerData.baseDamage;
         currentRange = towerData.baseRange;
@@ -90,12 +90,12 @@ public class Tower : MonoBehaviour
 
         if (target == null)
         {
-            attackEffect.Stop();
+            SetAttackEfect(false);
             return;
         }
 
         RotateTarget();
-        attackEffect.Play();
+        SetAttackEfect(true);
 
         if (fireCountdown <= 0f)
         {
@@ -124,13 +124,24 @@ public class Tower : MonoBehaviour
         }
 
     }
-    
+
     void OnDrawGizmosSelected()
     {
-       Gizmos.color = Color.green;
-       Gizmos.DrawWireSphere(transform.position, currentRange);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, currentRange);
     }
 
+    void SetAttackEfect(bool active)
+    {
+        if (attackEffect == null) return;
+
+        if (active)
+            attackEffect.Play();
+
+        else
+            attackEffect.Stop();
+    }
+    
     public void VerifyValidPosition()
     {
         validPosition = this.transform.position.y >= minHeight && this.transform.position.y <= maxHeight && coliding==0;
