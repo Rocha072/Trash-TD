@@ -37,6 +37,7 @@ public class PlayerEconomy : MonoBehaviour
     public void Buy(int cost)
     {
         money -= cost;
+        StatsManager.Instance.AddMoneySpent(cost);
         UIManager.Instance.UpdateMoneyText();
     }
 

@@ -14,6 +14,7 @@ public class MenuManagement : MonoBehaviour
     [Header("Loading Screen")]
     public Slider sliderLoading;
     public TextMeshProUGUI txtPorcentage;
+
     void Start()
     {
         BackToMainMenu();

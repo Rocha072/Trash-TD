@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
-    [Header("Lifes/Money")]
-    public TextMeshProUGUI moneyText;
-    public TextMeshProUGUI lifeText;
+    [Header("Player Status")]
+    [SerializeField] private TextMeshProUGUI moneyText;
+    [SerializeField] private TextMeshProUGUI lifeText;
+    [SerializeField] private TextMeshProUGUI currentWaveText;
 
     [Header("Mouse and Pause Screen")]
     public MousePosition mouse;
@@ -18,6 +19,11 @@ public class UIManager : MonoBehaviour
     public GameObject Shop;
     public CanvasGroup ShopCanvasGroup;
 
+    [Header("Victory/Defeat Screen")]
+    [SerializeField] private GameObject VictoryScreen;
+    [SerializeField] private VictoryScreenUI VictoryScreenScript;
+    [SerializeField] private GameObject DefeatScreen;
+    [SerializeField] private TextMeshProUGUI completedWavesText;
 
     public static UIManager Instance { get; private set; }
 
@@ -77,6 +83,10 @@ public class UIManager : MonoBehaviour
         lifeText.text = (100 - PlayerLife.Instance.GetLife()).ToString() + "%";
     }
 
+    public void UpdateCurrentWaveText()
+    {
+        currentWaveText.text = "Rodada " + (WaveManager.Instance.currentWaveIndex+1) + "/" + WaveManager.Instance.allWaves.Count;
+    }
 
     public void PurchaseTower(int towerID)
     {
@@ -140,4 +150,22 @@ public class UIManager : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void showVictoryScreen()
+    {
+        VictoryScreenScript.showStats();
+        VictoryScreen.SetActive(true);
+        Time.timeScale = 0f;
+        PlayerMovement.TurnOffPlayerMovement();
+    }
+
+    public void ShowDefeatScreen()
+    {
+        DefeatScreen.SetActive(true);
+        completedWavesText.text = "Rodada " + WaveManager.Instance.currentWaveIndex + "/" + WaveManager.Instance.allWaves.Count;
+        Time.timeScale = 0f;
+        PlayerMovement.TurnOffPlayerMovement();
+    }
+
+    
 }
