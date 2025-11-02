@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.VFX;
@@ -10,6 +11,7 @@ public class Tower : MonoBehaviour
     public TowerData towerData;
     public Transform partToRotate;
     public VisualEffect attackEffect;
+    private Animator animator;
 
     [Header("Masks")]
     public GameObject invalidMask;
@@ -56,7 +58,9 @@ public class Tower : MonoBehaviour
         currentSlowDuration = towerData.baseSlowDuration;
         currentSlowFactor = towerData.baseSlowFactor;
         totalCostInvested = towerData.cost;
-        
+
+        animator = GetComponent<Animator>();
+
         InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
     }
 
@@ -100,6 +104,7 @@ public class Tower : MonoBehaviour
         if (fireCountdown <= 0f)
         {
             Attack();
+            SetAnimationTrigger();
             fireCountdown = 1f / currentFireRate;
         }
         fireCountdown -= Time.deltaTime;
@@ -117,11 +122,19 @@ public class Tower : MonoBehaviour
     void Attack()
     {
         //Cada torre ataca de uma forma
-        if (towerData.towerType == TowerData.TowerTypes.waterGun)
+        switch (towerData.towerType)
         {
-            target.TakeDamage(currentDamage);
-            target.ApplySlow(currentSlowFactor, currentSlowDuration);
+            case TowerData.TowerTypes.waterGun:
+
+                target.TakeDamage(currentDamage);
+                target.ApplySlow(currentSlowFactor, currentSlowDuration);
+                break;
+
+            case TowerData.TowerTypes.trashCollector:
+                target.TakeDamage(currentDamage);
+                break;
         }
+
 
     }
 
@@ -140,6 +153,14 @@ public class Tower : MonoBehaviour
 
         else
             attackEffect.Stop();
+    }
+
+    void SetAnimationTrigger()
+    {
+        if (animator == null) return;
+
+        animator.ResetTrigger("Attack");
+        animator.SetTrigger("Attack");
     }
     
     public void VerifyValidPosition()

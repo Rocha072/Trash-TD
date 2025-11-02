@@ -116,7 +116,7 @@ public class WaveManager : MonoBehaviour
             WaveDefinition completedWave = allWaves[currentWaveIndex - 1];
             PlayerEconomy.Instance.GainMoney(completedWave.waveReward);
             StatsManager.Instance.AddMoneyGeneratedByWaves(completedWave.waveReward);
-            UIManager.Instance.UpdateCurrentWaveText();           
+                     
             Debug.Log("Wave completed");
 
             if (currentWaveIndex >= allWaves.Count)
@@ -127,6 +127,7 @@ public class WaveManager : MonoBehaviour
 
             else
             {
+                UIManager.Instance.UpdateCurrentWaveText(); 
                 currentState = WaveState.WaitingToStart;
             }
         }
