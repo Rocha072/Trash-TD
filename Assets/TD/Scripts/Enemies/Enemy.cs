@@ -48,8 +48,16 @@ public class Enemy : MonoBehaviour
             {
                 slowFactor = 1.0f;
                 Speed = enemyData.MaxSpeed * slowFactor;
+                agent.isStopped = false;
             }
         }
+
+        if (Speed <= 0f)
+        {
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+        }
+        
         agent.speed = Speed;
 
     }

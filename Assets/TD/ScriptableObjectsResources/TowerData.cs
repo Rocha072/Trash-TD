@@ -16,7 +16,7 @@ public class TowerData : ScriptableObject
     public int cost;
     public float turnSpeed;
     public enum TowerTypes {
-        waterGun, trashCollector
+        waterGun, trashCollector, catapult
     }
     public TowerTypes towerType;
 

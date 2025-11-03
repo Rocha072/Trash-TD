@@ -1,15 +1,15 @@
 using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
 public class Tower : MonoBehaviour
 {
     [Header("Tower Properties")]
     public TowerData towerData;
-    public Transform partToRotate;
+    public Transform partToRotateY;
+    public Transform partToRotateX;
+    public GameObject projectilePrefab;
+    public Transform shootPoint;
     public VisualEffect attackEffect;
     private Animator animator;
 
@@ -19,6 +19,7 @@ public class Tower : MonoBehaviour
     public GameObject selectMask;
 
     public bool isBeingPlaced = true;
+    [Header("Valid Position Control")]
     public bool validPosition;
 
     [SerializeField] private float minHeight;
@@ -28,11 +29,12 @@ public class Tower : MonoBehaviour
     private float fireCountdown;
     private int coliding;
 
-    private float currentDamage;
-    private float currentRange;
-    private float currentFireRate;
-    private float currentSlowFactor;
-    private float currentSlowDuration;
+    [Header("Current Stats")]
+    [SerializeField]private float currentDamage;
+    [SerializeField]private float currentRange;
+    [SerializeField]private float currentFireRate;
+    [SerializeField]private float currentSlowFactor;
+    [SerializeField]private float currentSlowDuration;
 
 
     private int totalCostInvested;
@@ -44,7 +46,6 @@ public class Tower : MonoBehaviour
     //Estado do upgrade (indice)
     private int currentTierA = 0;
     private int currentTierB = 0;
-
 
     public void Init(TowerData data)
     {
@@ -115,8 +116,9 @@ public class Tower : MonoBehaviour
     {
         Vector3 dir = target.transform.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
-        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * towerData.turnSpeed).eulerAngles;
-        partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
+        Vector3 rotation = Quaternion.Lerp(partToRotateY.rotation, lookRotation, Time.deltaTime * towerData.turnSpeed).eulerAngles;
+        partToRotateY.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        partToRotateX.localRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
     }
 
     void Attack()
@@ -132,6 +134,16 @@ public class Tower : MonoBehaviour
 
             case TowerData.TowerTypes.trashCollector:
                 target.TakeDamage(currentDamage);
+                break;
+
+            case TowerData.TowerTypes.catapult:
+                if (projectilePrefab != null) {
+                    TowerProjectile newProjectile = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation).GetComponent<TowerProjectile>();
+                    newProjectile.target = target;
+                    newProjectile.damage = currentDamage;
+                    newProjectile.slowDuration = currentSlowDuration;
+                    newProjectile.slowFactor = currentSlowFactor;
+                }
                 break;
         }
 
