@@ -1,6 +1,7 @@
-using NUnit.Framework.Internal.Commands;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class UIManager : MonoBehaviour
     [Header("Shop Bar")]
     public GameObject Shop;
     public CanvasGroup ShopCanvasGroup;
+    public GameObject purchaseTowerButtonPrefab;
 
     [Header("Victory/Defeat Screen")]
     [SerializeField] private GameObject VictoryScreen;
@@ -38,7 +40,10 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    void Start()
+    {
+        SetShop();
+    }
     public void Update()
     {
 
@@ -167,5 +172,33 @@ public class UIManager : MonoBehaviour
         PlayerMovement.TurnOffPlayerMovement();
     }
 
-    
+    public void SetShop()
+    {
+        foreach (TowerBlueprint towerBlueprint in EntitySummoner.Instance.towerBlueprints)
+        {
+            TowerData data = towerBlueprint.towerData;
+
+            GameObject newButton = Instantiate(purchaseTowerButtonPrefab);
+
+            newButton.transform.SetParent(Shop.transform, false);
+
+            List<Transform> childrens = new List<Transform>();
+            foreach (Transform children in newButton.transform)
+            {
+                childrens.Add(children);
+            }
+
+            TextMeshProUGUI towerName = childrens[0].GetComponent<TextMeshProUGUI>();
+            towerName.text = data.towerName;
+
+            Image towerImage = childrens[1].GetComponent<Image>();
+            towerImage.sprite = data.TowerSprite;
+
+            TextMeshProUGUI towerPrice = childrens[2].GetComponent<TextMeshProUGUI>();
+            towerPrice.text = data.cost.ToString();
+
+            Button buyTowerButton = newButton.GetComponent<Button>();
+            buyTowerButton.onClick.AddListener(() => PurchaseTower(data.towerID));
+        }
+    }
 }

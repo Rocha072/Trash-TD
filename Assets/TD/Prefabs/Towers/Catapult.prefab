@@ -248,6 +248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4262571823209096}
   - component: {fileID: 1964003355936801277}
+  - component: {fileID: -1619278133993822434}
   - component: {fileID: 2603899290283630310}
   - component: {fileID: 2477477036705627033}
   - component: {fileID: -2762636138940325364}
@@ -293,9 +294,6 @@ MonoBehaviour:
   towerData: {fileID: 11400000, guid: 199b16a2263978e4dad57df07088a912, type: 2}
   partToRotateY: {fileID: 7065585052351092490}
   partToRotateX: {fileID: 7065585052351092490}
-  projectilePrefab: {fileID: 1162392375372998, guid: dd8db37c1f233c34c8f289bf1f0018a2, type: 3}
-  shootPoint: {fileID: 4059261464750596}
-  attackEffect: {fileID: 0}
   invalidMask: {fileID: 2641389727103813863}
   hoverMask: {fileID: 2797027311268046462}
   selectMask: {fileID: 5975260889091085871}
@@ -308,6 +306,21 @@ MonoBehaviour:
   currentFireRate: 0
   currentSlowFactor: 0
   currentSlowDuration: 0
+--- !u!114 &-1619278133993822434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1791165765685050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfceb506d6e38214da07e0590257076c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 1162392375372998, guid: dd8db37c1f233c34c8f289bf1f0018a2, type: 3}
+  shootPoint: {fileID: 4059261464750596}
+  animator: {fileID: 0}
 --- !u!95 &2603899290283630310
 Animator:
   serializedVersion: 7

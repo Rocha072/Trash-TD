@@ -20,6 +20,25 @@ public class Enemy : MonoBehaviour
 
     List<Transform> path;
 
+    private int currentNodeIndex;
+
+    public int CurrentNodeIndex
+    {
+        get { return currentNodeIndex; }
+    }
+    public float RemainingDistanceToNode
+    {
+        get
+        {
+            if (agent.hasPath && !isDead)
+            {
+                return agent.remainingDistance;
+            }
+            
+            return float.MaxValue;
+        }
+    }
+
     public void Init(EnemyData data)
     {
         enemyData = data;
@@ -31,6 +50,7 @@ public class Enemy : MonoBehaviour
     {
         slowFactor = 1.0f;
         slowDurationTimer = 0f;
+        currentNodeIndex = 0;
         isDead = false;
         Health = enemyData.MaxHealth;
         Speed = enemyData.MaxSpeed;
@@ -71,8 +91,12 @@ public class Enemy : MonoBehaviour
     IEnumerator MovementCoroutine()
     {
 
-        foreach (Transform node in path)
+        for (int i = 0; i<path.Count; i++)
         {
+            currentNodeIndex = i;
+
+            Transform node = path[i];
+
             agent.SetDestination(node.position);
 
             yield return new WaitUntil(() =>

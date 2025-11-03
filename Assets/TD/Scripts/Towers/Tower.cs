@@ -8,26 +8,23 @@ public class Tower : MonoBehaviour
     public TowerData towerData;
     public Transform partToRotateY;
     public Transform partToRotateX;
-    public GameObject projectilePrefab;
-    public Transform shootPoint;
-    public VisualEffect attackEffect;
-    private Animator animator;
 
     [Header("Masks")]
     public GameObject invalidMask;
     public GameObject hoverMask;
     public GameObject selectMask;
 
-    public bool isBeingPlaced = true;
     [Header("Valid Position Control")]
+    public bool isBeingPlaced = true;
     public bool validPosition;
-
+    private int coliding;
     [SerializeField] private float minHeight;
     [SerializeField] private float maxHeight;
-    
+
+    //[Header("Attack control")]
+    private TowerAttackBehavior attackBehavior;
     private Enemy target;
     private float fireCountdown;
-    private int coliding;
 
     [Header("Current Stats")]
     [SerializeField]private float currentDamage;
@@ -51,41 +48,29 @@ public class Tower : MonoBehaviour
     {
         this.towerData = data;
         fireCountdown = 0f;
-        SetAttackEfect(false);
-
         currentDamage = towerData.baseDamage;
         currentRange = towerData.baseRange;
         currentFireRate = towerData.baseFireRate;
         currentSlowDuration = towerData.baseSlowDuration;
         currentSlowFactor = towerData.baseSlowFactor;
         totalCostInvested = towerData.cost;
+        
+        attackBehavior = GetComponent<TowerAttackBehavior>();
 
-        animator = GetComponent<Animator>();
-
-        InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
-    }
-
-    void UpdateTarget()
-    {
-        List<Enemy> enemies = EntitySummoner.Instance.EnemiesInGame;
-
-
-        foreach (Enemy enemy in enemies)
+        if (attackBehavior == null)
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy <= currentRange)
-            {
-                target = enemy;
-                return;
-            }
-
+            Debug.Log("Tower Attack is missing");
+            return;
         }
-        target = null;
 
+        attackBehavior.Init(this);
+        attackBehavior.SetAttackEffect(false);
+        
 
+        if(towerData.requiresTarget)
+            InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
     }
 
-    
 
     void Update()
     {
@@ -93,22 +78,87 @@ public class Tower : MonoBehaviour
         VerifyValidPosition();
         if (isBeingPlaced) return;
 
-        if (target == null)
+        if(fireCountdown > 0f)
+            fireCountdown -= Time.deltaTime;
+        
+        if (towerData.requiresTarget)
         {
-            SetAttackEfect(false);
-            return;
+            if (target == null)
+            {
+                attackBehavior.SetAttackEffect(false);
+            }
+            else
+            {
+                RotateTarget();
+
+                attackBehavior.SetAttackEffect(true);
+
+                if (fireCountdown <= 0f)
+                {
+                    Attack();
+                    fireCountdown = 1f / currentFireRate;
+                }
+            }
+        }
+        else
+        {
+            attackBehavior.SetAttackEffect(true);
+
+            if (fireCountdown <= 0f)
+            {
+                Attack();
+                fireCountdown = 1f / currentFireRate;
+            }
         }
 
-        RotateTarget();
-        SetAttackEfect(true);
 
-        if (fireCountdown <= 0f)
+        
+    }
+    void UpdateTarget()
+    {
+        List<Enemy> enemies = EntitySummoner.Instance.EnemiesInGame;
+
+        Enemy bestTarget = null;
+
+        int bestTargetNodeIndex = -1;
+        float bestTargetRemainingDistance = float.MaxValue;
+        foreach (Enemy enemy in enemies)
         {
-            Attack();
-            SetAnimationTrigger();
-            fireCountdown = 1f / currentFireRate;
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distanceToEnemy > currentRange)
+            {
+                continue;
+            }
+
+            int enemyNodeIndex = enemy.CurrentNodeIndex;
+
+            float enemyRemainingDistance = enemy.RemainingDistanceToNode;
+
+            bool isBetterTarget = false;
+
+            if (enemyNodeIndex > bestTargetNodeIndex)
+            {
+                isBetterTarget = true;
+            }
+            else if (enemyNodeIndex == bestTargetNodeIndex)
+            {
+                if (enemyRemainingDistance < bestTargetRemainingDistance)
+                {
+                    isBetterTarget = true;
+                }
+            }
+
+            if (isBetterTarget)
+            {
+                bestTarget = enemy;
+                bestTargetNodeIndex = enemyNodeIndex;
+                bestTargetRemainingDistance = enemyRemainingDistance;
+            }
+
         }
-        fireCountdown -= Time.deltaTime;
+        
+        target = bestTarget;
+
 
     }
 
@@ -123,31 +173,7 @@ public class Tower : MonoBehaviour
 
     void Attack()
     {
-        //Cada torre ataca de uma forma
-        switch (towerData.towerType)
-        {
-            case TowerData.TowerTypes.waterGun:
-
-                target.TakeDamage(currentDamage);
-                target.ApplySlow(currentSlowFactor, currentSlowDuration);
-                break;
-
-            case TowerData.TowerTypes.trashCollector:
-                target.TakeDamage(currentDamage);
-                break;
-
-            case TowerData.TowerTypes.catapult:
-                if (projectilePrefab != null) {
-                    TowerProjectile newProjectile = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation).GetComponent<TowerProjectile>();
-                    newProjectile.target = target;
-                    newProjectile.damage = currentDamage;
-                    newProjectile.slowDuration = currentSlowDuration;
-                    newProjectile.slowFactor = currentSlowFactor;
-                }
-                break;
-        }
-
-
+        attackBehavior.Attack(target, currentDamage, currentSlowFactor, currentSlowDuration);
     }
 
     void OnDrawGizmosSelected()
@@ -156,24 +182,6 @@ public class Tower : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, currentRange);
     }
 
-    void SetAttackEfect(bool active)
-    {
-        if (attackEffect == null) return;
-
-        if (active)
-            attackEffect.Play();
-
-        else
-            attackEffect.Stop();
-    }
-
-    void SetAnimationTrigger()
-    {
-        if (animator == null) return;
-
-        animator.ResetTrigger("Attack");
-        animator.SetTrigger("Attack");
-    }
     
     public void VerifyValidPosition()
     {

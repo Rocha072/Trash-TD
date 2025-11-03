@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Tower", menuName = "Create Scriptable Object/Towers")]
 public class TowerData : ScriptableObject
 {
-    public Sprite TowerSprite;
 
     [Header("Base Stats")]
     public float baseRange;
@@ -13,12 +12,12 @@ public class TowerData : ScriptableObject
     public float baseSlowDuration;
 
     [Header("Tower Traits")]
+    public Sprite TowerSprite;
+    public string towerName;
+    public int towerID;
     public int cost;
     public float turnSpeed;
-    public enum TowerTypes {
-        waterGun, trashCollector, catapult
-    }
-    public TowerTypes towerType;
+    public bool requiresTarget = true;
 
     [Header("Upgrade Paths")]
     public UpgradeDefinition[] pathA_Upgrades = new UpgradeDefinition[3]; 

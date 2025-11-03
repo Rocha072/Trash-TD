@@ -644,6 +644,9 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: -8113428684564188934}
     - targetCorrespondingSourceObject: {fileID: 880714636728156243, guid: 704e6059def12974b93a2246d7e71e9f, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: -7834367381096999406}
+    - targetCorrespondingSourceObject: {fileID: 880714636728156243, guid: 704e6059def12974b93a2246d7e71e9f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2955479876274596916}
     - targetCorrespondingSourceObject: {fileID: 880714636728156243, guid: 704e6059def12974b93a2246d7e71e9f, type: 3}
@@ -675,9 +678,6 @@ MonoBehaviour:
   towerData: {fileID: 11400000, guid: eb4ba9646584f4241a332637815a4108, type: 2}
   partToRotateY: {fileID: 5702514842431059567}
   partToRotateX: {fileID: 7756721215239044419}
-  projectilePrefab: {fileID: 0}
-  shootPoint: {fileID: 0}
-  attackEffect: {fileID: 0}
   invalidMask: {fileID: 3227150487263623008}
   hoverMask: {fileID: 3637515951664153038}
   selectMask: {fileID: 8974035889766518318}
@@ -690,6 +690,19 @@ MonoBehaviour:
   currentFireRate: 0
   currentSlowFactor: 0
   currentSlowDuration: 0
+--- !u!114 &-7834367381096999406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4929391714404052181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f3e210404b822488cbbe1baf020992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
 --- !u!135 &2955479876274596916
 SphereCollider:
   m_ObjectHideFlags: 0
