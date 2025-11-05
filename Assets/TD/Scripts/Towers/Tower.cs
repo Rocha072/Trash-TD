@@ -45,6 +45,18 @@ public class Tower : MonoBehaviour
     private int currentTierA = 0;
     private int currentTierB = 0;
 
+
+    private Animator animator;
+
+
+    void Start()
+    {
+        if(TryGetComponent(out Animator _animator))
+        {
+            animator = _animator;
+            animator.enabled = false;
+        }
+    }
     public void Init(TowerData data)
     {
         this.towerData = data;
@@ -57,7 +69,7 @@ public class Tower : MonoBehaviour
         currentStunDuration = towerData.baseStunDuration;
         totalCostInvested = towerData.cost;
 
-        
+
         attackBehavior = GetComponent<TowerAttackBehavior>();
 
         if (attackBehavior == null)
@@ -68,9 +80,9 @@ public class Tower : MonoBehaviour
 
         attackBehavior.Init(this);
         attackBehavior.SetAttackEffect(false);
-        
 
-        if(towerData.requiresTarget)
+
+        if (towerData.requiresTarget)
             InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
     }
 
@@ -80,6 +92,11 @@ public class Tower : MonoBehaviour
 
         VerifyValidPosition();
         if (isBeingPlaced) return;
+
+        if(animator!=null && !animator.enabled)
+        {
+            animator.enabled = true;
+        }
 
         if (fireCountdown > 0f)
             fireCountdown -= Time.deltaTime;
@@ -180,8 +197,11 @@ public class Tower : MonoBehaviour
         Vector3 dir = target.transform.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = Quaternion.Lerp(partToRotateY.rotation, lookRotation, Time.deltaTime * towerData.turnSpeed).eulerAngles;
+
         partToRotateY.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-        partToRotateX.localRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
+
+        if(partToRotateX!=null)
+            partToRotateX.localRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
     }
 
     void Attack()
