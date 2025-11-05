@@ -8,6 +8,7 @@ public class SelectedTowerCardManager : MonoBehaviour
     [SerializeField] private GameObject CardPanel;
     [SerializeField] private Image towerIcon;
     [SerializeField] private TextMeshProUGUI priceText;
+    [SerializeField] private TextMeshProUGUI towerNameText;
 
     [Header("Upgrade Path A Elements")]
     [SerializeField] private Button pathA_Button;
@@ -57,6 +58,7 @@ public class SelectedTowerCardManager : MonoBehaviour
         towerSelected = tower;
 
         towerIcon.sprite = towerSelected.towerData.TowerSprite;
+        towerNameText.text = towerSelected.towerData.towerName;
 
         PriceToSell = towerSelected.SellValue;
         priceText.text = "" + PriceToSell;

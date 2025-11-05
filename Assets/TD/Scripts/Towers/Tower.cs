@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
 
@@ -32,7 +33,7 @@ public class Tower : MonoBehaviour
     [SerializeField]private float currentFireRate;
     [SerializeField]private float currentSlowFactor;
     [SerializeField]private float currentSlowDuration;
-
+    [SerializeField]private float currentStunDuration;
 
     private int totalCostInvested;
     public int SellValue
@@ -53,7 +54,9 @@ public class Tower : MonoBehaviour
         currentFireRate = towerData.baseFireRate;
         currentSlowDuration = towerData.baseSlowDuration;
         currentSlowFactor = towerData.baseSlowFactor;
+        currentStunDuration = towerData.baseStunDuration;
         totalCostInvested = towerData.cost;
+
         
         attackBehavior = GetComponent<TowerAttackBehavior>();
 
@@ -78,8 +81,14 @@ public class Tower : MonoBehaviour
         VerifyValidPosition();
         if (isBeingPlaced) return;
 
-        if(fireCountdown > 0f)
+        if (fireCountdown > 0f)
             fireCountdown -= Time.deltaTime;
+
+        if (WaveManager.Instance.currentState == WaveManager.WaveState.WaitingToStart)
+        {
+            attackBehavior.SetAttackEffect(false);
+            return;
+        }
         
         if (towerData.requiresTarget)
         {
@@ -116,6 +125,10 @@ public class Tower : MonoBehaviour
     }
     void UpdateTarget()
     {
+        if (WaveManager.Instance.currentState == WaveManager.WaveState.WaitingToStart) {
+            target = null;
+            return;
+        };
         List<Enemy> enemies = EntitySummoner.Instance.EnemiesInGame;
 
         Enemy bestTarget = null;
@@ -173,7 +186,7 @@ public class Tower : MonoBehaviour
 
     void Attack()
     {
-        attackBehavior.Attack(target, currentDamage, currentSlowFactor, currentSlowDuration);
+        attackBehavior.Attack(target, currentDamage, currentRange, currentSlowFactor, currentSlowDuration, currentStunDuration);
     }
 
     void OnDrawGizmosSelected()

@@ -382,15 +382,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 536840843539716841, guid: 704e6059def12974b93a2246d7e71e9f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.8
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 536840843539716841, guid: 704e6059def12974b93a2246d7e71e9f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.8
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 536840843539716841, guid: 704e6059def12974b93a2246d7e71e9f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.8
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 536840843539716841, guid: 704e6059def12974b93a2246d7e71e9f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -442,7 +442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 880714636728156243, guid: 704e6059def12974b93a2246d7e71e9f, type: 3}
       propertyPath: m_Name
-      value: TrashCollector
+      value: Trash Collector
       objectReference: {fileID: 0}
     - target: {fileID: 880714636728156243, guid: 704e6059def12974b93a2246d7e71e9f, type: 3}
       propertyPath: m_Layer

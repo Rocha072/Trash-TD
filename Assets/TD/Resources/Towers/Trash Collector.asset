@@ -23,6 +23,7 @@ MonoBehaviour:
   cost: 35
   turnSpeed: 5
   requiresTarget: 1
+  isCollector: 1
   pathA_Upgrades:
   - {fileID: 11400000, guid: bf424fef20d71ed4db0bc83b0eddaa17, type: 2}
   - {fileID: 11400000, guid: e45a5f97581147949bb0b0adb7ba1b5f, type: 2}

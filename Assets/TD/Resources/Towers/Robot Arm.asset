@@ -10,21 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfcd5328711f14c41accf7b49ff8f707, type: 3}
-  m_Name: Catapult
+  m_Name: Robot Arm
   m_EditorClassIdentifier: 
-  baseRange: 15
-  baseDamage: 50
-  baseFireRate: 0.2
+  baseRange: 11
+  baseDamage: 100
+  baseFireRate: 1
   baseSlowFactor: 1
   baseSlowDuration: 0
-  baseStunDuration: 2
-  TowerSprite: {fileID: 21300000, guid: 2c96f6d5e4d3708478c28d3aa319198a, type: 3}
-  towerName: Catapult
-  towerID: 2
-  cost: 80
+  baseStunDuration: 0
+  TowerSprite: {fileID: 21300000, guid: e60e7fdc65220a74999f20392301b98e, type: 3}
+  towerName: Robot Arm
+  towerID: 4
+  cost: 200
   turnSpeed: 5
   requiresTarget: 1
-  isCollector: 0
+  isCollector: 1
+  rotateAroundZ: 1
   pathA_Upgrades:
   - {fileID: 11400000, guid: bf424fef20d71ed4db0bc83b0eddaa17, type: 2}
   - {fileID: 11400000, guid: e45a5f97581147949bb0b0adb7ba1b5f, type: 2}

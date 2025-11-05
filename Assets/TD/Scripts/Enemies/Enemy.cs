@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
     public float Speed;
     private float slowFactor; // 1.0f = sem lentidão
     private float slowDurationTimer;
-
+    private float stunDurationTimer;
     private bool isDead;
     
     NavMeshAgent agent;
@@ -21,7 +21,6 @@ public class Enemy : MonoBehaviour
     List<Transform> path;
 
     private int currentNodeIndex;
-
     public int CurrentNodeIndex
     {
         get { return currentNodeIndex; }
@@ -51,6 +50,7 @@ public class Enemy : MonoBehaviour
         slowFactor = 1.0f;
         slowDurationTimer = 0f;
         currentNodeIndex = 0;
+        stunDurationTimer = 0f;
         isDead = false;
         Health = enemyData.MaxHealth;
         Speed = enemyData.MaxSpeed;
@@ -59,26 +59,31 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-
-        if (slowDurationTimer > 0)
-        {
-            slowDurationTimer -= Time.deltaTime;
-
-            if (slowDurationTimer <= 0)
-            {
-                slowFactor = 1.0f;
-                Speed = enemyData.MaxSpeed * slowFactor;
-                agent.isStopped = false;
-            }
-        }
-
-        if (Speed <= 0f)
+        if (stunDurationTimer > 0)
         {
             agent.isStopped = true;
             agent.velocity = Vector3.zero;
+            Speed = 0;
+            stunDurationTimer -= Time.deltaTime;
+        }
+
+        else
+        {
+            agent.isStopped = false;
+            if (slowDurationTimer > 0)
+            {
+                slowDurationTimer -= Time.deltaTime;
+            }
+            else
+            {
+                slowFactor = 1.0f;
+                Speed = enemyData.MaxSpeed;
+            }
+
         }
         
         agent.speed = Speed;
+
 
     }
 
@@ -125,16 +130,21 @@ public class Enemy : MonoBehaviour
 
     public void ApplySlow(float factor, float duration)
     {
-        
+
         if (factor < this.slowFactor)
         {
             this.slowFactor = factor;
         }
 
-    
+
         this.slowDurationTimer = duration;
 
         Speed = enemyData.MaxSpeed * slowFactor;
+    }
+    
+    public void ApplyStun(float duration)
+    {
+        this.stunDurationTimer = duration;
     }
 
     private void Die()
