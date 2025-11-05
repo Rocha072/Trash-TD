@@ -13,12 +13,30 @@ public class Enemy : MonoBehaviour
     public float Speed;
     private float slowFactor; // 1.0f = sem lentidão
     private float slowDurationTimer;
-
+    private float stunDurationTimer;
     private bool isDead;
     
     NavMeshAgent agent;
 
     List<Transform> path;
+
+    private int currentNodeIndex;
+    public int CurrentNodeIndex
+    {
+        get { return currentNodeIndex; }
+    }
+    public float RemainingDistanceToNode
+    {
+        get
+        {
+            if (agent.hasPath && !isDead)
+            {
+                return agent.remainingDistance;
+            }
+            
+            return float.MaxValue;
+        }
+    }
 
     public void Init(EnemyData data)
     {
@@ -31,6 +49,8 @@ public class Enemy : MonoBehaviour
     {
         slowFactor = 1.0f;
         slowDurationTimer = 0f;
+        currentNodeIndex = 0;
+        stunDurationTimer = 0f;
         isDead = false;
         Health = enemyData.MaxHealth;
         Speed = enemyData.MaxSpeed;
@@ -39,18 +59,31 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-
-        if (slowDurationTimer > 0)
+        if (stunDurationTimer > 0)
         {
-            slowDurationTimer -= Time.deltaTime;
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+            Speed = 0;
+            stunDurationTimer -= Time.deltaTime;
+        }
 
-            if (slowDurationTimer <= 0)
+        else
+        {
+            agent.isStopped = false;
+            if (slowDurationTimer > 0)
+            {
+                slowDurationTimer -= Time.deltaTime;
+            }
+            else
             {
                 slowFactor = 1.0f;
-                Speed = enemyData.MaxSpeed * slowFactor;
+                Speed = enemyData.MaxSpeed;
             }
+
         }
+        
         agent.speed = Speed;
+
 
     }
 
@@ -63,8 +96,12 @@ public class Enemy : MonoBehaviour
     IEnumerator MovementCoroutine()
     {
 
-        foreach (Transform node in path)
+        for (int i = 0; i<path.Count; i++)
         {
+            currentNodeIndex = i;
+
+            Transform node = path[i];
+
             agent.SetDestination(node.position);
 
             yield return new WaitUntil(() =>
@@ -93,16 +130,21 @@ public class Enemy : MonoBehaviour
 
     public void ApplySlow(float factor, float duration)
     {
-        
+
         if (factor < this.slowFactor)
         {
             this.slowFactor = factor;
         }
 
-    
+
         this.slowDurationTimer = duration;
 
         Speed = enemyData.MaxSpeed * slowFactor;
+    }
+    
+    public void ApplyStun(float duration)
+    {
+        this.stunDurationTimer = duration;
     }
 
     private void Die()

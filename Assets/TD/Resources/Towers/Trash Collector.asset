@@ -12,15 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcd5328711f14c41accf7b49ff8f707, type: 3}
   m_Name: Trash Collector
   m_EditorClassIdentifier: 
-  TowerSprite: {fileID: 21300000, guid: 25ab43c5f4ff0da43ac69849aba52929, type: 3}
-  baseRange: 12
+  baseRange: 9
   baseDamage: 40
   baseFireRate: 1
   baseSlowFactor: 1
   baseSlowDuration: 0
+  TowerSprite: {fileID: 21300000, guid: 25ab43c5f4ff0da43ac69849aba52929, type: 3}
+  towerName: Collector
+  towerID: 1
   cost: 35
   turnSpeed: 5
-  towerType: 1
+  requiresTarget: 1
+  isCollector: 1
   pathA_Upgrades:
   - {fileID: 11400000, guid: bf424fef20d71ed4db0bc83b0eddaa17, type: 2}
   - {fileID: 11400000, guid: e45a5f97581147949bb0b0adb7ba1b5f, type: 2}

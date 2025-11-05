@@ -1,39 +1,39 @@
 using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEditor.Animations;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
 public class Tower : MonoBehaviour
 {
     [Header("Tower Properties")]
     public TowerData towerData;
-    public Transform partToRotate;
-    public VisualEffect attackEffect;
-    private Animator animator;
+    public Transform partToRotateY;
+    public Transform partToRotateX;
 
     [Header("Masks")]
     public GameObject invalidMask;
     public GameObject hoverMask;
     public GameObject selectMask;
 
+    [Header("Valid Position Control")]
     public bool isBeingPlaced = true;
     public bool validPosition;
-
+    private int coliding;
     [SerializeField] private float minHeight;
     [SerializeField] private float maxHeight;
-    
+
+    //[Header("Attack control")]
+    private TowerAttackBehavior attackBehavior;
     private Enemy target;
     private float fireCountdown;
-    private int coliding;
 
-    private float currentDamage;
-    private float currentRange;
-    private float currentFireRate;
-    private float currentSlowFactor;
-    private float currentSlowDuration;
-
+    [Header("Current Stats")]
+    [SerializeField]private float currentDamage;
+    [SerializeField]private float currentRange;
+    [SerializeField]private float currentFireRate;
+    [SerializeField]private float currentSlowFactor;
+    [SerializeField]private float currentSlowDuration;
+    [SerializeField]private float currentStunDuration;
 
     private int totalCostInvested;
     public int SellValue
@@ -46,45 +46,46 @@ public class Tower : MonoBehaviour
     private int currentTierB = 0;
 
 
+    private Animator animator;
+
+
+    void Start()
+    {
+        if(TryGetComponent(out Animator _animator))
+        {
+            animator = _animator;
+            animator.enabled = false;
+        }
+    }
     public void Init(TowerData data)
     {
         this.towerData = data;
         fireCountdown = 0f;
-        SetAttackEfect(false);
-
         currentDamage = towerData.baseDamage;
         currentRange = towerData.baseRange;
         currentFireRate = towerData.baseFireRate;
         currentSlowDuration = towerData.baseSlowDuration;
         currentSlowFactor = towerData.baseSlowFactor;
+        currentStunDuration = towerData.baseStunDuration;
         totalCostInvested = towerData.cost;
 
-        animator = GetComponent<Animator>();
 
-        InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
-    }
+        attackBehavior = GetComponent<TowerAttackBehavior>();
 
-    void UpdateTarget()
-    {
-        List<Enemy> enemies = EntitySummoner.Instance.EnemiesInGame;
-
-
-        foreach (Enemy enemy in enemies)
+        if (attackBehavior == null)
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy <= currentRange)
-            {
-                target = enemy;
-                return;
-            }
-
+            Debug.Log("Tower Attack is missing");
+            return;
         }
-        target = null;
+
+        attackBehavior.Init(this);
+        attackBehavior.SetAttackEffect(false);
 
 
+        if (towerData.requiresTarget)
+            InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
     }
 
-    
 
     void Update()
     {
@@ -92,22 +93,102 @@ public class Tower : MonoBehaviour
         VerifyValidPosition();
         if (isBeingPlaced) return;
 
-        if (target == null)
+        if(animator!=null && !animator.enabled)
         {
-            SetAttackEfect(false);
+            animator.enabled = true;
+        }
+
+        if (fireCountdown > 0f)
+            fireCountdown -= Time.deltaTime;
+
+        if (WaveManager.Instance.currentState == WaveManager.WaveState.WaitingToStart)
+        {
+            attackBehavior.SetAttackEffect(false);
             return;
         }
-
-        RotateTarget();
-        SetAttackEfect(true);
-
-        if (fireCountdown <= 0f)
+        
+        if (towerData.requiresTarget)
         {
-            Attack();
-            SetAnimationTrigger();
-            fireCountdown = 1f / currentFireRate;
+            if (target == null)
+            {
+                attackBehavior.SetAttackEffect(false);
+            }
+            else
+            {
+                RotateTarget();
+
+                attackBehavior.SetAttackEffect(true);
+
+                if (fireCountdown <= 0f)
+                {
+                    Attack();
+                    fireCountdown = 1f / currentFireRate;
+                }
+            }
         }
-        fireCountdown -= Time.deltaTime;
+        else
+        {
+            attackBehavior.SetAttackEffect(true);
+
+            if (fireCountdown <= 0f)
+            {
+                Attack();
+                fireCountdown = 1f / currentFireRate;
+            }
+        }
+
+
+        
+    }
+    void UpdateTarget()
+    {
+        if (WaveManager.Instance.currentState == WaveManager.WaveState.WaitingToStart) {
+            target = null;
+            return;
+        };
+        List<Enemy> enemies = EntitySummoner.Instance.EnemiesInGame;
+
+        Enemy bestTarget = null;
+
+        int bestTargetNodeIndex = -1;
+        float bestTargetRemainingDistance = float.MaxValue;
+        foreach (Enemy enemy in enemies)
+        {
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distanceToEnemy > currentRange)
+            {
+                continue;
+            }
+
+            int enemyNodeIndex = enemy.CurrentNodeIndex;
+
+            float enemyRemainingDistance = enemy.RemainingDistanceToNode;
+
+            bool isBetterTarget = false;
+
+            if (enemyNodeIndex > bestTargetNodeIndex)
+            {
+                isBetterTarget = true;
+            }
+            else if (enemyNodeIndex == bestTargetNodeIndex)
+            {
+                if (enemyRemainingDistance < bestTargetRemainingDistance)
+                {
+                    isBetterTarget = true;
+                }
+            }
+
+            if (isBetterTarget)
+            {
+                bestTarget = enemy;
+                bestTargetNodeIndex = enemyNodeIndex;
+                bestTargetRemainingDistance = enemyRemainingDistance;
+            }
+
+        }
+        
+        target = bestTarget;
+
 
     }
 
@@ -115,27 +196,17 @@ public class Tower : MonoBehaviour
     {
         Vector3 dir = target.transform.position - transform.position;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
-        Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * towerData.turnSpeed).eulerAngles;
-        partToRotate.rotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
+        Vector3 rotation = Quaternion.Lerp(partToRotateY.rotation, lookRotation, Time.deltaTime * towerData.turnSpeed).eulerAngles;
+
+        partToRotateY.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+
+        if(partToRotateX!=null)
+            partToRotateX.localRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
     }
 
     void Attack()
     {
-        //Cada torre ataca de uma forma
-        switch (towerData.towerType)
-        {
-            case TowerData.TowerTypes.waterGun:
-
-                target.TakeDamage(currentDamage);
-                target.ApplySlow(currentSlowFactor, currentSlowDuration);
-                break;
-
-            case TowerData.TowerTypes.trashCollector:
-                target.TakeDamage(currentDamage);
-                break;
-        }
-
-
+        attackBehavior.Attack(target, currentDamage, currentRange, currentSlowFactor, currentSlowDuration, currentStunDuration);
     }
 
     void OnDrawGizmosSelected()
@@ -144,24 +215,6 @@ public class Tower : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, currentRange);
     }
 
-    void SetAttackEfect(bool active)
-    {
-        if (attackEffect == null) return;
-
-        if (active)
-            attackEffect.Play();
-
-        else
-            attackEffect.Stop();
-    }
-
-    void SetAnimationTrigger()
-    {
-        if (animator == null) return;
-
-        animator.ResetTrigger("Attack");
-        animator.SetTrigger("Attack");
-    }
     
     public void VerifyValidPosition()
     {
