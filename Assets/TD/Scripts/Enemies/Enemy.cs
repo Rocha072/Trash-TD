@@ -38,18 +38,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void Init(EnemyData data)
+    public void Init(EnemyData data, int startNodeIndex)
     {
         enemyData = data;
         agent = GetComponent<NavMeshAgent>();
-        RestartState();
+        RestartState(startNodeIndex);
     }
 
-    public void RestartState()
+    public void RestartState(int startNodeIndex)
     {
         slowFactor = 1.0f;
         slowDurationTimer = 0f;
-        currentNodeIndex = 0;
+        currentNodeIndex = startNodeIndex;
         stunDurationTimer = 0f;
         isDead = false;
         Health = enemyData.MaxHealth;
@@ -96,7 +96,7 @@ public class Enemy : MonoBehaviour
     IEnumerator MovementCoroutine()
     {
 
-        for (int i = 0; i<path.Count; i++)
+        for (int i = currentNodeIndex; i<path.Count; i++)
         {
             currentNodeIndex = i;
 
@@ -152,6 +152,21 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
+
+        if (enemyData.spawnOnDeathList != null && enemyData.spawnOnDeathList.Count > 0)
+        {
+            int totalChildrenToSpawn = 0;
+            foreach (var group in enemyData.spawnOnDeathList)
+            {
+                totalChildrenToSpawn += group.amount;
+            }
+
+            for (int i = 0; i < totalChildrenToSpawn; i++)
+            {
+                WaveManager.Instance.OnEnemySpawned();
+            }
+            EntitySummoner.Instance.SpawnEnemiesWithDelay(enemyData.spawnOnDeathList, transform.position, currentNodeIndex, 0.1f);
+        }
         
         WaveManager.Instance.OnEnemyDied();
         PlayerEconomy.Instance.GainMoney(enemyData.dropAmount);

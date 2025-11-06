@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using Unity.Mathematics;
@@ -70,16 +71,17 @@ public class EntitySummoner : MonoBehaviour
     }
 
 
-    public Enemy SummonEnemy(int EnemyID)
+    public Enemy SummonEnemy(int EnemyID, Vector3 spawnPosition = default, int startNodeIndex = 0)
     {
-
-
         if (EnemyID < 0 || EnemyID >= towerBlueprints.Count)
         {
             Debug.Log($"Enemy with ID {EnemyID} not found");
             return null;
         }
 
+        if (spawnPosition == Vector3.zero) 
+            spawnPosition = Spawnner.transform.position;
+        
         Enemy SummonedEnemy;
 
         EnemyBlueprint enemyToSummon = enemyBlueprints[EnemyID];
@@ -90,17 +92,18 @@ public class EntitySummoner : MonoBehaviour
         {
             SummonedEnemy = ReferencedQueue.Dequeue();
             SummonedEnemy.gameObject.SetActive(true);
-            SummonedEnemy.transform.position = Spawnner.transform.position;
-            SummonedEnemy.RestartState();
+            SummonedEnemy.transform.position = spawnPosition;
+            SummonedEnemy.RestartState(startNodeIndex);
         }
         else
         {
-            GameObject NewEnemy = Instantiate(enemyToSummon.enemyPrefab, Spawnner.transform);
+            GameObject NewEnemy = Instantiate(enemyToSummon.enemyPrefab, spawnPosition, Quaternion.identity);
             SummonedEnemy = NewEnemy.GetComponent<Enemy>();
             SummonedEnemy.Path = enemyPath;
-            SummonedEnemy.Init(enemyToSummon.enemyData);
+            SummonedEnemy.Init(enemyToSummon.enemyData, startNodeIndex);
         }
 
+        
         EnemiesInGame.Add(SummonedEnemy);
         return SummonedEnemy;
     }
@@ -113,6 +116,24 @@ public class EntitySummoner : MonoBehaviour
         EnemiesInGame.Remove(EnemyToRemove);
     }
 
+    public void SpawnEnemiesWithDelay(List<EnemyDeathSpawnInfo> spawns, Vector3 position, int nodeIndex, float delayBetweenSpawns = 0.1f)
+    {
+        StartCoroutine(SpawnRoutine(spawns, position, nodeIndex, delayBetweenSpawns));
+    }
+
+
+    private IEnumerator SpawnRoutine(List<EnemyDeathSpawnInfo> spawns, Vector3 position, int nodeIndex, float delay)
+    {
+        foreach (EnemyDeathSpawnInfo group in spawns)
+        {
+            for (int i = 0; i < group.amount; i++)
+            {
+                SummonEnemy(group.enemyID, position, nodeIndex);
+                yield return new WaitForSeconds(delay);
+            }
+        }
+    }
+    
     public Tower SummonTower(int TowerID, Vector3 positionToSpawn)
     {
 
@@ -144,7 +165,7 @@ public class EntitySummoner : MonoBehaviour
         StartCoroutine(SafeDestroyRoutine(TowerToRemove));
     }
 
-    private System.Collections.IEnumerator SafeDestroyRoutine(Tower TowerToRemove)
+    private IEnumerator SafeDestroyRoutine(Tower TowerToRemove)
     {
         TowerToRemove.transform.position = new Vector3(1000, 1000, 1000);
 
