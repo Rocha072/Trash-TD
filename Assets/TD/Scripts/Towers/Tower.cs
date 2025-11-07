@@ -14,6 +14,7 @@ public class Tower : MonoBehaviour
     public GameObject invalidMask;
     public GameObject hoverMask;
     public GameObject selectMask;
+    public GameObject RangeObject;
 
     [Header("Valid Position Control")]
     public bool isBeingPlaced = true;
@@ -76,6 +77,8 @@ public class Tower : MonoBehaviour
         attackBehavior.Init(this);
         attackBehavior.SetAttackEffect(false);
 
+        this.RangeObject.SetActive(true);
+        UpdateRange();
 
         if (towerData.requiresTarget)
             InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
@@ -88,7 +91,7 @@ public class Tower : MonoBehaviour
         VerifyValidPosition();
         if (isBeingPlaced) return;
 
-        if(animator!=null && !animator.enabled)
+        if (animator != null && !animator.enabled)
         {
             animator.enabled = true;
         }
@@ -246,11 +249,18 @@ public class Tower : MonoBehaviour
     {
         hoverMask.SetActive(false);
         this.selectMask.SetActive(true);
+        this.RangeObject.SetActive(true);
     }
 
     public void UnselectTower()
     {
         this.selectMask.SetActive(false);
+        this.RangeObject.SetActive(false);
+    }
+
+    public void UpdateRange()
+    {
+        this.RangeObject.transform.localScale = new Vector3(currentStats.Range / transform.lossyScale.x * 2, 0.1f, currentStats.Range / transform.lossyScale.z * 2);
     }
 
     public void TryApplyUpgrade(int pathIndex) // 0 => A, 1 => B
@@ -299,7 +309,7 @@ public class Tower : MonoBehaviour
         currentStats.FireRate *= stats.fireRate_multiplier;
         currentStats.SlowFactor *= stats.slowFactor_multiplier;
 
-        // Atualizar o anel de range
+        UpdateRange();
     }
 
     public UpgradeDefinition GetNextUpgrade(int pathIndex)

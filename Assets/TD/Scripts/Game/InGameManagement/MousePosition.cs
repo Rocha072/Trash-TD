@@ -82,6 +82,7 @@ public class MousePosition : MonoBehaviour
             PlayerEconomy.Instance.Buy(towerBeingPlaced.towerData.cost);
             StatsManager.Instance.AddTowerPurchased();
             towerBeingPlaced.isBeingPlaced = false;
+            towerBeingPlaced.RangeObject.SetActive(false);
             towerBeingPlaced = null;
         }
 
