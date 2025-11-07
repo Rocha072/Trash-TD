@@ -28,13 +28,8 @@ public class Tower : MonoBehaviour
     private float fireCountdown;
 
     [Header("Current Stats")]
-    [SerializeField]private float currentDamage;
-    [SerializeField]private float currentRange;
-    [SerializeField]private float currentFireRate;
-    [SerializeField]private float currentSlowFactor;
-    [SerializeField]private float currentSlowDuration;
-    [SerializeField]private float currentStunDuration;
 
+    [SerializeField] private CurrentTowerStats currentStats;
     private int totalCostInvested;
     public int SellValue
     {
@@ -61,12 +56,12 @@ public class Tower : MonoBehaviour
     {
         this.towerData = data;
         fireCountdown = 0f;
-        currentDamage = towerData.baseDamage;
-        currentRange = towerData.baseRange;
-        currentFireRate = towerData.baseFireRate;
-        currentSlowDuration = towerData.baseSlowDuration;
-        currentSlowFactor = towerData.baseSlowFactor;
-        currentStunDuration = towerData.baseStunDuration;
+        currentStats.Damage = towerData.baseDamage;
+        currentStats.Range = towerData.baseRange;
+        currentStats.FireRate = towerData.baseFireRate;
+        currentStats.SlowDuration = towerData.baseSlowDuration;
+        currentStats.SlowFactor = towerData.baseSlowFactor;
+        currentStats.StunDuration = towerData.baseStunDuration;
         totalCostInvested = towerData.cost;
 
 
@@ -122,7 +117,7 @@ public class Tower : MonoBehaviour
                 if (fireCountdown <= 0f)
                 {
                     Attack();
-                    fireCountdown = 1f / currentFireRate;
+                    fireCountdown = 1f / currentStats.FireRate;
                 }
             }
         }
@@ -133,7 +128,7 @@ public class Tower : MonoBehaviour
             if (fireCountdown <= 0f)
             {
                 Attack();
-                fireCountdown = 1f / currentFireRate;
+                fireCountdown = 1f / currentStats.FireRate;
             }
         }
 
@@ -155,7 +150,7 @@ public class Tower : MonoBehaviour
         foreach (Enemy enemy in enemies)
         {
             float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy > currentRange)
+            if (distanceToEnemy > currentStats.Range)
             {
                 continue;
             }
@@ -206,13 +201,13 @@ public class Tower : MonoBehaviour
 
     void Attack()
     {
-        attackBehavior.Attack(target, currentDamage, currentRange, currentSlowFactor, currentSlowDuration, currentStunDuration);
+        attackBehavior.Attack(target, currentStats);
     }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, currentRange);
+        Gizmos.DrawWireSphere(transform.position, currentStats.Range);
     }
 
     
@@ -298,11 +293,11 @@ public class Tower : MonoBehaviour
 
     private void ApplyStats(UpgradeStats stats)
     {
-        currentDamage += stats.damage_add;
-        currentRange += stats.range_add;
-        currentSlowDuration += stats.slowDuration_add;
-        currentFireRate *= stats.fireRate_multiplier;
-        currentSlowFactor *= stats.slowFactor_multiplier;
+        currentStats.Damage += stats.damage_add;
+        currentStats.Range += stats.range_add;
+        currentStats.SlowDuration += stats.slowDuration_add;
+        currentStats.FireRate *= stats.fireRate_multiplier;
+        currentStats.SlowFactor *= stats.slowFactor_multiplier;
 
         // Atualizar o anel de range
     }
@@ -333,4 +328,15 @@ public class Tower : MonoBehaviour
         return false;
     }
 
+}
+
+[System.Serializable]
+public struct CurrentTowerStats
+{
+    public float Damage;
+    public float Range;
+    public float FireRate;
+    public float SlowFactor;
+    public float SlowDuration;
+    public float StunDuration;
 }

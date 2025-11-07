@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class Attack_Hitscan : TowerAttackBehavior
 {
-    [SerializeField] private Animator animator; 
-
+    [SerializeField] private Animator animator;
+    private CurrentTowerStats currentStats;
+    private Enemy currentTarget;
     public override void Init(Tower tower)
     {
     
@@ -11,16 +12,33 @@ public class Attack_Hitscan : TowerAttackBehavior
             animator = GetComponentInParent<Animator>(); 
     }
 
-    public override void Attack(Enemy target, float damage, float range, float slowFactor, float slowDuration, float stunDuration)
+    public override void Attack(Enemy target, CurrentTowerStats currentTowerStats)
     {
-        target.TakeDamage(damage);
-        target.ApplySlow(slowFactor, slowDuration);
-        
+        currentStats = currentTowerStats;
+        currentTarget = target;
+
         if (animator != null)
         {
             animator.ResetTrigger("Attack");
             animator.SetTrigger("Attack");
         }
+        else
+        {
+            currentTarget.TakeDamage(currentStats.Damage);
+            currentTarget.ApplySlow(currentStats.SlowFactor, currentStats.SlowDuration);
+        }
+
+    }
+    
+    public void AnimationEvent_ApplyDamage()
+    {
+
+        if (currentTarget != null)
+        {
+            currentTarget.TakeDamage(currentStats.Damage);
+            currentTarget.ApplySlow(currentStats.SlowFactor, currentStats.SlowDuration);
+        }
+
     }
 
     public override void SetAttackEffect(bool active)

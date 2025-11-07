@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 320a2cdbbfde4ca4b84e7154ff8e94a6, type: 3}
-  m_Name: Wave_1
+  m_Script: {fileID: 11500000, guid: bc5e10748d5b75b42a3aef7e01555aaa, type: 3}
+  m_Name: WhiteTrashBag
   m_EditorClassIdentifier: 
-  enemyGroups:
-  - enemyID: 0
-    count: 5
-    spawnIntervalBetweenMembers: 2
-    delayBeforeStartGroup: 0
-  waveReward: 30
+  dropAmount: 5
+  damage: 1
+  ID: 0
+  MaxHealth: 50
+  MaxSpeed: 6
+  MinDistanceToPassNode: 2
+  spawnOnDeathList: []

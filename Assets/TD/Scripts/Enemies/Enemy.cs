@@ -111,7 +111,7 @@ public class Enemy : MonoBehaviour
         }
 
         PlayerLife.Instance.TakeDamage(this.enemyData.damage);
-
+        WaveManager.Instance.OnEnemyDied();
         EntitySummoner.Instance.RemoveEnemy(this);
 
     }

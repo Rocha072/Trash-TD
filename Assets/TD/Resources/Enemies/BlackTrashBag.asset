@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc5e10748d5b75b42a3aef7e01555aaa, type: 3}
-  m_Name: TrashBag
+  m_Name: BlackTrashBag
   m_EditorClassIdentifier: 
   dropAmount: 10
   damage: 10
-  ID: 0
-  MaxHealth: 1000
+  ID: 1
+  MaxHealth: 100
   MaxSpeed: 4
   MinDistanceToPassNode: 2
   spawnOnDeathList:
   - enemyID: 0
-    amount: 10
+    amount: 4

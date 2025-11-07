@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Wave_2
   m_EditorClassIdentifier: 
   enemyGroups:
-  - enemyID: 0
+  - enemyID: 1
     count: 10
-    spawnIntervalBetweenMembers: 0.8
-    delayBeforeStartGroup: 5
-  waveReward: 0
+    spawnIntervalBetweenMembers: 3
+    delayBeforeStartGroup: 2
+  waveReward: 50

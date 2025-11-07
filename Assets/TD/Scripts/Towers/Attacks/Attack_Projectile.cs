@@ -12,16 +12,12 @@ public class Attack_Projectile : TowerAttackBehavior
             animator = GetComponentInParent<Animator>(); 
     }
 
-    public override void Attack(Enemy target, float damage, float range, float slowFactor, float slowDuration, float stunDuration)
+    public override void Attack(Enemy target, CurrentTowerStats currentTowerStats)
     {
         if (projectilePrefab == null) return;
 
         TowerProjectile newProjectile = Instantiate(projectilePrefab, shootPoint.position, shootPoint.rotation).GetComponent<TowerProjectile>();
-        newProjectile.target = target;
-        newProjectile.damage = damage;
-        newProjectile.slowDuration = slowDuration;
-        newProjectile.slowFactor = slowFactor;
-        newProjectile.stunDuration = stunDuration;
+        newProjectile.SetInfoProjectile(target, currentTowerStats);
         
         if(animator != null)
         {

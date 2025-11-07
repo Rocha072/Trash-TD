@@ -10,13 +10,13 @@ public class RecycleCenterBehavior: TowerAttackBehavior
         this.thisTower = tower;
     }
 
-    public override void Attack(Enemy target, float damage, float range, float slowFactor, float slowDuration, float stunDuration)
+    public override void Attack(Enemy target, CurrentTowerStats towerStats)
     {
         
 
-        if (IsCollectorInRange(range))
+        if (IsCollectorInRange(towerStats.Range))
         {
-            int moneyToGenerate = (int)damage;
+            int moneyToGenerate = (int)towerStats.Damage;
             PlayerEconomy.Instance.GainMoney(moneyToGenerate);
             StatsManager.Instance.AddMoneyGeneratedByCollections(moneyToGenerate);
         }

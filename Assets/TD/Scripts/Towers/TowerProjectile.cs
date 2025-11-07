@@ -5,19 +5,20 @@ public class TowerProjectile : MonoBehaviour
 {
     public float speed;
     public AnimationCurve trajectory;
-    public Enemy target;
     private float timeToArrive;
     private Vector3 startPosition;
     private float counter;
-    public float damage;
-    public float slowFactor;
-    public float slowDuration;
-    public float stunDuration;
+
+    Enemy target;
+    CurrentTowerStats currentStats;
     public GameObject projectileTransformationPrefab;
 
     public float transformationDuration;
-    void Start()
+
+    public void SetInfoProjectile(Enemy towerTarget, CurrentTowerStats towerStats)
     {
+        target = towerTarget;
+        currentStats = towerStats;
         transformationDuration = 0f;
         startPosition = transform.position;
         timeToArrive = Vector3.Distance(target.transform.position, transform.position) / speed;
@@ -34,19 +35,19 @@ public class TowerProjectile : MonoBehaviour
             yield return null;
         } while (counter < timeToArrive);
 
-        target.TakeDamage(damage);
-        target.ApplySlow(slowFactor, slowDuration);
-        target.ApplyStun(stunDuration);
+        target.TakeDamage(currentStats.Damage);
+        target.ApplySlow(currentStats.SlowFactor, currentStats.SlowDuration);
+        target.ApplyStun(currentStats.StunDuration);
 
         
         if (projectileTransformationPrefab != null)
         {
             GameObject transformation = Instantiate(projectileTransformationPrefab, transform.position, Quaternion.identity);
 
-            if (stunDuration > slowDuration)
-                transformationDuration = stunDuration;
+            if (currentStats.StunDuration > currentStats.SlowDuration)
+                transformationDuration = currentStats.StunDuration;
             else
-                transformationDuration = slowDuration;
+                transformationDuration = currentStats.SlowDuration;
             Destroy(transformation, transformationDuration);
         }
 
