@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New WaveDefinition", menuName = "Create Scriptable Object/WaveDefinition")]
+[CreateAssetMenu(fileName = "Wave", menuName = "Create Scriptable Object/WaveDefinition")]
 public class WaveDefinition : ScriptableObject
 {
     public List<EnemyGroup> enemyGroups;

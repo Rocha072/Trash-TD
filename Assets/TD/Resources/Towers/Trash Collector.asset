@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Trash Collector
   m_EditorClassIdentifier: 
   baseRange: 9
-  baseDamage: 40
+  baseDamage: 30
   baseFireRate: 1
   baseSlowFactor: 1
   baseSlowDuration: 0
+  baseStunDuration: 0
   TowerSprite: {fileID: 21300000, guid: 25ab43c5f4ff0da43ac69849aba52929, type: 3}
   towerName: Collector
   towerID: 1

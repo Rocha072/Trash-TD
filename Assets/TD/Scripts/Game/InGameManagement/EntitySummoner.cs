@@ -73,7 +73,7 @@ public class EntitySummoner : MonoBehaviour
 
     public Enemy SummonEnemy(int EnemyID, Vector3 spawnPosition = default, int startNodeIndex = 0)
     {
-        if (EnemyID < 0 || EnemyID >= towerBlueprints.Count)
+        if (EnemyID < 0 || EnemyID >= enemyBlueprints.Count)
         {
             Debug.Log($"Enemy with ID {EnemyID} not found");
             return null;

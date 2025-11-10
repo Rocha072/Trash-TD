@@ -10,11 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 320a2cdbbfde4ca4b84e7154ff8e94a6, type: 3}
-  m_Name: Wave_3
+  m_Name: Wave 5
   m_EditorClassIdentifier: 
   enemyGroups:
+  - enemyID: 0
+    count: 12
+    spawnIntervalBetweenMembers: 0.7
+    delayBeforeStartGroup: 0
+  - enemyID: 1
+    count: 10
+    spawnIntervalBetweenMembers: 0.8
+    delayBeforeStartGroup: 2
   - enemyID: 2
-    count: 3
-    spawnIntervalBetweenMembers: 3
-    delayBeforeStartGroup: 5
-  waveReward: 100
+    count: 6
+    spawnIntervalBetweenMembers: 1
+    delayBeforeStartGroup: 18
+  waveReward: 95

@@ -10,19 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc5e10748d5b75b42a3aef7e01555aaa, type: 3}
-  m_Name: BlackTrashBag
+  m_Name: TrashSkip
   m_EditorClassIdentifier: 
-  dropAmount: 50
-  damage: 27
-  ID: 3
-  MaxHealth: 320
-  MaxSpeed: 4
-  Acceleration: 2
-  MinDistanceToPassNode: 2
+  dropAmount: 400
+  damage: 100
+  ID: 5
+  MaxHealth: 5000
+  MaxSpeed: 2
+  Acceleration: 1
+  MinDistanceToPassNode: 2.5
   spawnOnDeathList:
-  - enemyID: 0
-    amount: 2
   - enemyID: 1
-    amount: 1
-  - enemyID: 2
     amount: 3
+  - enemyID: 2
+    amount: 4
+  - enemyID: 3
+    amount: 6
+  - enemyID: 4
+    amount: 2

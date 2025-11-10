@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4968878243995507779}
   - component: {fileID: 857083987497694137}
   - component: {fileID: 6880094853366513197}
+  - component: {fileID: 8068080107735393477}
   m_Layer: 0
   m_Name: Trash Bag
   m_TagString: Untagged
@@ -86,6 +87,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2348377907135333244}
   m_Mesh: {fileID: 4300000, guid: 2c2b464c511351647893fe73456d16d2, type: 3}
+--- !u!64 &8068080107735393477
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2348377907135333244}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 2c2b464c511351647893fe73456d16d2, type: 3}
 --- !u!1 &2558235356485348051
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,8 +137,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2.85, y: 2.85, z: 2.85}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4968878243995507779}
   m_Father: {fileID: 0}

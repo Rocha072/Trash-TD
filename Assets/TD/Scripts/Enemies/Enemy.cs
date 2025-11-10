@@ -54,6 +54,7 @@ public class Enemy : MonoBehaviour
         isDead = false;
         Health = enemyData.MaxHealth;
         Speed = enemyData.MaxSpeed;
+        agent.acceleration = enemyData.Acceleration;
         StartCoroutine(MovementCoroutine());
     }
 
@@ -81,9 +82,8 @@ public class Enemy : MonoBehaviour
             }
 
         }
-        
-        agent.speed = Speed;
 
+        agent.speed = Speed;
 
     }
 
