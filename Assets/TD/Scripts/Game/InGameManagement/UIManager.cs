@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     public GameObject Shop;
     public CanvasGroup ShopCanvasGroup;
     public GameObject purchaseTowerButtonPrefab;
+    private List<GameObject> towerPurchaseButtons;
 
     [Header("Victory/Defeat Screen")]
     [SerializeField] private GameObject VictoryScreen;
@@ -43,7 +44,9 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1f;
+        towerPurchaseButtons = new List<GameObject>();
         SetShop();
+        InvokeRepeating(nameof(UpdateButtonsInteractive), 0f, 0.2f);
     }
     public void Update()
     {
@@ -199,6 +202,24 @@ public class UIManager : MonoBehaviour
 
             Button buyTowerButton = newButton.GetComponent<Button>();
             buyTowerButton.onClick.AddListener(() => PurchaseTower(data.towerID));
+            towerPurchaseButtons.Add(newButton);
+        }
+    }
+
+    void UpdateButtonsInteractive()
+    {
+        foreach (GameObject buttonObj in towerPurchaseButtons)
+        {
+            int towerPrice = int.Parse(buttonObj.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text);
+            Button buttonComponent = buttonObj.GetComponent<Button>();
+            if (PlayerEconomy.Instance.CanBuy(towerPrice))
+            {
+                buttonComponent.interactable = true;
+            }
+            else
+            {
+                buttonComponent.interactable = false;
+            }
         }
     }
 }

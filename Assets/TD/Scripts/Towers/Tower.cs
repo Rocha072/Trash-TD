@@ -3,6 +3,23 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
 
+
+[System.Serializable]
+public struct CurrentTowerStats
+{
+    public float Damage;
+    public float Range;
+    public float FireRate;
+    public float SlowFactor;
+    public float SlowDuration;
+    public float StunDuration;
+}
+
+public enum TargetingPriority
+{
+    First, Last, Strongest   
+}
+
 public class Tower : MonoBehaviour
 {
     [Header("Tower Properties")]
@@ -23,10 +40,13 @@ public class Tower : MonoBehaviour
     [SerializeField] private float minHeight;
     [SerializeField] private float maxHeight;
 
-    //[Header("Attack control")]
+    [Header("Attack Control")]
+    public TargetingPriority currentPriority = TargetingPriority.First;
+    [SerializeField] private float targetSearchFrequency = 0.1f;
     private TowerAttackBehavior attackBehavior;
     private Enemy target;
     private float fireCountdown;
+
 
     [Header("Current Stats")]
 
@@ -47,7 +67,7 @@ public class Tower : MonoBehaviour
 
     void Start()
     {
-        if(TryGetComponent(out Animator _animator))
+        if (TryGetComponent(out Animator _animator))
         {
             animator = _animator;
             animator.enabled = false;
@@ -81,7 +101,7 @@ public class Tower : MonoBehaviour
         UpdateRange();
 
         if (towerData.requiresTarget)
-            InvokeRepeating(nameof(UpdateTarget), 0f, 0.1f);
+            InvokeRepeating(nameof(UpdateTarget), 0f, targetSearchFrequency);
     }
 
 
@@ -104,7 +124,7 @@ public class Tower : MonoBehaviour
             attackBehavior.SetAttackEffect(false);
             return;
         }
-        
+
         if (towerData.requiresTarget)
         {
             if (target == null)
@@ -136,58 +156,125 @@ public class Tower : MonoBehaviour
         }
 
 
-        
+
     }
+
     void UpdateTarget()
     {
-        if (WaveManager.Instance.currentState == WaveManager.WaveState.WaitingToStart) {
+        if (WaveManager.Instance.currentState == WaveManager.WaveState.WaitingToStart)
+        {
             target = null;
             return;
-        };
-        List<Enemy> enemies = EntitySummoner.Instance.EnemiesInGame;
+        }
+
+        List<Enemy> enemiesInRange = new List<Enemy>();
+
+        foreach (Enemy enemy in EntitySummoner.Instance.EnemiesInGame)
+        {
+            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+            if (distanceToEnemy <= currentStats.Range)
+            {
+                enemiesInRange.Add(enemy);
+            }
+        }
+
+        if (enemiesInRange.Count == 0)
+        {
+            target = null;
+            return;
+        }
 
         Enemy bestTarget = null;
 
-        int bestTargetNodeIndex = -1;
-        float bestTargetRemainingDistance = float.MaxValue;
-        foreach (Enemy enemy in enemies)
+        switch (currentPriority)
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distanceToEnemy > currentStats.Range)
-            {
-                continue;
-            }
+            case TargetingPriority.First:
+                bestTarget = SearchFirstEnemy(enemiesInRange);
+                break;
 
-            int enemyNodeIndex = enemy.CurrentNodeIndex;
+            case TargetingPriority.Last:
+                bestTarget = SearchLastEnemy(enemiesInRange);
+                break;
 
-            float enemyRemainingDistance = enemy.RemainingDistanceToNode;
-
-            bool isBetterTarget = false;
-
-            if (enemyNodeIndex > bestTargetNodeIndex)
-            {
-                isBetterTarget = true;
-            }
-            else if (enemyNodeIndex == bestTargetNodeIndex)
-            {
-                if (enemyRemainingDistance < bestTargetRemainingDistance)
-                {
-                    isBetterTarget = true;
-                }
-            }
-
-            if (isBetterTarget)
-            {
-                bestTarget = enemy;
-                bestTargetNodeIndex = enemyNodeIndex;
-                bestTargetRemainingDistance = enemyRemainingDistance;
-            }
+            case TargetingPriority.Strongest:
+                bestTarget = SearchStrongerEnemy(enemiesInRange);
+                break;
 
         }
-        
+
         target = bestTarget;
+    }
 
+    Enemy SearchFirstEnemy(List<Enemy> enemiesInRange)
+    {
+        Enemy bestTarget = null;
+        int bestNodeIndex = -1;
+        float minRemainingDist = float.MaxValue;
+        bestTarget = enemiesInRange[0];
 
+        foreach (Enemy enemy in enemiesInRange)
+        {
+            int enemyNodeIndex = enemy.CurrentNodeIndex;
+            float enemyDist = enemy.RemainingDistanceToNode;
+
+            if (enemyNodeIndex > bestNodeIndex)
+            {
+                bestNodeIndex = enemyNodeIndex;
+                minRemainingDist = enemyDist;
+                bestTarget = enemy;
+            }
+            else if (enemyNodeIndex == bestNodeIndex && enemyDist < minRemainingDist)
+            {
+                minRemainingDist = enemyDist;
+                bestTarget = enemy;
+            }
+        }
+
+        return bestTarget;
+    }
+    Enemy SearchLastEnemy(List<Enemy> enemiesInRange)
+    {
+        Enemy bestTarget = null;
+        int worstNodeIndex = int.MaxValue;
+        float maxRemainingDist = 0f;
+        bestTarget = enemiesInRange[0];
+
+        foreach (Enemy enemy in enemiesInRange)
+        {
+            int enemyNodeIndex = enemy.CurrentNodeIndex;
+            float enemyDist = enemy.RemainingDistanceToNode;
+
+            if (enemyNodeIndex < worstNodeIndex)
+            {
+                worstNodeIndex = enemyNodeIndex;
+                maxRemainingDist = enemyDist;
+                bestTarget = enemy;
+            }
+            else if (enemyNodeIndex == worstNodeIndex && enemyDist > maxRemainingDist)
+            {
+                maxRemainingDist = enemyDist;
+                bestTarget = enemy;
+            }
+        }
+        return bestTarget;
+    }
+
+    Enemy SearchStrongerEnemy(List<Enemy> enemiesInRange)
+    {
+        Enemy bestTarget = null;
+        float maxHealth = 0f;
+                
+        bestTarget = enemiesInRange[0]; 
+
+        foreach (Enemy enemy in enemiesInRange)
+        {
+            if (enemy.enemyData.MaxHealth > maxHealth)
+            {
+                maxHealth = enemy.enemyData.MaxHealth;
+                bestTarget = enemy;
+            }
+        }
+        return bestTarget;
     }
 
     void RotateTarget()
@@ -198,7 +285,7 @@ public class Tower : MonoBehaviour
 
         partToRotateY.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 
-        if(partToRotateX!=null)
+        if (partToRotateX != null)
             partToRotateX.localRotation = Quaternion.Euler(rotation.x, rotation.y, 0f);
     }
 
@@ -213,10 +300,10 @@ public class Tower : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, currentStats.Range);
     }
 
-    
+
     public void VerifyValidPosition()
     {
-        validPosition = this.transform.position.y >= minHeight && this.transform.position.y <= maxHeight && coliding==0;
+        validPosition = this.transform.position.y >= minHeight && this.transform.position.y <= maxHeight && coliding == 0;
 
         this.invalidMask.SetActive(!validPosition);
     }
@@ -330,7 +417,7 @@ public class Tower : MonoBehaviour
         }
 
     }
-    
+
     public bool IsPathLocked(int pathIndex)
     {
         if (pathIndex == 0 && currentTierB > 0) return true;
@@ -340,13 +427,3 @@ public class Tower : MonoBehaviour
 
 }
 
-[System.Serializable]
-public struct CurrentTowerStats
-{
-    public float Damage;
-    public float Range;
-    public float FireRate;
-    public float SlowFactor;
-    public float SlowDuration;
-    public float StunDuration;
-}
