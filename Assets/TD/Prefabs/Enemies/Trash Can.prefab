@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb28d7ebfebf8044b8d1fb6ad39d79b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundEmitterPrefab: {fileID: 604784972683118250, guid: 419207e87b570c44da216d0224c1f721, type: 3}
   enemyData: {fileID: 11400000, guid: 613b72a55d3eb414d87a7dad29b12ca0, type: 2}
   Health: 0
   Speed: 0
@@ -70,7 +71,7 @@ NavMeshAgent:
   m_Height: 1.9
   m_BaseOffset: 0.03
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 0
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &6038041017019863118
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -84,6 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb28d7ebfebf8044b8d1fb6ad39d79b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundEmitterPrefab: {fileID: 604784972683118250, guid: 419207e87b570c44da216d0224c1f721, type: 3}
   enemyData: {fileID: 11400000, guid: 6ffd583d6e8e323419f17fbc9ce5b167, type: 2}
   Health: 0
   Speed: 0

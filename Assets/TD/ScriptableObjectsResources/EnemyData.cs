@@ -11,6 +11,8 @@ public class EnemyData : ScriptableObject
     public float MaxSpeed;
     public float Acceleration;
     public float MinDistanceToPassNode;
+    public AudioClip dieSoundEffect;
+    public float dieVolume;
 
     public List<EnemyDeathSpawnInfo> spawnOnDeathList;
 }
