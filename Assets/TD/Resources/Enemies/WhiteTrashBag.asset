@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc5e10748d5b75b42a3aef7e01555aaa, type: 3}
   m_Name: WhiteTrashBag
   m_EditorClassIdentifier: 
-  dropAmount: 5
-  damage: 1
-  ID: 0
-  MaxHealth: 50
+  dropAmount: 25
+  damage: 10
+  ID: 2
+  MaxHealth: 85
   MaxSpeed: 6
+  Acceleration: 4.5
   MinDistanceToPassNode: 2
-  spawnOnDeathList: []
+  spawnOnDeathList:
+  - enemyID: 0
+    amount: 6

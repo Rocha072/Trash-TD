@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayerMovementInput = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
             PlayerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+            
             Move();            
             Rotate();
         }
@@ -56,8 +57,8 @@ public class PlayerMovement : MonoBehaviour
             speed = 10;
 
 
-        Controller.Move((movement) * (speed * Time.deltaTime));
-        Controller.Move((Velocity) * (speed * Time.deltaTime));
+        Controller.Move(movement * (speed * Time.deltaTime));
+        Controller.Move(Velocity * (speed * Time.deltaTime));
 
         Velocity.y = 0f;
     }

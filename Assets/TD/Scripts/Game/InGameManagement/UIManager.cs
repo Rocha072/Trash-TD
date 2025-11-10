@@ -42,6 +42,7 @@ public class UIManager : MonoBehaviour
     }
     void Start()
     {
+        Time.timeScale = 1f;
         SetShop();
     }
     public void Update()
@@ -142,7 +143,6 @@ public class UIManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

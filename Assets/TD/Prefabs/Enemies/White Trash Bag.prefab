@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4968878243995507779}
   - component: {fileID: 857083987497694137}
   - component: {fileID: 6880094853366513197}
+  - component: {fileID: 3361849121134279572}
   m_Layer: 0
   m_Name: Trash Bag
   m_TagString: Untagged
@@ -26,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2348377907135333244}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18215612, y: -0.6727557, z: 0.1763059, w: 0.6950792}
+  m_LocalRotation: {x: 0.06956929, y: -0.69349945, z: 0.06014361, w: 0.7145637}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7321678868537186987}
-  m_LocalEulerAnglesHint: {x: 29.37, y: -88.13, z: 0}
+  m_LocalEulerAnglesHint: {x: 10.535, y: -88.342, z: -0.614}
 --- !u!23 &857083987497694137
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -85,6 +86,28 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2348377907135333244}
+  m_Mesh: {fileID: 4300000, guid: 2c2b464c511351647893fe73456d16d2, type: 3}
+--- !u!64 &3361849121134279572
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2348377907135333244}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 2c2b464c511351647893fe73456d16d2, type: 3}
 --- !u!1 &2558235356485348051
 GameObject:

@@ -9,6 +9,7 @@ public class EnemyData : ScriptableObject
     public int ID;
     public float MaxHealth;
     public float MaxSpeed;
+    public float Acceleration;
     public float MinDistanceToPassNode;
 
     public List<EnemyDeathSpawnInfo> spawnOnDeathList;

@@ -21,7 +21,7 @@ MonoBehaviour:
   TowerSprite: {fileID: 21300000, guid: 078a848156bc370448e92b6125382ed9, type: 3}
   towerName: Recycle Center
   towerID: 3
-  cost: 100
+  cost: 400
   turnSpeed: 0
   requiresTarget: 0
   isCollector: 0
