@@ -19,7 +19,9 @@ MonoBehaviour:
   baseSlowDuration: 0
   baseStunDuration: 2
   TowerSprite: {fileID: 21300000, guid: 2c96f6d5e4d3708478c28d3aa319198a, type: 3}
-  towerName: Catapult
+  towerName: Catapulta
+  towerDescription: "Lan\xE7a um proj\xE9til que paraliza temporariamente o lixo.
+    Um estouro!!!"
   towerID: 2
   cost: 100
   turnSpeed: 5

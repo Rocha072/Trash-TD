@@ -33,6 +33,17 @@ public class SelectedTowerCardManager : MonoBehaviour
     public static SelectedTowerCardManager Instance { get; private set; }
 
     private Tower towerSelected;
+
+    public Tower GetSelectedTower()
+    {
+        if (!CardPanel.activeSelf)
+        {
+            return null;
+        }
+        return towerSelected;
+    }
+
+
     private UpgradeDefinition nextUpgradeA;
     private UpgradeDefinition nextUpgradeB;
     private int PriceToSell;

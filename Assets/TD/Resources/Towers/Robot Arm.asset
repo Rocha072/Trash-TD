@@ -19,7 +19,9 @@ MonoBehaviour:
   baseSlowDuration: 0
   baseStunDuration: 0
   TowerSprite: {fileID: 21300000, guid: e60e7fdc65220a74999f20392301b98e, type: 3}
-  towerName: Robot Arm
+  towerName: "Bra\xE7o Rob\xF4"
+  towerDescription: "Unidade coletora que utiliza suas articul\xE7\xF5es para retirar
+    os lixos. O alcance n\xE3o \xE9 o seu forte."
   towerID: 4
   cost: 1000
   turnSpeed: 5
