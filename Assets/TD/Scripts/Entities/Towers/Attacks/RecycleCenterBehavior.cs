@@ -1,26 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecycleCenterBehavior: TowerAttackBehavior
+public class RecycleCenterBehavior: TowerAttackBehavior, IEnemyDeathListener
 {
-    private Tower thisTower;
     private CurrentTowerStats currentStats;
 
     public override void Init(Tower tower)
     {
         this.thisTower = tower;
-        EntitySummoner.Instance.RegisterRecycleCenter(this);
+        EntitySummoner.Instance.RegisterDeathListener(this);
     }
 
     private void OnDestroy()
     {
         if (EntitySummoner.Instance != null)
         {
-            EntitySummoner.Instance.UnregisterRecycleCenter(this);
+            EntitySummoner.Instance.RegisterDeathListener(this);
         }
     }
 
-    public override void Attack(Enemy target, CurrentTowerStats towerStats, Tower attacker)
+    public override void Attack(Enemy target, CurrentTowerStats towerStats)
     {
         this.currentStats = towerStats;
 
@@ -39,7 +38,7 @@ public class RecycleCenterBehavior: TowerAttackBehavior
 
     }
 
-    public void GiveBonusForKill(Tower killer, Enemy killedEnemy)
+    public void OnEnemyDeath(Tower killer, Enemy killedEnemy)
     {
         if (killer == null || !killer.towerData.isCollector)
         {

@@ -291,7 +291,7 @@ public class Tower : MonoBehaviour
 
     void Attack()
     {
-        attackBehavior.Attack(target, currentStats, this);
+        attackBehavior.Attack(target, currentStats);
     }
 
     void OnDrawGizmosSelected()

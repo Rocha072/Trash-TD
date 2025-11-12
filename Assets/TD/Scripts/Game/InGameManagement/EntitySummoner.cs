@@ -10,7 +10,7 @@ using UnityEngine;
 public class EntitySummoner : MonoBehaviour
 {
     public static EntitySummoner Instance { get; private set; }
-    private List<RecycleCenterBehavior> activeRecycleCenters = new List<RecycleCenterBehavior>();
+    private List<IEnemyDeathListener> enemyDeathListeners = new List<IEnemyDeathListener>();
 
     [Header("Enemy Configuration")]
     public List<EnemyBlueprint> enemyBlueprints;
@@ -117,30 +117,30 @@ public class EntitySummoner : MonoBehaviour
         StatsManager.Instance.AddTrashCollected();
         StatsManager.Instance.AddMoneyGeneratedByCollections(enemy.enemyData.dropAmount);
 
-        
+
         if (enemy.enemyData.spawnOnDeathList != null && enemy.enemyData.spawnOnDeathList.Count > 0)
         {
             int totalChildren = 0;
-            foreach (var group in enemy.enemyData.spawnOnDeathList) totalChildren += group.amount;
-            for (int i = 0; i < totalChildren; i++) WaveManager.Instance.OnEnemySpawned();
+
+            foreach (var group in enemy.enemyData.spawnOnDeathList)
+                totalChildren += group.amount;
+                
+            for (int i = 0; i < totalChildren; i++) 
+                WaveManager.Instance.OnEnemySpawned();
 
             SpawnEnemiesWithDelay(enemy.enemyData.spawnOnDeathList, enemy.transform.position, enemy.CurrentNodeIndex, 0.1f);
         }
-        // 3. LÓGICA DA AURA (Sua Feature)
-        // Avisa todos os Centros de Reciclagem sobre a morte
-        // (Usamos ToList() para criar uma cópia, caso um Centro seja destruído
-        // durante o loop, o que poderia quebrar a iteração)
-        foreach (RecycleCenterBehavior center in activeRecycleCenters.ToList()) 
+
+        foreach (IEnemyDeathListener listener in enemyDeathListeners.ToList())
         {
-            if (center != null)
-            {
-                center.GiveBonusForKill(killer, enemy);
-            }
+            if (listener != null)
+                listener.OnEnemyDeath(killer, enemy);
+            
         }
-        
-        // 4. Lógica de Remoção (o fim)
+
         RemoveEnemy(enemy);
     }
+    
     public void RemoveEnemy(Enemy EnemyToRemove)
     {
         enemiesDisabled[EnemyToRemove.enemyData.ID].Enqueue(EnemyToRemove);
@@ -185,7 +185,7 @@ public class EntitySummoner : MonoBehaviour
         if (tower != null)
             tower.Init(towerToSummon.towerData);
         else
-            Debug.LogError("O prefab da torre não contém o script TowerController!");
+            Debug.LogError("O prefab da torre não contém o script Tower");
 
         return tower;
 
@@ -205,20 +205,20 @@ public class EntitySummoner : MonoBehaviour
 
         Destroy(TowerToRemove.gameObject);
     }
-    
-    public void RegisterRecycleCenter(RecycleCenterBehavior center)
+
+    public void RegisterDeathListener(IEnemyDeathListener listener)
     {
-        if (!activeRecycleCenters.Contains(center))
+        if (!enemyDeathListeners.Contains(listener))
         {
-            activeRecycleCenters.Add(center);
+            enemyDeathListeners.Add(listener);
         }
     }
-
-    public void UnregisterRecycleCenter(RecycleCenterBehavior center)
+    
+    public void UnregisterDeathListener(IEnemyDeathListener listener)
     {
-        if (activeRecycleCenters.Contains(center))
+        if (enemyDeathListeners.Contains(listener))
         {
-            activeRecycleCenters.Remove(center);
+            enemyDeathListeners.Remove(listener);
         }
     }
 
