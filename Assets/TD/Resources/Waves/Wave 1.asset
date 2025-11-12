@@ -15,6 +15,6 @@ MonoBehaviour:
   enemyGroups:
   - enemyID: 0
     count: 5
-    spawnIntervalBetweenMembers: 1
+    spawnIntervalBetweenMembers: 0.9
     delayBeforeStartGroup: 0
   waveReward: 10

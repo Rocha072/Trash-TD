@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    public SoundEmitter soundEmitterPrefab;
     public EnemyData enemyData;
     public float Health;
     public float Speed;
@@ -152,6 +153,20 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
 
         isDead = true;
+
+        //if (enemyData.dieSoundEffect != null)
+        //{
+        //    AudioSource.PlayClipAtPoint(enemyData.dieSoundEffect, transform.position);
+        //}
+
+        if (enemyData.dieSoundEffect != null && soundEmitterPrefab != null)
+        {
+            // 1. Cria (Instancia) o prefab na posição do inimigo
+            SoundEmitter emitter = Instantiate(soundEmitterPrefab, transform.position, Quaternion.identity);
+
+            // 2. Manda ele tocar o som
+            emitter.PlaySound(enemyData.dieSoundEffect, enemyData.dieVolume);
+        }
 
         if (enemyData.spawnOnDeathList != null && enemyData.spawnOnDeathList.Count > 0)
         {

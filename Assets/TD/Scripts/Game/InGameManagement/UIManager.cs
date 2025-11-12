@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     public GameObject Shop;
     public CanvasGroup ShopCanvasGroup;
     public GameObject purchaseTowerButtonPrefab;
+    private List<GameObject> towerPurchaseButtons;
+    public TowerData pendingTowerToSpawn { get; private set; } = null;
 
     [Header("Victory/Defeat Screen")]
     [SerializeField] private GameObject VictoryScreen;
@@ -27,6 +29,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject DefeatScreen;
     [SerializeField] private TextMeshProUGUI completedWavesText;
 
+    [Header("Upgrade Screen")]
+    [SerializeField] private GameObject upgradeScreen;
     public static UIManager Instance { get; private set; }
 
     private void Awake()
@@ -40,11 +44,15 @@ public class UIManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     void Start()
     {
         Time.timeScale = 1f;
+        towerPurchaseButtons = new List<GameObject>();
         SetShop();
+        // InvokeRepeating(nameof(UpdateButtonsInteractive), 0f, 0.2f);
     }
+
     public void Update()
     {
 
@@ -60,23 +68,34 @@ public class UIManager : MonoBehaviour
             }
 
         }
-        
+
         if (!pauseScreen.activeSelf && Input.GetKeyDown(KeyCode.Tab))
         {
             if (Shop.activeSelf)
             {
-                PlayerMovement.TurnOnPlayerMovement();
-                Shop.SetActive(false);
+                CloseShopAndClearPending();
             }
             else
             {
                 PlayerMovement.TurnOffPlayerMovement();
                 Shop.SetActive(true);
                 SelectedTowerCardManager.Instance.HideSelectCard();
-                
+                ClearPendingTower();
             }
 
         }
+    }
+
+    public void ClearPendingTower()
+    {
+        pendingTowerToSpawn = null;
+    }
+    
+    public void CloseShopAndClearPending()
+    {
+        PlayerMovement.TurnOnPlayerMovement();
+        Shop.SetActive(false);
+        ClearPendingTower();
     }
 
     public void UpdateMoneyText()
@@ -94,12 +113,47 @@ public class UIManager : MonoBehaviour
         currentWaveText.text = "Rodada " + (WaveManager.Instance.currentWaveIndex+1) + "/" + WaveManager.Instance.allWaves.Count;
     }
 
-    public void PurchaseTower(int towerID)
+    public void SelectTowerInShop(TowerData data)
     {
-        int cost = EntitySummoner.Instance.towerBlueprints[towerID].towerData.cost;
-        if (PlayerEconomy.Instance.CanBuy(cost))
+        pendingTowerToSpawn = data;
+    }
+
+    public void OnUpgradeScreenButtonClicked()
+    {
+        TowerData dataToShow = null;
+
+        Tower selectedTower = SelectedTowerCardManager.Instance.GetSelectedTower();
+        if (selectedTower != null)
         {
-            mouse.setTowerToPlaceByID(towerID);
+            dataToShow = selectedTower.towerData;
+        }
+
+        else if (pendingTowerToSpawn != null)
+        {
+            dataToShow = pendingTowerToSpawn;
+        }
+
+        if (dataToShow != null)
+        {
+            ShowUpgradeScreen(dataToShow);
+        }
+
+        ClearPendingTower();
+    }
+
+    private void ShowUpgradeScreen(TowerData data)
+    {
+        Time.timeScale = 0f;
+        UpgradeScreenManager.Instance.UpdateInfo(data);
+        upgradeScreen.SetActive(true);
+    }
+    
+    public void HideUpgradeScreen()
+    {
+        upgradeScreen.SetActive(false);
+        if (!pauseScreen.activeSelf)
+        {
+            Time.timeScale = 1.0f;
         }
     }
 
@@ -198,7 +252,27 @@ public class UIManager : MonoBehaviour
             towerPrice.text = data.cost.ToString();
 
             Button buyTowerButton = newButton.GetComponent<Button>();
-            buyTowerButton.onClick.AddListener(() => PurchaseTower(data.towerID));
+            buyTowerButton.onClick.RemoveAllListeners();
+            buyTowerButton.onClick.AddListener(() => SelectTowerInShop(data));
+            towerPurchaseButtons.Add(newButton);
+        }
+    }
+
+
+    void UpdateButtonsInteractive()
+    {
+        foreach (GameObject buttonObj in towerPurchaseButtons)
+        {
+            int towerPrice = int.Parse(buttonObj.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text);
+            Button buttonComponent = buttonObj.GetComponent<Button>();
+            if (PlayerEconomy.Instance.CanBuy(towerPrice))
+            {
+                buttonComponent.interactable = true;
+            }
+            else
+            {
+                buttonComponent.interactable = false;
+            }
         }
     }
 }

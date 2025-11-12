@@ -10,6 +10,10 @@ public class SelectedTowerCardManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private TextMeshProUGUI towerNameText;
 
+    [Header("Targeting Controls")]
+    [SerializeField] private GameObject targetingControlsPanel;
+    [SerializeField] private TextMeshProUGUI targetingPriorityText;
+
     [Header("Upgrade Path A Elements")]
     [SerializeField] private Button pathA_Button;
     [SerializeField] private TextMeshProUGUI pathA_Name;
@@ -29,6 +33,17 @@ public class SelectedTowerCardManager : MonoBehaviour
     public static SelectedTowerCardManager Instance { get; private set; }
 
     private Tower towerSelected;
+
+    public Tower GetSelectedTower()
+    {
+        if (!CardPanel.activeSelf)
+        {
+            return null;
+        }
+        return towerSelected;
+    }
+
+
     private UpgradeDefinition nextUpgradeA;
     private UpgradeDefinition nextUpgradeB;
     private int PriceToSell;
@@ -63,6 +78,16 @@ public class SelectedTowerCardManager : MonoBehaviour
         PriceToSell = towerSelected.SellValue;
         priceText.text = "" + PriceToSell;
 
+        if (towerSelected.towerData.requiresTarget)
+        {
+            targetingControlsPanel.SetActive(true);
+            UpdateTargetingUI();
+        }
+        else
+        {
+            targetingControlsPanel.SetActive(false);
+        }
+
         RefreshUI(towerSelected);
 
         CardPanel.SetActive(true);
@@ -72,6 +97,9 @@ public class SelectedTowerCardManager : MonoBehaviour
         towerSelected = null;
         nextUpgradeA = null;
         nextUpgradeB = null;
+
+        targetingControlsPanel.SetActive(false);
+
         CardPanel.SetActive(false);
     }
 
@@ -147,7 +175,46 @@ public class SelectedTowerCardManager : MonoBehaviour
         }
     }
 
-   
+    public void CycleTargetingPriority(int direction)
+    {
+        if (towerSelected == null) return;
+
+        int newPriorityIndex = (int)towerSelected.currentPriority + direction;
+
+        int totalPriorities = System.Enum.GetNames(typeof(TargetingPriority)).Length;
+
+        if (newPriorityIndex < 0)
+        {
+            newPriorityIndex = totalPriorities - 1;
+        }
+        else if (newPriorityIndex >= totalPriorities)
+        {
+            newPriorityIndex = 0;
+        }
+
+        towerSelected.currentPriority = (TargetingPriority)newPriorityIndex;
+
+        // Atualiza o texto na UI
+        UpdateTargetingUI();
+    }
+    
+    private void UpdateTargetingUI()
+    {
+        if (towerSelected == null) return;
+        
+        switch (towerSelected.currentPriority)
+        {
+            case TargetingPriority.First:
+                targetingPriorityText.text = "Primeiro";
+                break;
+            case TargetingPriority.Last:
+                targetingPriorityText.text = "Último";
+                break;
+            case TargetingPriority.Strongest:
+                targetingPriorityText.text = "Mais Forte";
+                break;
+        }
+    }
 
     public void SellTower()
     {

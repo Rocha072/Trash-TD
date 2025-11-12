@@ -19,7 +19,9 @@ MonoBehaviour:
   baseSlowDuration: 4
   baseStunDuration: 0
   TowerSprite: {fileID: 21300000, guid: b8c47ccc99ac2b64d9e85aca7cca87fd, type: 3}
-  towerName: Water Gun
+  towerName: "Arma de \xC1gua"
+  towerDescription: "Atira um jato de \xE1gua cont\xEDnuo que deixa o lixo lento,
+    mas causa pouco dano."
   towerID: 0
   cost: 50
   turnSpeed: 5

@@ -19,17 +19,19 @@ MonoBehaviour:
   baseSlowDuration: 0
   baseStunDuration: 0
   TowerSprite: {fileID: 21300000, guid: e60e7fdc65220a74999f20392301b98e, type: 3}
-  towerName: Robot Arm
+  towerName: "Bra\xE7o Rob\xF4"
+  towerDescription: "Unidade coletora que utiliza suas articul\xE7\xF5es para retirar
+    os lixos. O alcance n\xE3o \xE9 o seu forte."
   towerID: 4
   cost: 1000
   turnSpeed: 5
   requiresTarget: 1
   isCollector: 1
   pathA_Upgrades:
-  - {fileID: 11400000, guid: bf424fef20d71ed4db0bc83b0eddaa17, type: 2}
-  - {fileID: 11400000, guid: e45a5f97581147949bb0b0adb7ba1b5f, type: 2}
-  - {fileID: 11400000, guid: b097e866cbbbefc43a05ba607a1080ef, type: 2}
+  - {fileID: 11400000, guid: 5b761ddfd0bb77144924b50f17a859a3, type: 2}
+  - {fileID: 11400000, guid: 59185150064c6de4593491f19c8e99ab, type: 2}
+  - {fileID: 11400000, guid: 4f15430d2e5ff714f9d644aaa6376d86, type: 2}
   pathB_Upgrades:
-  - {fileID: 11400000, guid: 43e7fc4d98f0c564da771e6cd1e140d4, type: 2}
-  - {fileID: 11400000, guid: 3bd940c76184db442b600cd2074f4075, type: 2}
-  - {fileID: 11400000, guid: d51dd6f51ee24ff4d9c00cb3fa6bd5fa, type: 2}
+  - {fileID: 11400000, guid: 032205443450912498f35741ab15a9d4, type: 2}
+  - {fileID: 11400000, guid: 77b2f38196a318b429921d1cb7e419e0, type: 2}
+  - {fileID: 11400000, guid: 9c6d79b69c63d05489f4b4435cf04c1c, type: 2}

@@ -15,6 +15,8 @@ public class TowerData : ScriptableObject
     [Header("Tower Traits")]
     public Sprite TowerSprite;
     public string towerName;
+    [TextArea(3, 5)]
+    public string towerDescription;
     public int towerID;
     public int cost;
     public float turnSpeed;

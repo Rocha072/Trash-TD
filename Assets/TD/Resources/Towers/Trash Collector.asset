@@ -12,24 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcd5328711f14c41accf7b49ff8f707, type: 3}
   m_Name: Trash Collector
   m_EditorClassIdentifier: 
-  baseRange: 9
+  baseRange: 10
   baseDamage: 30
   baseFireRate: 1
   baseSlowFactor: 1
   baseSlowDuration: 0
   baseStunDuration: 0
   TowerSprite: {fileID: 21300000, guid: 25ab43c5f4ff0da43ac69849aba52929, type: 3}
-  towerName: Collector
+  towerName: Gari
+  towerDescription: "Trabalhador na linha de frente da luta contra o lixo. Apenas
+    um deles parece pouco, mas juntos fazem a diferen\xE7a. Recomend\xE1vel no in\xEDcio
+    do jogo. \xC9 uma unidade coletora"
   towerID: 1
   cost: 35
   turnSpeed: 5
   requiresTarget: 1
   isCollector: 1
   pathA_Upgrades:
-  - {fileID: 11400000, guid: bf424fef20d71ed4db0bc83b0eddaa17, type: 2}
-  - {fileID: 11400000, guid: e45a5f97581147949bb0b0adb7ba1b5f, type: 2}
-  - {fileID: 11400000, guid: b097e866cbbbefc43a05ba607a1080ef, type: 2}
+  - {fileID: 11400000, guid: c8d3edcda48edc5409cdfdb69226135f, type: 2}
+  - {fileID: 11400000, guid: 5a5097e26ba830f468ca4ddc3b5c2c15, type: 2}
+  - {fileID: 11400000, guid: 0910c1b907789aa4eb104f5ba09ff3ea, type: 2}
   pathB_Upgrades:
-  - {fileID: 11400000, guid: 43e7fc4d98f0c564da771e6cd1e140d4, type: 2}
-  - {fileID: 11400000, guid: 3bd940c76184db442b600cd2074f4075, type: 2}
-  - {fileID: 11400000, guid: d51dd6f51ee24ff4d9c00cb3fa6bd5fa, type: 2}
+  - {fileID: 11400000, guid: c2d9aa6c0fb9e394b943ed70f60aed5c, type: 2}
+  - {fileID: 11400000, guid: e7bbe447df2e5444c847ae5477bc2dd7, type: 2}
+  - {fileID: 11400000, guid: ca57f6c03e387d24196d3862f9eb1f3e, type: 2}
