@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Recycle Center
   m_EditorClassIdentifier: 
   baseRange: 30
-  baseDamage: 10
-  baseFireRate: 0.33
+  baseDamage: 20000
+  baseFireRate: 1
   baseSlowFactor: 0
   baseSlowDuration: 0
   baseStunDuration: 0
