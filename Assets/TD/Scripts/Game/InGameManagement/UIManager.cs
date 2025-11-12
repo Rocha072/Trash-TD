@@ -20,7 +20,25 @@ public class UIManager : MonoBehaviour
     public GameObject Shop;
     public CanvasGroup ShopCanvasGroup;
     public GameObject purchaseTowerButtonPrefab;
-    private List<GameObject> towerPurchaseButtons;
+    private class ShopButtonData
+    {
+        public TowerData towerData;
+        public Button buttonComponent;
+        public Image buttonBackground;
+         public TextMeshProUGUI towerName;
+        public Image towerIcon;
+        public TextMeshProUGUI towerPrice;
+        public Image coin;
+        public ButtonHoverCursor hoverDetector;
+    }
+    private List<ShopButtonData> shopButtons = new List<ShopButtonData>();
+    private Color color_CanBuy_Background = new Color(0.2005482f, 0.7149413f, 0.8641509f, 0.4823529f);
+    private Color color_CantBuy_Background = new Color(0.1226415f, 0.4078374f, 0.490566f, 0.4823529f);
+    private Color color_Selected_Background = new Color(0.08116768f, 0.2525773f, 0.3018868f, 0.4823529f);
+    private Color color_CanBuy = Color.white;
+    private Color color_CantBuy = new Color(0.85f, 0.85f, 0.85f, 1f); 
+    private Color color_Selected = new Color(0.5f, 0.5f, 0.5f, 1f); 
+
     public TowerData pendingTowerToSpawn { get; private set; } = null;
 
     [Header("Victory/Defeat Screen")]
@@ -48,9 +66,8 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1f;
-        towerPurchaseButtons = new List<GameObject>();
         SetShop();
-        // InvokeRepeating(nameof(UpdateButtonsInteractive), 0f, 0.2f);
+        InvokeRepeating(nameof(UpdateShopButtonColors), 0f, 0.2f);
     }
 
     public void Update()
@@ -89,6 +106,7 @@ public class UIManager : MonoBehaviour
     public void ClearPendingTower()
     {
         pendingTowerToSpawn = null;
+        UpdateShopButtonColors();
     }
     
     public void CloseShopAndClearPending()
@@ -115,7 +133,16 @@ public class UIManager : MonoBehaviour
 
     public void SelectTowerInShop(TowerData data)
     {
-        pendingTowerToSpawn = data;
+        if (pendingTowerToSpawn == data)
+        {
+            pendingTowerToSpawn = null;
+        }
+        else
+        {
+            pendingTowerToSpawn = data;
+        }
+
+        UpdateShopButtonColors();
     }
 
     public void OnUpgradeScreenButtonClicked()
@@ -236,43 +263,71 @@ public class UIManager : MonoBehaviour
 
             newButton.transform.SetParent(Shop.transform, false);
 
-            List<Transform> childrens = new List<Transform>();
-            foreach (Transform children in newButton.transform)
-            {
-                childrens.Add(children);
-            }
-
-            TextMeshProUGUI towerName = childrens[0].GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI towerName = newButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
             towerName.text = data.towerName;
-
-            Image towerImage = childrens[1].GetComponent<Image>();
+            
+            Image towerImage = newButton.transform.GetChild(1).GetComponent<Image>();
             towerImage.sprite = data.TowerSprite;
-
-            TextMeshProUGUI towerPrice = childrens[2].GetComponent<TextMeshProUGUI>();
+            
+            TextMeshProUGUI towerPrice = newButton.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
             towerPrice.text = data.cost.ToString();
 
+            
             Button buyTowerButton = newButton.GetComponent<Button>();
             buyTowerButton.onClick.RemoveAllListeners();
             buyTowerButton.onClick.AddListener(() => SelectTowerInShop(data));
-            towerPurchaseButtons.Add(newButton);
+
+
+            Image buttonBackground = newButton.GetComponent<Image>();
+            Image coinImage = newButton.transform.GetChild(3).GetComponent<Image>();
+
+            shopButtons.Add(new ShopButtonData
+            {
+                towerData = data,
+                buttonComponent = buyTowerButton,
+                buttonBackground = buttonBackground,
+                towerName = towerName,
+                towerIcon = towerImage,
+                towerPrice = towerPrice,
+                coin = coinImage
+            });
         }
     }
 
 
-    void UpdateButtonsInteractive()
+    void UpdateShopButtonColors()
     {
-        foreach (GameObject buttonObj in towerPurchaseButtons)
+        if (!Shop.activeSelf) return;
+
+        foreach (ShopButtonData shopButton in shopButtons)
         {
-            int towerPrice = int.Parse(buttonObj.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text);
-            Button buttonComponent = buttonObj.GetComponent<Button>();
-            if (PlayerEconomy.Instance.CanBuy(towerPrice))
+
+            Color colorToApply;
+            Color colorToApply_Background;
+            
+            if (pendingTowerToSpawn == shopButton.towerData)
             {
-                buttonComponent.interactable = true;
+                colorToApply = color_Selected;
+                colorToApply_Background = color_Selected_Background;
             }
+   
+            else if (!PlayerEconomy.Instance.CanBuy(shopButton.towerData.cost))
+            {
+                colorToApply = color_CantBuy; 
+                colorToApply_Background = color_CantBuy_Background;
+            }
+            
             else
             {
-                buttonComponent.interactable = false;
+                colorToApply = color_CanBuy; 
+                colorToApply_Background = color_CanBuy_Background;
             }
+            
+            shopButton.buttonBackground.color = colorToApply_Background;
+            shopButton.towerIcon.color = colorToApply;
+            shopButton.towerName.color = colorToApply;
+            shopButton.towerPrice.color = colorToApply;
+            shopButton.coin.color = colorToApply;
         }
     }
 }

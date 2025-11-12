@@ -5,6 +5,7 @@ public class Attack_Hitscan : TowerAttackBehavior
     [SerializeField] private Animator animator;
     private CurrentTowerStats currentStats;
     private Enemy currentTarget;
+    Tower Attacker;
     public override void Init(Tower tower)
     {
     
@@ -12,10 +13,11 @@ public class Attack_Hitscan : TowerAttackBehavior
             animator = GetComponentInParent<Animator>(); 
     }
 
-    public override void Attack(Enemy target, CurrentTowerStats currentTowerStats)
+    public override void Attack(Enemy target, CurrentTowerStats currentTowerStats, Tower attacker)
     {
         currentStats = currentTowerStats;
         currentTarget = target;
+        Attacker = attacker;
 
         if (animator != null)
         {
@@ -24,7 +26,7 @@ public class Attack_Hitscan : TowerAttackBehavior
         }
         else
         {
-            currentTarget.TakeDamage(currentStats.Damage);
+            currentTarget.TakeDamage(currentStats.Damage, Attacker);
             currentTarget.ApplySlow(currentStats.SlowFactor, currentStats.SlowDuration);
         }
 
@@ -35,7 +37,7 @@ public class Attack_Hitscan : TowerAttackBehavior
 
         if (currentTarget != null)
         {
-            currentTarget.TakeDamage(currentStats.Damage);
+            currentTarget.TakeDamage(currentStats.Damage, Attacker);
             currentTarget.ApplySlow(currentStats.SlowFactor, currentStats.SlowDuration);
         }
 

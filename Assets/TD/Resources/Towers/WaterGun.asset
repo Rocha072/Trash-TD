@@ -22,7 +22,7 @@ MonoBehaviour:
   towerName: "Arma de \xC1gua"
   towerDescription: "Atira um jato de \xE1gua cont\xEDnuo que deixa o lixo lento,
     mas causa pouco dano."
-  towerID: 0
+  towerID: 1
   cost: 50
   turnSpeed: 5
   requiresTarget: 1

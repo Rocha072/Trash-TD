@@ -12,7 +12,6 @@ public class ShopPanelHandler : MonoBehaviour, IPointerExitHandler
         if (IsMouseInsideGameWindow())
         {
             int towerID = pendingTower.towerID;
-            UIManager.Instance.ClearPendingTower();
             MousePosition.Instance.setTowerToPlaceByID(towerID);
         }
     }

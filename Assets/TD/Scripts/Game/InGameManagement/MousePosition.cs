@@ -81,6 +81,7 @@ public class MousePosition : MonoBehaviour
 
             PlayerEconomy.Instance.Buy(towerBeingPlaced.towerData.cost);
             StatsManager.Instance.AddTowerPurchased();
+            UIManager.Instance.ClearPendingTower();
             towerBeingPlaced.isBeingPlaced = false;
             towerBeingPlaced.RangeObject.SetActive(false);
             towerBeingPlaced = null;
@@ -89,6 +90,7 @@ public class MousePosition : MonoBehaviour
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape))
         {
             EntitySummoner.Instance.RemoveTower(towerBeingPlaced);
+            UIManager.Instance.ClearPendingTower();
             towerBeingPlaced = null;
         }
     }

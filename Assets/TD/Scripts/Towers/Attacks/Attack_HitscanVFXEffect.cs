@@ -12,9 +12,9 @@ public class Attack_HitscanVFXEffect : TowerAttackBehavior
             animator = GetComponentInParent<Animator>(); 
     }
 
-    public override void Attack(Enemy target, CurrentTowerStats currentTowerStats)
+    public override void Attack(Enemy target, CurrentTowerStats currentTowerStats, Tower attacker)
     {
-        target.TakeDamage(currentTowerStats.Damage);
+        target.TakeDamage(currentTowerStats.Damage, attacker);
         target.ApplySlow(currentTowerStats.SlowFactor, currentTowerStats.SlowDuration);
         
         if (animator != null)
