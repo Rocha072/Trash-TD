@@ -392,10 +392,11 @@ public class Tower : MonoBehaviour
     {
         currentStats.Damage += stats.damage_add;
         currentStats.Range += stats.range_add;
+        currentStats.Damage *= stats.damage_multiplier;
         currentStats.SlowDuration += stats.slowDuration_add;
         currentStats.FireRate *= stats.fireRate_multiplier;
         currentStats.SlowFactor *= stats.slowFactor_multiplier;
-
+        currentStats.StunDuration += stats.StunDuration_add;
         UpdateRange();
     }
 
