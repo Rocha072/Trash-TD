@@ -158,39 +158,9 @@ public class Enemy : MonoBehaviour
 
         isDead = true;
 
-        //if (enemyData.dieSoundEffect != null)
-        //{
-        //    AudioSource.PlayClipAtPoint(enemyData.dieSoundEffect, transform.position);
-        //}
-
-        if (enemyData.dieSoundEffect != null && soundEmitterPrefab != null)
-        {
-            SoundEmitter emitter = Instantiate(soundEmitterPrefab, transform.position, Quaternion.identity);
-
-            emitter.PlaySound(enemyData.dieSoundEffect, enemyData.dieVolume);
-        }
+        SoundHandler.Instance.PlaySoundAtPosition(enemyData.dieSoundEffect, transform.position, enemyData.dieVolume, singleExecution: true);
 
         EntitySummoner.Instance.HandleEnemyDeath(this, lastAttacker);
-        // if (enemyData.spawnOnDeathList != null && enemyData.spawnOnDeathList.Count > 0)
-        // {
-        //     int totalChildrenToSpawn = 0;
-        //     foreach (var group in enemyData.spawnOnDeathList)
-        //     {
-        //         totalChildrenToSpawn += group.amount;
-        //     }
-
-        //     for (int i = 0; i < totalChildrenToSpawn; i++)
-        //     {
-        //         WaveManager.Instance.OnEnemySpawned();
-        //     }
-        //     EntitySummoner.Instance.SpawnEnemiesWithDelay(enemyData.spawnOnDeathList, transform.position, currentNodeIndex, 0.1f);
-        // }
-        
-        // WaveManager.Instance.OnEnemyDied();
-        // PlayerEconomy.Instance.GainMoney(enemyData.dropAmount);
-        // StatsManager.Instance.AddTrashCollected();
-        // StatsManager.Instance.AddMoneyGeneratedByCollections(enemyData.dropAmount);
-        // EntitySummoner.Instance.RemoveEnemy(this);
     }
 
 }

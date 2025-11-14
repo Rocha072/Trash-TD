@@ -27,4 +27,10 @@ public class TowerData : ScriptableObject
     public UpgradeDefinition[] pathA_Upgrades = new UpgradeDefinition[3]; 
     public UpgradeDefinition[] pathB_Upgrades = new UpgradeDefinition[3];
 
+    [Header("Sounds")]
+    public AudioClip placeSound;
+    public float placeSoundVolume = 1f;
+    public AudioClip attackSound;
+    public float attackSoundVolume = 1f;
+    public bool attackSoundLoop = false;
 }
