@@ -29,7 +29,11 @@ public class SelectedTowerCardManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pathB_Cost;
 
     //[SerializeField] private GameObject pathB_LockedIcon;
-    
+
+    [Header("Audio")]
+    public AudioClip sellSound;
+    public float sellSoundVolume = 1.0f;
+
     public static SelectedTowerCardManager Instance { get; private set; }
 
     private Tower towerSelected;
@@ -223,6 +227,7 @@ public class SelectedTowerCardManager : MonoBehaviour
         MousePosition.Instance.DeselectTower();
         EntitySummoner.Instance.RemoveTower(towerToRemove);
 
+        SoundHandler.Instance.PlaySoundAtPosition(sellSound, towerToRemove.transform.position, sellSoundVolume, singleExecution: true );
     }
     
 

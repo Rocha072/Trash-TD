@@ -61,6 +61,7 @@ public class Tower : MonoBehaviour
     private int currentTierA = 0;
     private int currentTierB = 0;
 
+    private SoundEmitter attackSoundEmitter;
 
     private Animator animator;
 
@@ -102,6 +103,8 @@ public class Tower : MonoBehaviour
 
         if (towerData.requiresTarget)
             InvokeRepeating(nameof(UpdateTarget), 0f, targetSearchFrequency);
+
+        attackSoundEmitter = SoundHandler.Instance.PlaySoundAtPosition(towerData.attackSound, transform.position, towerData.attackSoundVolume, towerData.attackSoundLoop);
     }
 
 
@@ -122,6 +125,7 @@ public class Tower : MonoBehaviour
         if (WaveManager.Instance.currentState == WaveManager.WaveState.WaitingToStart)
         {
             attackBehavior.SetAttackEffect(false);
+            if(towerData.attackSoundLoop) attackSoundEmitter.PauseSound();
             return;
         }
 
@@ -130,12 +134,14 @@ public class Tower : MonoBehaviour
             if (target == null)
             {
                 attackBehavior.SetAttackEffect(false);
+                if (towerData.attackSoundLoop) attackSoundEmitter.PauseSound();
             }
             else
             {
                 RotateTarget();
 
                 attackBehavior.SetAttackEffect(true);
+                if (towerData.attackSoundLoop) attackSoundEmitter.ResumeSound();
 
                 if (fireCountdown <= 0f)
                 {
@@ -147,6 +153,7 @@ public class Tower : MonoBehaviour
         else
         {
             attackBehavior.SetAttackEffect(true);
+            if (towerData.attackSoundLoop) attackSoundEmitter.ResumeSound();
 
             if (fireCountdown <= 0f)
             {
@@ -292,6 +299,9 @@ public class Tower : MonoBehaviour
     void Attack()
     {
         attackBehavior.Attack(target, currentStats);
+
+        if(!towerData.attackSoundLoop)
+            attackSoundEmitter.ReplaySound();
     }
 
     void OnDrawGizmosSelected()

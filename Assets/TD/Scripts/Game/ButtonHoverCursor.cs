@@ -3,9 +3,11 @@ using UnityEngine.EventSystems;
 
 
 [RequireComponent(typeof(UnityEngine.UI.Button))]
-public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+    [SerializeField] private bool isScreenChanger = true;
    
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         CursorManager.Instance.SetHand();
@@ -17,14 +19,11 @@ public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerEx
         CursorManager.Instance.SetDefault();
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        CursorManager.Instance.SetDefault();
-
-    }
-    
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        CursorManager.Instance.SetDefault();
+        if (isScreenChanger)
+        {
+            CursorManager.Instance.SetDefault();
+        }
     }
 }

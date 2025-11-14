@@ -81,14 +81,19 @@ public class MousePosition : MonoBehaviour
 
             PlayerEconomy.Instance.Buy(towerBeingPlaced.towerData.cost);
             StatsManager.Instance.AddTowerPurchased();
+            UIManager.Instance.ClearPendingTower();
             towerBeingPlaced.isBeingPlaced = false;
             towerBeingPlaced.RangeObject.SetActive(false);
+            SoundHandler.Instance.PlaySoundAtPosition(towerBeingPlaced.towerData.placeSound, towerBeingPlaced.transform.position, towerBeingPlaced.towerData.placeSoundVolume);
+
             towerBeingPlaced = null;
+
         }
 
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.Escape))
         {
             EntitySummoner.Instance.RemoveTower(towerBeingPlaced);
+            UIManager.Instance.ClearPendingTower();
             towerBeingPlaced = null;
         }
     }

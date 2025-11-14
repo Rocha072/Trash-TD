@@ -12,12 +12,13 @@ public class TowerProjectile : MonoBehaviour
     Enemy target;
     CurrentTowerStats currentStats;
     public GameObject projectileTransformationPrefab;
-
+    Tower Attacker;
     public float transformationDuration;
 
-    public void SetInfoProjectile(Enemy towerTarget, CurrentTowerStats towerStats)
+    public void SetInfoProjectile(Enemy towerTarget, CurrentTowerStats towerStats, Tower attacker)
     {
         target = towerTarget;
+        Attacker = attacker;
         currentStats = towerStats;
         transformationDuration = 0f;
         startPosition = transform.position;
@@ -35,7 +36,7 @@ public class TowerProjectile : MonoBehaviour
             yield return null;
         } while (counter < timeToArrive);
 
-        target.TakeDamage(currentStats.Damage);
+        target.TakeDamage(currentStats.Damage, Attacker);
         target.ApplySlow(currentStats.SlowFactor, currentStats.SlowDuration);
         target.ApplyStun(currentStats.StunDuration);
 

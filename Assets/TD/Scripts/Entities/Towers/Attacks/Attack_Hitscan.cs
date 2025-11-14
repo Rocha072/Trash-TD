@@ -7,7 +7,7 @@ public class Attack_Hitscan : TowerAttackBehavior
     private Enemy currentTarget;
     public override void Init(Tower tower)
     {
-    
+        this.thisTower = tower;
         if (animator == null)
             animator = GetComponentInParent<Animator>(); 
     }
@@ -24,7 +24,7 @@ public class Attack_Hitscan : TowerAttackBehavior
         }
         else
         {
-            currentTarget.TakeDamage(currentStats.Damage);
+            currentTarget.TakeDamage(currentStats.Damage, this.thisTower);
             currentTarget.ApplySlow(currentStats.SlowFactor, currentStats.SlowDuration);
         }
 
@@ -35,7 +35,7 @@ public class Attack_Hitscan : TowerAttackBehavior
 
         if (currentTarget != null)
         {
-            currentTarget.TakeDamage(currentStats.Damage);
+            currentTarget.TakeDamage(currentStats.Damage, this.thisTower);
             currentTarget.ApplySlow(currentStats.SlowFactor, currentStats.SlowDuration);
         }
 

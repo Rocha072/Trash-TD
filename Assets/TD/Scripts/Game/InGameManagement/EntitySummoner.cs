@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.NetworkInformation;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -9,6 +10,7 @@ using UnityEngine;
 public class EntitySummoner : MonoBehaviour
 {
     public static EntitySummoner Instance { get; private set; }
+    private List<IEnemyDeathListener> enemyDeathListeners = new List<IEnemyDeathListener>();
 
     [Header("Enemy Configuration")]
     public List<EnemyBlueprint> enemyBlueprints;
@@ -108,7 +110,37 @@ public class EntitySummoner : MonoBehaviour
         return SummonedEnemy;
     }
 
+    public void HandleEnemyDeath(Enemy enemy, Tower killer)
+    {
+        WaveManager.Instance.OnEnemyDied();
+        PlayerEconomy.Instance.GainMoney(enemy.enemyData.dropAmount);
+        StatsManager.Instance.AddTrashCollected();
+        StatsManager.Instance.AddMoneyGeneratedByCollections(enemy.enemyData.dropAmount);
 
+
+        if (enemy.enemyData.spawnOnDeathList != null && enemy.enemyData.spawnOnDeathList.Count > 0)
+        {
+            int totalChildren = 0;
+
+            foreach (var group in enemy.enemyData.spawnOnDeathList)
+                totalChildren += group.amount;
+                
+            for (int i = 0; i < totalChildren; i++) 
+                WaveManager.Instance.OnEnemySpawned();
+
+            SpawnEnemiesWithDelay(enemy.enemyData.spawnOnDeathList, enemy.transform.position, enemy.CurrentNodeIndex, 0.1f);
+        }
+
+        foreach (IEnemyDeathListener listener in enemyDeathListeners.ToList())
+        {
+            if (listener != null)
+                listener.OnEnemyDeath(killer, enemy);
+            
+        }
+
+        RemoveEnemy(enemy);
+    }
+    
     public void RemoveEnemy(Enemy EnemyToRemove)
     {
         enemiesDisabled[EnemyToRemove.enemyData.ID].Enqueue(EnemyToRemove);
@@ -153,7 +185,7 @@ public class EntitySummoner : MonoBehaviour
         if (tower != null)
             tower.Init(towerToSummon.towerData);
         else
-            Debug.LogError("O prefab da torre não contém o script TowerController!");
+            Debug.LogError("O prefab da torre não contém o script Tower");
 
         return tower;
 
@@ -170,8 +202,24 @@ public class EntitySummoner : MonoBehaviour
         TowerToRemove.transform.position = new Vector3(1000, 1000, 1000);
 
         yield return new WaitForFixedUpdate();
-        
+
         Destroy(TowerToRemove.gameObject);
+    }
+
+    public void RegisterDeathListener(IEnemyDeathListener listener)
+    {
+        if (!enemyDeathListeners.Contains(listener))
+        {
+            enemyDeathListeners.Add(listener);
+        }
+    }
+    
+    public void UnregisterDeathListener(IEnemyDeathListener listener)
+    {
+        if (enemyDeathListeners.Contains(listener))
+        {
+            enemyDeathListeners.Remove(listener);
+        }
     }
 
 }

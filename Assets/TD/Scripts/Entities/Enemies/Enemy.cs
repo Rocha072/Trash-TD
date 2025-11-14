@@ -15,7 +15,9 @@ public class Enemy : MonoBehaviour
     private float slowFactor; // 1.0f = sem lentidão
     private float slowDurationTimer;
     private float stunDurationTimer;
+
     private bool isDead;
+    private Tower lastAttacker;
     
     NavMeshAgent agent;
 
@@ -34,10 +36,12 @@ public class Enemy : MonoBehaviour
             {
                 return agent.remainingDistance;
             }
-            
+
             return float.MaxValue;
         }
     }
+    
+
 
     public void Init(EnemyData data, int startNodeIndex)
     {
@@ -112,16 +116,16 @@ public class Enemy : MonoBehaviour
         }
 
         PlayerLife.Instance.TakeDamage(this.enemyData.damage);
-        WaveManager.Instance.OnEnemyDied();
-        EntitySummoner.Instance.RemoveEnemy(this);
+        EntitySummoner.Instance.HandleEnemyDeath(this, null);
 
     }
 
-    public void TakeDamage(float damage, string type = "nothing")
+    public void TakeDamage(float damage, Tower attacker)
     {
         if (isDead) return;
 
         this.Health -= damage;
+        this.lastAttacker = attacker;
 
         if (Health <= 0f)
         {
@@ -154,40 +158,9 @@ public class Enemy : MonoBehaviour
 
         isDead = true;
 
-        //if (enemyData.dieSoundEffect != null)
-        //{
-        //    AudioSource.PlayClipAtPoint(enemyData.dieSoundEffect, transform.position);
-        //}
+        SoundHandler.Instance.PlaySoundAtPosition(enemyData.dieSoundEffect, transform.position, enemyData.dieVolume, singleExecution: true);
 
-        if (enemyData.dieSoundEffect != null && soundEmitterPrefab != null)
-        {
-            // 1. Cria (Instancia) o prefab na posição do inimigo
-            SoundEmitter emitter = Instantiate(soundEmitterPrefab, transform.position, Quaternion.identity);
-
-            // 2. Manda ele tocar o som
-            emitter.PlaySound(enemyData.dieSoundEffect, enemyData.dieVolume);
-        }
-
-        if (enemyData.spawnOnDeathList != null && enemyData.spawnOnDeathList.Count > 0)
-        {
-            int totalChildrenToSpawn = 0;
-            foreach (var group in enemyData.spawnOnDeathList)
-            {
-                totalChildrenToSpawn += group.amount;
-            }
-
-            for (int i = 0; i < totalChildrenToSpawn; i++)
-            {
-                WaveManager.Instance.OnEnemySpawned();
-            }
-            EntitySummoner.Instance.SpawnEnemiesWithDelay(enemyData.spawnOnDeathList, transform.position, currentNodeIndex, 0.1f);
-        }
-        
-        WaveManager.Instance.OnEnemyDied();
-        PlayerEconomy.Instance.GainMoney(enemyData.dropAmount);
-        StatsManager.Instance.AddTrashCollected();
-        StatsManager.Instance.AddMoneyGeneratedByCollections(enemyData.dropAmount);
-        EntitySummoner.Instance.RemoveEnemy(this);
+        EntitySummoner.Instance.HandleEnemyDeath(this, lastAttacker);
     }
 
 }
