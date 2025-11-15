@@ -101,10 +101,11 @@ public class Tower : MonoBehaviour
         this.RangeObject.SetActive(true);
         UpdateRange();
 
+        attackSoundEmitter = SoundHandler.Instance.PlaySoundAtPosition(towerData.attackSound, transform.position, towerData.attackSoundVolume, towerData.attackSoundLoop, parent: transform);
+        
         if (towerData.requiresTarget)
             InvokeRepeating(nameof(UpdateTarget), 0f, targetSearchFrequency);
 
-        attackSoundEmitter = SoundHandler.Instance.PlaySoundAtPosition(towerData.attackSound, transform.position, towerData.attackSoundVolume, towerData.attackSoundLoop);
     }
 
 
@@ -300,7 +301,7 @@ public class Tower : MonoBehaviour
     {
         attackBehavior.Attack(target, currentStats);
 
-        if(!towerData.attackSoundLoop)
+        if(attackSoundEmitter != null && !towerData.attackSoundLoop)
             attackSoundEmitter.ReplaySound();
     }
 

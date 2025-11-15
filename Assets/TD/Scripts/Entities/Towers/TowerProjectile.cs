@@ -14,10 +14,11 @@ public class TowerProjectile : MonoBehaviour
     public GameObject projectileTransformationPrefab;
     Tower Attacker;
     public float transformationDuration;
-
+    Vector3 targetPosition;
     public void SetInfoProjectile(Enemy towerTarget, CurrentTowerStats towerStats, Tower attacker)
     {
         target = towerTarget;
+        targetPosition = towerTarget.transform.position;
         Attacker = attacker;
         currentStats = towerStats;
         transformationDuration = 0f;
@@ -28,11 +29,18 @@ public class TowerProjectile : MonoBehaviour
 
     IEnumerator GoToTarget()
     {
+        bool enemyIsAlive = true;
         do
         {
+            if(target.Health > 0 && enemyIsAlive)
+                targetPosition = target.transform.position;
+            else if (enemyIsAlive)
+                enemyIsAlive = false;
+                
             counter += Time.deltaTime;
-            transform.position = Vector3.Lerp(startPosition, target.transform.position, counter / timeToArrive);
+            transform.position = Vector3.Lerp(startPosition, targetPosition, counter / timeToArrive);
             transform.position += Vector3.up * trajectory.Evaluate(counter / timeToArrive);
+            
             yield return null;
         } while (counter < timeToArrive);
 

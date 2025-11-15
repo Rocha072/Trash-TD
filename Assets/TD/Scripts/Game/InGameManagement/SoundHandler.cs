@@ -15,12 +15,17 @@ public class SoundHandler : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public SoundEmitter PlaySoundAtPosition(AudioClip clip, Vector3 position, float volume = 1.0f, bool loop = false, bool singleExecution = false)
+    public SoundEmitter PlaySoundAtPosition(AudioClip clip, Vector3 passedPosition, float volume = 1.0f, bool loop = false, bool singleExecution = false, Transform parent = null)
     {
         if (clip == null) return null;
 
         GameObject soundEmitterObject = new GameObject("SoundEmitter");
-        soundEmitterObject.transform.position = position;
+        soundEmitterObject.transform.position = passedPosition;
+
+        if (parent != null)
+        {
+            soundEmitterObject.transform.SetParent(parent);
+        }
 
         SoundEmitter soundEmitter = soundEmitterObject.AddComponent<SoundEmitter>();
 

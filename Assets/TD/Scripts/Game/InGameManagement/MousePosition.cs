@@ -84,7 +84,7 @@ public class MousePosition : MonoBehaviour
             UIManager.Instance.ClearPendingTower();
             towerBeingPlaced.isBeingPlaced = false;
             towerBeingPlaced.RangeObject.SetActive(false);
-            SoundHandler.Instance.PlaySoundAtPosition(towerBeingPlaced.towerData.placeSound, towerBeingPlaced.transform.position, towerBeingPlaced.towerData.placeSoundVolume);
+            SoundHandler.Instance.PlaySoundAtPosition(towerBeingPlaced.towerData.placeSound, towerBeingPlaced.transform.position, towerBeingPlaced.towerData.placeSoundVolume, singleExecution: true);
 
             towerBeingPlaced = null;
 

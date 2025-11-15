@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Recycle Center
   m_EditorClassIdentifier: 
   baseRange: 30
-  baseDamage: 20000
+  baseDamage: 10
   baseFireRate: 1
   baseSlowFactor: 0
   baseSlowDuration: 0
@@ -36,3 +36,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 43e7fc4d98f0c564da771e6cd1e140d4, type: 2}
   - {fileID: 11400000, guid: 3bd940c76184db442b600cd2074f4075, type: 2}
   - {fileID: 11400000, guid: d51dd6f51ee24ff4d9c00cb3fa6bd5fa, type: 2}
+  placeSound: {fileID: 8300000, guid: 7c514824c67997d428fe50518866a003, type: 3}
+  placeSoundVolume: 0.1
+  attackSound: {fileID: 0}
+  attackSoundVolume: 1
+  attackSoundLoop: 0
