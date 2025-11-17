@@ -14,6 +14,9 @@ public class WaveManager : MonoBehaviour
     public int currentWaveIndex;
     private int enemiesAlive;
 
+    [Header("Musics")]
+    public AudioClip faseMusic;
+
     public enum WaveState
     {
         WaitingToStart, Spawning, WaitingForClear, AllWavesComplete
@@ -31,6 +34,7 @@ public class WaveManager : MonoBehaviour
 
     void Start()
     {
+        SoundHandler.Instance.PlayMusic(faseMusic, 0.01f);
         currentWaveIndex = 0;
         enemiesAlive = 0;
         UIManager.Instance.UpdateCurrentWaveText();

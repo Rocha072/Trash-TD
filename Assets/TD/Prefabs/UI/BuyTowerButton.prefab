@@ -139,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isScreenChanger: 1
+  clickAudio: {fileID: 8300000, guid: 2eb3606935af78645998b69a4ac89eb1, type: 3}
 --- !u!114 &8675092098811041427
 MonoBehaviour:
   m_ObjectHideFlags: 0

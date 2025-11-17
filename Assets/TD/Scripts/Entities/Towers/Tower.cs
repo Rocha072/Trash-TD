@@ -42,7 +42,7 @@ public class Tower : MonoBehaviour
 
     [Header("Attack Control")]
     public TargetingPriority currentPriority = TargetingPriority.First;
-    [SerializeField] private float targetSearchFrequency = 0.1f;
+    private float targetSearchFrequency = 0.05f;
     private TowerAttackBehavior attackBehavior;
     private Enemy target;
     private float fireCountdown;

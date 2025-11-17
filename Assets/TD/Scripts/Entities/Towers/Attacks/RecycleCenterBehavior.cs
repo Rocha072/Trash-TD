@@ -15,22 +15,13 @@ public class RecycleCenterBehavior: TowerAttackBehavior, IEnemyDeathListener
     {
         if (EntitySummoner.Instance != null)
         {
-            EntitySummoner.Instance.RegisterDeathListener(this);
+            EntitySummoner.Instance.UnregisterDeathListener(this);
         }
     }
 
     public override void Attack(Enemy target, CurrentTowerStats towerStats)
     {
         this.currentStats = towerStats;
-
-        // if (IsCollectorInRange(towerStats.Range))
-        // {
-        //     int moneyToGenerate = (int)towerStats.Damage;
-        //     PlayerEconomy.Instance.GainMoney(moneyToGenerate);
-        //     StatsManager.Instance.AddMoneyGeneratedByCollections(moneyToGenerate);
-        // }
-
-        
     }
 
     public override void SetAttackEffect(bool active)
