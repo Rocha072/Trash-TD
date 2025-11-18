@@ -13,6 +13,7 @@ public struct CurrentTowerStats
     public float SlowFactor;
     public float SlowDuration;
     public float StunDuration;
+    public float GenerateRate;
 }
 
 public enum TargetingPriority
@@ -61,8 +62,6 @@ public class Tower : MonoBehaviour
     private int currentTierA = 0;
     private int currentTierB = 0;
 
-    private SoundEmitter attackSoundEmitter;
-
     private Animator animator;
 
 
@@ -84,6 +83,8 @@ public class Tower : MonoBehaviour
         currentStats.SlowDuration = towerData.baseSlowDuration;
         currentStats.SlowFactor = towerData.baseSlowFactor;
         currentStats.StunDuration = towerData.baseStunDuration;
+        currentStats.GenerateRate = towerData.baseGenerateRate;
+        
         totalCostInvested = towerData.cost;
 
 
@@ -100,8 +101,6 @@ public class Tower : MonoBehaviour
 
         this.RangeObject.SetActive(true);
         UpdateRange();
-
-        attackSoundEmitter = SoundHandler.Instance.PlaySoundAtPosition(towerData.attackSound, transform.position, towerData.attackSoundVolume, towerData.attackSoundLoop, parent: transform);
         
         if (towerData.requiresTarget)
             InvokeRepeating(nameof(UpdateTarget), 0f, targetSearchFrequency);
@@ -126,7 +125,7 @@ public class Tower : MonoBehaviour
         if (WaveManager.Instance.currentState == WaveManager.WaveState.WaitingToStart)
         {
             attackBehavior.SetAttackEffect(false);
-            if(towerData.attackSoundLoop) attackSoundEmitter.PauseSound();
+            if(towerData.attackSoundLoop) attackBehavior.SetLoopAttackSound(false);
             return;
         }
 
@@ -135,14 +134,15 @@ public class Tower : MonoBehaviour
             if (target == null)
             {
                 attackBehavior.SetAttackEffect(false);
-                if (towerData.attackSoundLoop) attackSoundEmitter.PauseSound();
+                if (towerData.attackSoundLoop) attackBehavior.SetLoopAttackSound(false);
+
             }
             else
             {
                 RotateTarget();
 
                 attackBehavior.SetAttackEffect(true);
-                if (towerData.attackSoundLoop) attackSoundEmitter.ResumeSound();
+                if (towerData.attackSoundLoop) attackBehavior.SetLoopAttackSound(true);
 
                 if (fireCountdown <= 0f)
                 {
@@ -154,7 +154,7 @@ public class Tower : MonoBehaviour
         else
         {
             attackBehavior.SetAttackEffect(true);
-            if (towerData.attackSoundLoop) attackSoundEmitter.ResumeSound();
+            if (towerData.attackSoundLoop) attackBehavior.SetLoopAttackSound(true);
 
             if (fireCountdown <= 0f)
             {
@@ -300,9 +300,6 @@ public class Tower : MonoBehaviour
     void Attack()
     {
         attackBehavior.Attack(target, currentStats);
-
-        if(attackSoundEmitter != null && !towerData.attackSoundLoop)
-            attackSoundEmitter.ReplaySound();
     }
 
     void OnDrawGizmosSelected()
@@ -361,17 +358,17 @@ public class Tower : MonoBehaviour
         this.RangeObject.transform.localScale = new Vector3(currentStats.Range / transform.lossyScale.x * 2, 0.1f, currentStats.Range / transform.lossyScale.z * 2);
     }
 
-    public void TryApplyUpgrade(int pathIndex) // 0 => A, 1 => B
+    public bool TryApplyUpgrade(int pathIndex) // 0 => A, 1 => B
     {
         //Retorna se tentou comprar o caminho errado
 
         if (pathIndex == 0 && currentTierB > 0)
         {
-            return;
+            return false;
         }
         if (pathIndex == 1 && currentTierA > 0)
         {
-            return;
+            return false;
         }
 
         // Pega o upgrade que deve ser incrementado
@@ -379,7 +376,7 @@ public class Tower : MonoBehaviour
 
         if (upgradeToApply == null)
         {
-            return;
+            return false;
         }
 
         if (PlayerEconomy.Instance.CanBuy(upgradeToApply.upgradeCost))
@@ -396,7 +393,11 @@ public class Tower : MonoBehaviour
             else currentTierB++;
 
             SelectedTowerCardManager.Instance.RefreshUI(this);
+
+            return true;
         }
+
+        return false;
     }
 
     private void ApplyStats(UpgradeStats stats)
@@ -408,6 +409,8 @@ public class Tower : MonoBehaviour
         currentStats.FireRate *= stats.fireRate_multiplier;
         currentStats.SlowFactor *= stats.slowFactor_multiplier;
         currentStats.StunDuration += stats.StunDuration_add;
+        currentStats.GenerateRate += stats.GenerateRate_add;
+        currentStats.GenerateRate *= stats.GenerateRate_multiply;
         UpdateRange();
     }
 

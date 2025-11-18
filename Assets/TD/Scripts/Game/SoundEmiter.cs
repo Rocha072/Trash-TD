@@ -24,7 +24,7 @@ public class SoundEmitter : MonoBehaviour
         audioSource.clip = clip;
         audioSource.volume = volume;
         audioSource.loop = loop;
-        audioSource.spatialBlend = 0.95f;
+        audioSource.spatialBlend = 0.98f;
 
     }
 
@@ -39,7 +39,7 @@ public class SoundEmitter : MonoBehaviour
         audioSource.clip = clip;
         audioSource.volume = volume;
         audioSource.loop = false;
-        audioSource.spatialBlend = 0.5f;
+        audioSource.spatialBlend = 0.9f;
 
 
         audioSource.Play();

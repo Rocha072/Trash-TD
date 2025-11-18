@@ -27,5 +27,7 @@ public class UpgradeStats
     public float slowDuration_add = 0;
 
     public float StunDuration_add = 0;
+    public float GenerateRate_add = 0;
+    public float GenerateRate_multiply = 1.0f;
     
 }

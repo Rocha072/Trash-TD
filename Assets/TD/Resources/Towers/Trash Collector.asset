@@ -39,5 +39,5 @@ MonoBehaviour:
   placeSound: {fileID: 8300000, guid: 7c514824c67997d428fe50518866a003, type: 3}
   placeSoundVolume: 0.1
   attackSound: {fileID: 8300000, guid: 8563339f52da7654aaa81e42efa7298f, type: 3}
-  attackSoundVolume: 0.1
+  attackSoundVolume: 0.08
   attackSoundLoop: 0
