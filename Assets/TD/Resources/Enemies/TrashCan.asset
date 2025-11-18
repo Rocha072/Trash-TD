@@ -20,7 +20,7 @@ MonoBehaviour:
   Acceleration: 1.125
   MinDistanceToPassNode: 2
   dieSoundEffect: {fileID: 8300000, guid: 3fd8fb5b2011f404d9128363a1917360, type: 3}
-  dieVolume: 0.1
+  dieVolume: 3
   spawnOnDeathList:
   - enemyID: 2
     amount: 2

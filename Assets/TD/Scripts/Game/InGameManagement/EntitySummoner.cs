@@ -112,10 +112,6 @@ public class EntitySummoner : MonoBehaviour
 
     public void HandleEnemyDeath(Enemy enemy, Tower killer)
     {
-        WaveManager.Instance.OnEnemyDied();
-        PlayerEconomy.Instance.GainMoney(enemy.enemyData.dropAmount);
-        StatsManager.Instance.AddTrashCollected();
-        StatsManager.Instance.AddMoneyGeneratedByCollections(enemy.enemyData.dropAmount);
 
 
         if (enemy.enemyData.spawnOnDeathList != null && enemy.enemyData.spawnOnDeathList.Count > 0)
@@ -130,6 +126,11 @@ public class EntitySummoner : MonoBehaviour
 
             SpawnEnemiesWithDelay(enemy.enemyData.spawnOnDeathList, enemy.transform.position, enemy.CurrentNodeIndex, 0.1f);
         }
+        
+        WaveManager.Instance.OnEnemyDied();
+        PlayerEconomy.Instance.GainMoney(enemy.enemyData.dropAmount);
+        StatsManager.Instance.AddTrashCollected();
+        StatsManager.Instance.AddMoneyGeneratedByCollections(enemy.enemyData.dropAmount);
 
         foreach (IEnemyDeathListener listener in enemyDeathListeners.ToList())
         {

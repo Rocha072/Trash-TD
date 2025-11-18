@@ -28,7 +28,7 @@ public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         if (clickAudio != null)
         {
-            SoundHandler.Instance.PlayUISound(clickAudio, 0.2f);
+            SoundHandler.Instance.PlayUISound(clickAudio, 0.9f);
         }
     }
 }

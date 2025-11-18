@@ -18,6 +18,7 @@ MonoBehaviour:
   baseSlowFactor: 0.5
   baseSlowDuration: 4
   baseStunDuration: 0
+  baseGenerateRate: 1
   TowerSprite: {fileID: 21300000, guid: b8c47ccc99ac2b64d9e85aca7cca87fd, type: 3}
   towerName: "Arma de \xC1gua"
   towerDescription: "Atira um jato de \xE1gua cont\xEDnuo que deixa o lixo lento,
@@ -36,7 +37,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3bd940c76184db442b600cd2074f4075, type: 2}
   - {fileID: 11400000, guid: d51dd6f51ee24ff4d9c00cb3fa6bd5fa, type: 2}
   placeSound: {fileID: 8300000, guid: 7c514824c67997d428fe50518866a003, type: 3}
-  placeSoundVolume: 0.1
+  placeSoundVolume: 1
   attackSound: {fileID: 8300000, guid: 3a5cdd9c1c9087748ab63ca735034451, type: 3}
-  attackSoundVolume: 0.02
+  attackSoundVolume: 0.2
   attackSoundLoop: 1

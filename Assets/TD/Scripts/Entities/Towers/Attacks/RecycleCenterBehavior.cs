@@ -56,6 +56,7 @@ public class RecycleCenterBehavior: TowerAttackBehavior, IEnemyDeathListener
             attackSoundEmitter.ReplaySound();
 
         int bonusMoney = (int)this.currentStats.Damage; 
+        StatsManager.Instance.AddMoneyGeneratedByCollections(bonusMoney);
         PlayerEconomy.Instance.GainMoney(bonusMoney);
     }
 
