@@ -11,6 +11,7 @@ public class TowerData : ScriptableObject
     public float baseSlowFactor = 1f;
     public float baseSlowDuration;
     public float baseStunDuration;
+    public float baseGenerateRate = 1f;
 
     [Header("Tower Traits")]
     public Sprite TowerSprite;

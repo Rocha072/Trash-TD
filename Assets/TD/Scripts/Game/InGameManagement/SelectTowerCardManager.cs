@@ -33,6 +33,8 @@ public class SelectedTowerCardManager : MonoBehaviour
     [Header("Audio")]
     public AudioClip sellSound;
     public float sellSoundVolume = 1.0f;
+    public AudioClip upgradeSound;
+    public float upgradeSoundVolume = 1.0f;
 
     public static SelectedTowerCardManager Instance { get; private set; }
 
@@ -175,7 +177,8 @@ public class SelectedTowerCardManager : MonoBehaviour
     {
         if (towerSelected != null)
         {
-            towerSelected.TryApplyUpgrade(pathIndex);
+            if(towerSelected.TryApplyUpgrade(pathIndex))
+                SoundHandler.Instance.PlaySoundAtPosition(upgradeSound, towerSelected.transform.position, upgradeSoundVolume, singleExecution: true);
         }
     }
 
@@ -198,7 +201,6 @@ public class SelectedTowerCardManager : MonoBehaviour
 
         towerSelected.currentPriority = (TargetingPriority)newPriorityIndex;
 
-        // Atualiza o texto na UI
         UpdateTargetingUI();
     }
     
@@ -225,9 +227,10 @@ public class SelectedTowerCardManager : MonoBehaviour
         Tower towerToRemove = towerSelected;
         PlayerEconomy.Instance.GainMoney(PriceToSell);
         MousePosition.Instance.DeselectTower();
+        SoundHandler.Instance.PlaySoundAtPosition(sellSound, towerToRemove.transform.position, sellSoundVolume, singleExecution: true );
+        
         EntitySummoner.Instance.RemoveTower(towerToRemove);
 
-        SoundHandler.Instance.PlaySoundAtPosition(sellSound, towerToRemove.transform.position, sellSoundVolume, singleExecution: true );
     }
     
 

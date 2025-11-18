@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEditor;
 public class MenuManagement : MonoBehaviour
 {
     [Header("Panels")]
@@ -15,9 +16,12 @@ public class MenuManagement : MonoBehaviour
     public Slider sliderLoading;
     public TextMeshProUGUI txtPorcentage;
 
+    [Header("Music")]
+    public AudioClip menuMusic;
     void Start()
     {
         BackToMainMenu();
+        SoundHandler.Instance.PlayMusic(menuMusic, 0.1f);
     }
 
 

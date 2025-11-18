@@ -1,4 +1,3 @@
-// Salve como CursorManager.cs
 using UnityEngine;
 
 public class CursorManager : MonoBehaviour
@@ -18,7 +17,6 @@ public class CursorManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject); 
-            
         }
         else
         {

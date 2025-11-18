@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     [SerializeField] private bool isScreenChanger = true;
-   
+    [SerializeField] private AudioClip clickAudio;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -24,6 +24,11 @@ public class ButtonHoverCursor : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if (isScreenChanger)
         {
             CursorManager.Instance.SetDefault();
+        }
+
+        if (clickAudio != null)
+        {
+            SoundHandler.Instance.PlayUISound(clickAudio, 0.2f);
         }
     }
 }

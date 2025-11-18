@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Recycle Center
   m_EditorClassIdentifier: 
   baseRange: 30
-  baseDamage: 20000
+  baseDamage: 5
   baseFireRate: 1
   baseSlowFactor: 0
   baseSlowDuration: 0
   baseStunDuration: 0
+  baseGenerateRate: 0.5
   TowerSprite: {fileID: 21300000, guid: 078a848156bc370448e92b6125382ed9, type: 3}
   towerName: Centro de Reciclagem
   towerDescription: Transforma o lixo coletado em moedas. Gaste moedas para receber
@@ -29,10 +30,15 @@ MonoBehaviour:
   requiresTarget: 0
   isCollector: 0
   pathA_Upgrades:
-  - {fileID: 11400000, guid: bf424fef20d71ed4db0bc83b0eddaa17, type: 2}
-  - {fileID: 11400000, guid: e45a5f97581147949bb0b0adb7ba1b5f, type: 2}
-  - {fileID: 11400000, guid: b097e866cbbbefc43a05ba607a1080ef, type: 2}
+  - {fileID: 11400000, guid: a41ef070135f62b4f8a3b369b9e5afcf, type: 2}
+  - {fileID: 11400000, guid: 90d6da4a21e9eb7438447c1528e3181e, type: 2}
+  - {fileID: 11400000, guid: ff5f5ccf78b6b8d4bbeecdd9ffd6c7b8, type: 2}
   pathB_Upgrades:
-  - {fileID: 11400000, guid: 43e7fc4d98f0c564da771e6cd1e140d4, type: 2}
-  - {fileID: 11400000, guid: 3bd940c76184db442b600cd2074f4075, type: 2}
-  - {fileID: 11400000, guid: d51dd6f51ee24ff4d9c00cb3fa6bd5fa, type: 2}
+  - {fileID: 11400000, guid: 6f163fdf4c7a8d24eaf45fe289b8b3ea, type: 2}
+  - {fileID: 11400000, guid: 46a1d19f67f6b0d43a4db9f997a7d418, type: 2}
+  - {fileID: 11400000, guid: e06c6b5e62e156f4bb6863bc5f83a61c, type: 2}
+  placeSound: {fileID: 8300000, guid: 7c514824c67997d428fe50518866a003, type: 3}
+  placeSoundVolume: 0.1
+  attackSound: {fileID: 8300000, guid: eaa5ea40bbab21e469de44408ce83f63, type: 3}
+  attackSoundVolume: 0.1
+  attackSoundLoop: 0

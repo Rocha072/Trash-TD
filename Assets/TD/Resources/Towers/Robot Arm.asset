@@ -35,3 +35,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 032205443450912498f35741ab15a9d4, type: 2}
   - {fileID: 11400000, guid: 77b2f38196a318b429921d1cb7e419e0, type: 2}
   - {fileID: 11400000, guid: 9c6d79b69c63d05489f4b4435cf04c1c, type: 2}
+  placeSound: {fileID: 8300000, guid: 7c514824c67997d428fe50518866a003, type: 3}
+  placeSoundVolume: 0.1
+  attackSound: {fileID: 8300000, guid: fb69f5cf96c5262409ae45bcebdb5a4e, type: 3}
+  attackSoundVolume: 0.06
+  attackSoundLoop: 0
