@@ -302,7 +302,8 @@ MonoBehaviour:
   isBeingPlaced: 1
   validPosition: 0
   minHeight: 18.8
-  maxHeight: 20.3
+  maxHeight: 19.1
+  currentPriority: 0
   currentStats:
     Damage: 0
     Range: 0
@@ -310,6 +311,7 @@ MonoBehaviour:
     SlowFactor: 0
     SlowDuration: 0
     StunDuration: 0
+    GenerateRate: 0
 --- !u!114 &-1619278133993822434
 MonoBehaviour:
   m_ObjectHideFlags: 0

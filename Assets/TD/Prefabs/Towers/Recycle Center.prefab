@@ -321,7 +321,7 @@ MonoBehaviour:
   isBeingPlaced: 1
   validPosition: 0
   minHeight: 18.8
-  maxHeight: 20.3
+  maxHeight: 19.1
   currentPriority: 0
   currentStats:
     Damage: 0
