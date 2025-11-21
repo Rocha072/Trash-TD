@@ -128,7 +128,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateCurrentWaveText()
     {
-        currentWaveText.text = "Rodada " + (WaveManager.Instance.currentWaveIndex+1) + "/" + WaveManager.Instance.allWaves.Count;
+        currentWaveText.text = "Rodada " + (WaveManager.Instance.currentWaveIndex+1) + "/" + WaveManager.Instance.maxWavesForThisDifficulty;
     }
 
     public void SelectTowerInShop(TowerData data)

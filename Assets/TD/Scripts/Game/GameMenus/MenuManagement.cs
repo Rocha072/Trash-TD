@@ -11,6 +11,7 @@ public class MenuManagement : MonoBehaviour
     public GameObject panelSelectLevel;
     public GameObject panelGuide;
     public GameObject panelLoading;
+    public GameObject panelDifficulty;
 
     [Header("Loading Screen")]
     public Slider sliderLoading;
@@ -31,6 +32,7 @@ public class MenuManagement : MonoBehaviour
         panelSelectLevel.SetActive(false);
         panelGuide.SetActive(false);
         panelLoading.SetActive(false);
+        panelDifficulty.SetActive(false);
     }
 
     public void PlayButton()
@@ -39,6 +41,7 @@ public class MenuManagement : MonoBehaviour
         panelSelectLevel.SetActive(true);
         panelGuide.SetActive(false);
         panelLoading.SetActive(false);
+        panelDifficulty.SetActive(false);
     }
 
     public void GuideButton()
@@ -47,6 +50,7 @@ public class MenuManagement : MonoBehaviour
         panelSelectLevel.SetActive(false);
         panelGuide.SetActive(true);
         panelLoading.SetActive(false);
+        panelDifficulty.SetActive(false);
     }
 
     public void ExitButton()
@@ -59,11 +63,21 @@ public class MenuManagement : MonoBehaviour
         panelMenuPrincipal.SetActive(false);
         panelSelectLevel.SetActive(false);
         panelGuide.SetActive(false);
-        panelLoading.SetActive(true);
-        StartCoroutine(LoadScene(LevelNumber));
+        panelLoading.SetActive(false);
 
+        panelDifficulty.SetActive(true);
+        LevelSettings.LevelNumber = LevelNumber;
+        
     }
     
+    public void SelectDifficulty(int difficultyIndex)
+    {
+        LevelSettings.DifficultyChosed = (Difficulty)difficultyIndex;
+        panelDifficulty.SetActive(false);
+        panelLoading.SetActive(true);
+        StartCoroutine(LoadScene(LevelSettings.LevelNumber));
+    }
+
     private IEnumerator LoadScene(int SceneNumber)
     {
         yield return null;

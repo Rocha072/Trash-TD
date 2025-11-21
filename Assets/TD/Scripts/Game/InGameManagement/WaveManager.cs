@@ -12,6 +12,7 @@ public class WaveManager : MonoBehaviour
     public List<WaveDefinition> allWaves;
 
     public int currentWaveIndex;
+    public int maxWavesForThisDifficulty;
     private int enemiesAlive;
 
     [Header("Musics")]
@@ -38,11 +39,29 @@ public class WaveManager : MonoBehaviour
         SoundHandler.Instance.PlayMusic(faseMusic, musicVolume);
         currentWaveIndex = 0;
         enemiesAlive = 0;
+        SetupDifficulty();
         UIManager.Instance.UpdateCurrentWaveText();
         UIManager.Instance.UpdateMoneyText();
         UIManager.Instance.UpdateLifeText();
         EntitySummoner.Instance.Init();
         currentState = WaveState.WaitingToStart;
+    }
+
+    void SetupDifficulty()
+    {
+        switch (LevelSettings.DifficultyChosed)
+        {
+            case Difficulty.Easy:
+                maxWavesForThisDifficulty = Mathf.Min(5, allWaves.Count); 
+                break;
+            case Difficulty.Medium:
+                maxWavesForThisDifficulty = Mathf.Min(10, allWaves.Count);
+                break;
+            case Difficulty.Hard:
+            default:
+                maxWavesForThisDifficulty = allWaves.Count; 
+                break;
+        }
     }
 
 
@@ -51,7 +70,7 @@ public class WaveManager : MonoBehaviour
         if (currentState != WaveState.WaitingToStart)
             return;
 
-        if (currentWaveIndex >= allWaves.Count)
+        if (currentWaveIndex >= maxWavesForThisDifficulty)
         {
             UIManager.Instance.showVictoryScreen();
             currentState = WaveState.AllWavesComplete;
@@ -121,10 +140,8 @@ public class WaveManager : MonoBehaviour
             WaveDefinition completedWave = allWaves[currentWaveIndex - 1];
             PlayerEconomy.Instance.GainMoney(completedWave.waveReward);
             StatsManager.Instance.AddMoneyGeneratedByWaves(completedWave.waveReward);
-                     
-            Debug.Log("Wave completed");
 
-            if (currentWaveIndex >= allWaves.Count)
+            if (currentWaveIndex >= maxWavesForThisDifficulty)
             {
                 UIManager.Instance.showVictoryScreen();
                 currentState = WaveState.AllWavesComplete;
