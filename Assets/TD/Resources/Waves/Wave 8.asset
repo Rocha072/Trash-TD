@@ -17,7 +17,7 @@ MonoBehaviour:
     count: 20
     spawnIntervalBetweenMembers: 1
     delayBeforeStartGroup: 0
-  - enemyID: 4
+  - enemyID: 2
     count: 1
     spawnIntervalBetweenMembers: 25
     delayBeforeStartGroup: 35

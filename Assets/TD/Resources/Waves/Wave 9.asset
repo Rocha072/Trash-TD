@@ -29,11 +29,11 @@ MonoBehaviour:
     count: 10
     spawnIntervalBetweenMembers: 1
     delayBeforeStartGroup: 21
-  - enemyID: 4
-    count: 3
-    spawnIntervalBetweenMembers: 2
-    delayBeforeStartGroup: 40
   - enemyID: 1
+    count: 20
+    spawnIntervalBetweenMembers: 0.5
+    delayBeforeStartGroup: 60
+  - enemyID: 3
     count: 20
     spawnIntervalBetweenMembers: 0.5
     delayBeforeStartGroup: 60

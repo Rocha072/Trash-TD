@@ -15,7 +15,7 @@ MonoBehaviour:
   dropAmount: 100
   damage: 40
   ID: 4
-  MaxHealth: 900
+  MaxHealth: 1500
   MaxSpeed: 3
   Acceleration: 1.125
   MinDistanceToPassNode: 2
