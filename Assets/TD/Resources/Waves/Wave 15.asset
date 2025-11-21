@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 320a2cdbbfde4ca4b84e7154ff8e94a6, type: 3}
-  m_Name: Wave 10
+  m_Name: Wave 15
   m_EditorClassIdentifier: 
   enemyGroups:
   - enemyID: 3
-    count: 20
+    count: 5
     spawnIntervalBetweenMembers: 0.5
     delayBeforeStartGroup: 0
-  - enemyID: 4
-    count: 3
+  - enemyID: 5
+    count: 2
     spawnIntervalBetweenMembers: 2
-    delayBeforeStartGroup: 15
-  waveReward: 1000
+    delayBeforeStartGroup: 10
+  waveReward: 500
