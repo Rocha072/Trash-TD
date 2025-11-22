@@ -128,16 +128,20 @@ public class EntitySummoner : MonoBehaviour
         }
         
         WaveManager.Instance.OnEnemyDied();
-        PlayerEconomy.Instance.GainMoney(enemy.enemyData.dropAmount);
-        StatsManager.Instance.AddTrashCollected();
-        StatsManager.Instance.AddMoneyGeneratedByCollections(enemy.enemyData.dropAmount);
 
-        foreach (IEnemyDeathListener listener in enemyDeathListeners.ToList())
-        {
-            if (listener != null)
-                listener.OnEnemyDeath(killer, enemy);
-            
+        if(killer!=null){
+            PlayerEconomy.Instance.GainMoney(enemy.enemyData.dropAmount);
+            StatsManager.Instance.AddTrashCollected();
+            StatsManager.Instance.AddMoneyGeneratedByCollections(enemy.enemyData.dropAmount);
+
+            foreach (IEnemyDeathListener listener in enemyDeathListeners.ToList())
+            {
+                if (listener != null)
+                    listener.OnEnemyDeath(killer, enemy);
+            }
         }
+
+        
 
         RemoveEnemy(enemy);
     }

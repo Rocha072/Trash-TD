@@ -248,7 +248,7 @@ public class UIManager : MonoBehaviour
     public void ShowDefeatScreen()
     {
         DefeatScreen.SetActive(true);
-        completedWavesText.text = "Rodada " + WaveManager.Instance.currentWaveIndex + "/" + WaveManager.Instance.allWaves.Count;
+        completedWavesText.text = "Rodada " + WaveManager.Instance.currentWaveIndex + "/" + WaveManager.Instance.maxWavesForThisDifficulty;
         Time.timeScale = 0f;
         PlayerMovement.TurnOffPlayerMovement();
     }

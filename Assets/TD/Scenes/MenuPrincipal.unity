@@ -292,7 +292,7 @@ RectTransform:
   m_AnchorMin: {x: 0.11652376, y: 0.4826902}
   m_AnchorMax: {x: 0.418581, y: 0.805462}
   m_AnchoredPosition: {x: -1.4998779, y: 50.671997}
-  m_SizeDelta: {x: -123.4822, y: -143.65338}
+  m_SizeDelta: {x: -123.4822, y: -150.93896}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &123560805
 MonoBehaviour:
@@ -328,7 +328,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0873b7ea573a1b740a250ef6af5a7166, type: 3}
+  m_Texture: {fileID: 2800000, guid: d494eec7209f99e47822acc0aa5676cf, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -915,7 +915,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0873b7ea573a1b740a250ef6af5a7166, type: 3}
+  m_Texture: {fileID: 2800000, guid: d494eec7209f99e47822acc0aa5676cf, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -2718,7 +2718,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0873b7ea573a1b740a250ef6af5a7166, type: 3}
+  m_Texture: {fileID: 2800000, guid: d494eec7209f99e47822acc0aa5676cf, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -2776,7 +2776,7 @@ RectTransform:
   m_AnchorMin: {x: 0.4395238, y: 0.18446198}
   m_AnchorMax: {x: 0.87879056, y: 0.38936013}
   m_AnchoredPosition: {x: 0.00012207031, y: -1.3334045}
-  m_SizeDelta: {x: 0, y: 16.22043}
+  m_SizeDelta: {x: 0, y: 9.382039}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &600664129
 MonoBehaviour:
@@ -2812,7 +2812,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0873b7ea573a1b740a250ef6af5a7166, type: 3}
+  m_Texture: {fileID: 2800000, guid: d494eec7209f99e47822acc0aa5676cf, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -3485,7 +3485,7 @@ RectTransform:
   m_AnchorMin: {x: 0.4395238, y: 0.467}
   m_AnchorMax: {x: 0.87879056, y: 0.67173326}
   m_AnchoredPosition: {x: 0, y: -3}
-  m_SizeDelta: {x: 0, y: 16.32907}
+  m_SizeDelta: {x: 0, y: 9.493021}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &782597387
 MonoBehaviour:
@@ -3521,7 +3521,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0873b7ea573a1b740a250ef6af5a7166, type: 3}
+  m_Texture: {fileID: 2800000, guid: d494eec7209f99e47822acc0aa5676cf, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -3573,7 +3573,7 @@ RectTransform:
   m_AnchorMin: {x: 0.11652376, y: 0.18446198}
   m_AnchorMax: {x: 0.418581, y: 0.5207718}
   m_AnchoredPosition: {x: 0, y: 67}
-  m_SizeDelta: {x: -123.48, y: -152.57208}
+  m_SizeDelta: {x: -123.48, y: -160.04996}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &800025989
 MonoBehaviour:
@@ -3609,7 +3609,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0873b7ea573a1b740a250ef6af5a7166, type: 3}
+  m_Texture: {fileID: 2800000, guid: d494eec7209f99e47822acc0aa5676cf, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -6503,7 +6503,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0873b7ea573a1b740a250ef6af5a7166, type: 3}
+  m_Texture: {fileID: 2800000, guid: d494eec7209f99e47822acc0aa5676cf, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -7825,7 +7825,7 @@ RectTransform:
   m_AnchorMin: {x: 0.4395238, y: 0.18446198}
   m_AnchorMax: {x: 0.87879056, y: 0.82277185}
   m_AnchoredPosition: {x: -0.000030517578, y: 159.83}
-  m_SizeDelta: {x: -233.0799, y: -335.3554}
+  m_SizeDelta: {x: -233.0799, y: -348.3497}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1614929606
 MonoBehaviour:
@@ -7861,7 +7861,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0873b7ea573a1b740a250ef6af5a7166, type: 3}
+  m_Texture: {fileID: 2800000, guid: d494eec7209f99e47822acc0aa5676cf, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -9876,7 +9876,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1b9b3bda0611f8d4da9e1f882ded37d3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba4cf67377d0d994d960a06d97e88d7f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

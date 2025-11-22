@@ -569,7 +569,7 @@ MonoBehaviour:
   RangeObject: {fileID: 996726184985666321}
   isBeingPlaced: 1
   validPosition: 0
-  minHeight: 18.8
+  minHeight: 18.7
   maxHeight: 19.1
   currentPriority: 0
   currentStats:
